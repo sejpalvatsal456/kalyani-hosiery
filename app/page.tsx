@@ -1,7 +1,10 @@
+import Header from "./_components/Header";
+
 export default function Home() {
   return (
     <>
-      <h1 className="text-3xl font-bold">Kalyani Hosiery</h1>
+    {/* from #efe0c9 to  */}
+      <Header visibility={false} />
     </>
   );
 }
