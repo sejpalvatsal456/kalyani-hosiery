@@ -2,12 +2,12 @@
 
 import React, { useState } from "react";
 import "@tailwindplus/elements";
-import { ElDropdown, ElMenu } from "@tailwindplus/elements/react";
 import { FiShoppingCart } from "react-icons/fi";
 import { FaRegUser, FaSearch } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import { navLinksDataType } from "@/lib/typeDefinitions";
 import { HiMenu, HiX } from "react-icons/hi";
+import Image from "next/image";
 
 export default function Navbar({
   activePage,
@@ -48,11 +48,11 @@ export default function Navbar({
 
         {/* Logo */}
         <a href="/">
-          <img
-            width={100}
-            className="h-7 cursor-pointer"
-            src="https://khushbujewellers.com/cdn/shop/files/khushbu_jewellers_logo_1_d016ce61-73cb-4f48-8fb7-8073abc9b45d.png?v=1751370925&width=320"
-            alt="logo"
+          <Image
+            src="/logo1.png"
+            alt="Next.js logo"
+            width={150}
+            height={50}          
           />
         </a>
 
