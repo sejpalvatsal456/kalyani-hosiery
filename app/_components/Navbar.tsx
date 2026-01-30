@@ -61,9 +61,10 @@ export default function Navbar({
           method="GET"
           className="flex items-center bg-[#f5f5f5] px-5 gap-5 rounded"
         >
-          <CiSearch size={20} className="h-10 " />
+          <CiSearch size={20} className="hidden md:flex h-10 " />
+          {/* Fix size of search bar in mobile view */}
           <input
-            className="w-30 md:w-auto h-10 focus:outline-none"
+            className="w-15 md:w-auto h-10 focus:outline-none"
             placeholder="Search..."
             type="text"
             name="serachInput"
