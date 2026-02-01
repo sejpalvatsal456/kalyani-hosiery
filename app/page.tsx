@@ -3,7 +3,7 @@
 import { navLinksDataType, ProductDataType } from "@/lib/typeDefinitions";
 import Header from "./_components/Header";
 import Navbar from "./_components/Navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DisplayCard from "./_components/DisplayCard";
 
 const navLinksData: navLinksDataType[] = [
@@ -12,7 +12,7 @@ const navLinksData: navLinksDataType[] = [
   { name: "Kids", tag: "kids" },
 ]
 
-const productDataList: ProductDataType[] = [
+const productDataListFromApi: ProductDataType[] = [
   {
     id: 1,
     category: "Men",
@@ -38,8 +38,19 @@ const productDataList: ProductDataType[] = [
 export default function Home() {
 
   const [page, setPage] = useState<string>("men")
+  const [productDataList, setProductDataList] = useState<ProductDataType[]>([]);
   const [search, setSearch] = useState<string>("");
 
+
+  
+  useEffect(() => {
+    setProductDataList(productDataListFromApi.filter(productData => productData.title.toLowerCase().includes(search.toLowerCase())))
+  }, [search]);
+  
+  useEffect(() => {
+    // fetch from api
+    setProductDataList(productDataListFromApi);
+  }, []);
   return (
     <>
       <Header visibility={false} />
