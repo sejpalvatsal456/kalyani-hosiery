@@ -12,11 +12,15 @@ import Image from "next/image";
 export default function Navbar({
   activePage,
   navLinksData,
+  search,
+  setSearch,
   setPage,
   cartCount,
 }: {
   activePage: string;
   navLinksData: navLinksDataType[];
+  search: string;
+  setSearch: (search: string) => void;
   setPage: (val: string) => void; 
   cartCount: number;
 }) {
@@ -64,11 +68,13 @@ export default function Navbar({
           <CiSearch size={20} className="hidden md:flex h-10 " />
           {/* Fix size of search bar in mobile view */}
           <input
-            className="w-15 md:w-auto h-10 focus:outline-none"
+            className="w-30 md:w-auto h-10 focus:outline-none"
             placeholder="Search..."
             type="text"
             name="serachInput"
             id="searchInput"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
           />
         </form>
 
