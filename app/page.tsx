@@ -58,7 +58,7 @@ export default function Home() {
       <h1 className="text-2xl m-5 font-semibold">{page}</h1>
       <div id="showCase" className='mx-10 grid grid-cols-2 md:grid-cols-4 gap-10'>
         {
-          productDataList.map((productData, key) => {
+          productDataList.map((productData) => {
             return (
               <DisplayCard key={productData.id} productData={productData} />
             )

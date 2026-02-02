@@ -1,5 +1,6 @@
 import { ProductDataType } from "@/lib/typeDefinitions";
-import React from "react";
+import { useRouter } from "next/navigation";
+import React, { FormEvent } from "react";
 
 export default function DisplayCard({
   productData
@@ -7,13 +8,19 @@ export default function DisplayCard({
   productData: ProductDataType
 }) {
 
+  const router = useRouter();
+
   const getDiscount = (mrp: number, price: number) => {
     const discount = (mrp-price)/mrp*100;
     return Math.round(discount);
   }
 
+  const handleClick = (e:FormEvent) => {
+    router.push("/product/" + productData.id);
+  }
+
   return (
-    <div className="w-50 min-h-70 max-h-100 rounded hover:shadow-lg hover:scale-110 transition-all duration-300 flex flex-col">
+    <div onClick={handleClick} className="w-50 min-h-70 max-h-100 rounded hover:shadow-lg hover:scale-110 transition-all duration-300 flex flex-col">
       <img src={productData.link} className="w-full h-40 rounded-t-lg" alt="card-img" />
 
       <span className="text-lg font-bold inline-block mt-3 pl-3">{productData.title}</span>
