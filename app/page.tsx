@@ -54,7 +54,7 @@ export default function Home() {
   return (
     <>
       <Header visibility={false} />
-      <Navbar activePage={page} setPage={setPage} search={search} setSearch={setSearch} navLinksData={navLinksData} cartCount={2} />
+      <Navbar displayNavLinks={true} activePage={page} setPage={setPage} search={search} setSearch={setSearch} navLinksData={navLinksData} cartCount={2} />
       <h1 className="text-2xl m-5 font-semibold">{page}</h1>
       <div id="showCase" className='mx-10 grid grid-cols-2 md:grid-cols-4 gap-10'>
         {
