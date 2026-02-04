@@ -5,7 +5,7 @@ const productData = {
   title: "T Shirts",
   price: 200,
   mrp: 250,
-  subtitle: "Description...............",
+  subtitle: "Subtitle...............",
   colors: ["9e846d", "956743"],
   sizes: [ "XS", "S", "L", "XL", "XXL" ],
   links: [

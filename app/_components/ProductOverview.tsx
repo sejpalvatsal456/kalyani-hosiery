@@ -58,8 +58,12 @@ export default function ProductOverview({
       />
       <div className="h-[100vh] w-[100vw] mt-10 flex flex-col md:flex-row justify-evenly">
         {/* Photo Privews */}
-        <div className="w-[95vw] md:w-[45vw] h-full flex justify-center">
-          <img src={productData.links[selectedColor]} alt="" />
+        <div className="w-full ml-2 md:ml-0 md:w-[45vw] flex justify-center">
+          <img
+            src={productData.links[selectedColor]}
+            alt=""
+            className="rounded-lg"
+          />
         </div>
 
         {/* Product Overview */}
@@ -115,7 +119,7 @@ export default function ProductOverview({
 
           <div className="flex flex-col gap-4">
             <h1 className="text-lg mt-5 font-semibold">Sizes</h1>
-            <div className="flex gap-10 mx-5 w-[80vw] md:w-[40vw] grid grid-cols-4 md:grid-cols-5 gap-4">
+            <div className="flex gap-10 mx-5 w-[80vw] md:w-[40vw] grid grid-cols-3 md:grid-cols-5 gap-4">
               {productData.sizes.map((size: string, key) => {
                 return (
                   <button
@@ -140,7 +144,7 @@ export default function ProductOverview({
           <button
             onClick={handleClick}
             className={
-              `mt-5 w-[80vw] md:w-140 mx-4 h-14 rounded font-semibold text-white text-lg hover:bg-white hover:text-[#4d3af3] hover:border-[#4d3af3] hover:border-1 transition-all duration-300s ` +
+              `mt-10 md:mt-5 w-[80vw] md:w-140 mx-4 h-14 rounded font-semibold text-white text-lg hover:bg-white hover:text-[#4d3af3] hover:border-[#4d3af3] hover:border-1 transition-all duration-300s ` +
               (isLoading
                 ? "bg-[#2f2394] cursor-not-allowed"
                 : "bg-[#4d3af3] cursor-pointer")
@@ -155,11 +159,13 @@ export default function ProductOverview({
             <ul className="mb-10 mt-5 flex flex-col gap-3">
               {productData.desc.map((pair, key) => {
                 return (
-                  <li key={key} className="text-gray-500 font-semibold">
-                    <span className="inline-block w-[40vw]">{pair.key}: </span>
+                  <li key={key} className="text-gray-500">
+                    <span className="inline-block w-[40vw] md:w-[20vw]">
+                      {pair.key}:{" "}
+                    </span>
                     <span>{pair.value}</span>
                   </li>
-                )
+                );
               })}
             </ul>
           </div>
