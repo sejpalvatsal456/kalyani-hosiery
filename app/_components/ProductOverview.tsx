@@ -55,14 +55,15 @@ export default function ProductOverview({
         navLinksData={navLinksData}
         setPage={() => {}}
         cartCount={2}
+        displayNavLinks={false}
       />
       <div className="h-[100vh] w-[100vw] mt-10 flex flex-col md:flex-row justify-evenly">
         {/* Photo Privews */}
-        <div className="w-full ml-2 md:ml-0 md:w-[45vw] flex justify-center">
+        <div className="w-[100%] md:ml-0 md:w-[45vw] flex justify-center">
           <img
             src={productData.links[selectedColor]}
             alt=""
-            className="rounded-lg"
+            className="rounded-lg w-[95%]"
           />
         </div>
 
