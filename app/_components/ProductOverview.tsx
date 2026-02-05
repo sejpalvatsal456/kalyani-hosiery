@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
-import { navLinksDataType } from "@/lib/typeDefinitions";
+import { navLinksDataType, ProductDataType, ProductOverviewType } from "@/lib/typeDefinitions";
 
 const primaryColor = "#4d3af3";
 
@@ -20,19 +20,11 @@ const getDiscount = (mrp: number, price: number) => {
 export default function ProductOverview({
   productData,
 }: {
-  productData: {
-    title: string;
-    subtitle: string;
-    price: number;
-    mrp: number;
-    colors: string[];
-    sizes: string[];
-    links: string[];
-    desc: { key: string; value: string }[];
-  };
+  productData: ProductOverviewType
 }) {
   const [search, setSearch] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<number>(0);
+  const [sizeList, setSizeList] = useState<{size: string, stock: number}[]>(productData.variety[0].sizes);
   const [selectedSize, setSelectedSize] = useState<number>(0);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -40,11 +32,33 @@ export default function ProductOverview({
   const handleClick = () => {
     setIsLoading(true);
     const selection = {
-      color: productData.colors[selectedColor],
-      size: productData.sizes[selectedSize],
+      color: productData.variety[selectedColor].color,
+      size: productData.variety[selectedColor].sizes[selectedSize].size,
     };
     alert(`Color: ${selection.color} | Size: ${selection.size}`);
+    setIsLoading(false);
   };
+
+  const sizeListEl = sizeList.map(({ size, stock }, key) => {
+    return (
+      <button
+        key={key}
+        className={
+          "border-1 rounded border-gray-300 font-medium cursor-pointer w-20 h-10 " +
+          (selectedSize == key
+            ? `border-none bg-[${primaryColor}] text-white`
+            : "")
+        }
+        onClick={() => setSelectedSize(key)}
+      >
+        {size}
+      </button>
+    );
+  });
+
+  useEffect(() => {
+    console.log(sizeList);
+  }, [sizeList]);
 
   return (
     <>
@@ -61,7 +75,7 @@ export default function ProductOverview({
         {/* Photo Privews */}
         <div className="w-[100%] md:ml-0 md:w-[45vw] flex justify-center">
           <img
-            src={productData.links[selectedColor]}
+            src={productData.variety[selectedColor].imgLinks[0]}
             alt=""
             className="rounded-lg w-[95%]"
           />
@@ -73,12 +87,12 @@ export default function ProductOverview({
 
           <h1 className="text-3xl font-bold mb-5">{productData.title}</h1>
           <span className="line-through text-gray-500">
-            ₹ {productData.mrp}
+            ₹ {productData.pricing.mrp}
           </span>
           <div className="flex gap-10 items-center">
-            <h1 className="text-2xl font-medium">₹ {productData.price}</h1>
+            <h1 className="text-2xl font-medium">₹ {productData.pricing.sellingPrice}</h1>
             <span className="text-sm text-white h-5 bg-green-500 px-3 rounded-full font-semibold">
-              {getDiscount(productData.mrp, productData.price)}% off
+              {getDiscount(productData.pricing.mrp, productData.pricing.sellingPrice)}% off
             </span>
           </div>
 
@@ -93,11 +107,14 @@ export default function ProductOverview({
           <div className="flex flex-col gap-4">
             <h1 className="text-lg mt-5 font-semibold">Colors</h1>
             <div className="flex gap-10 mx-5">
-              {productData.colors.map((color: string, key) => {
+              {productData.variety.map(({ id, color, imgLinks, sizes }, key) => {
                 return (
                   <button
                     key={key}
-                    onClick={() => setSelectedColor(key)}
+                    onClick={() => {
+                      setSelectedColor(key)
+                      setSizeList(productData.variety[key].sizes)
+                    }}
                     style={{
                       boxShadow:
                         selectedColor == key ? `0 0 0 2px #${color}` : "none",
@@ -121,26 +138,12 @@ export default function ProductOverview({
           <div className="flex flex-col gap-4">
             <h1 className="text-lg mt-5 font-semibold">Sizes</h1>
             <div className="flex gap-10 mx-5 w-[80vw] md:w-[40vw] grid grid-cols-3 md:grid-cols-5 gap-4">
-              {productData.sizes.map((size: string, key) => {
-                return (
-                  <button
-                    key={key}
-                    className={
-                      "border-1 rounded border-gray-300 font-medium cursor-pointer w-20 h-10 " +
-                      (selectedSize == key
-                        ? `border-none bg-[${primaryColor}] text-white`
-                        : "")
-                    }
-                    onClick={() => setSelectedSize(key)}
-                  >
-                    {size}
-                  </button>
-                );
-              })}
+              {sizeListEl}
             </div>
           </div>
 
           {/* Buy Now button */}
+          {/* TODO: Add out of stock option */}
 
           <button
             onClick={handleClick}
