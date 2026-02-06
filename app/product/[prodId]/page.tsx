@@ -57,7 +57,7 @@ const productData:ProductOverviewType = {
       sizes: [
         { size: "XS", stock: 10 },
         { size: "S", stock: 10 },
-        { size: "L", stock: 10 },
+        { size: "L", stock: 0 },
         { size: "XL", stock: 10 },
       ]
     }
