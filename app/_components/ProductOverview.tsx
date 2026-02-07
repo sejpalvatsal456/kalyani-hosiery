@@ -23,7 +23,6 @@ export default function ProductOverview({
 }) {
   const [search, setSearch] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<number>(0);
-  const [sizeList, setSizeList] = useState<{size: string, stock: number}[]>(productData.variety[0].sizes);
   const [selectedSize, setSelectedSize] = useState<number>(0);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
