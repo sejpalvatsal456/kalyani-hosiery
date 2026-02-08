@@ -1,16 +1,10 @@
 import { model, models, Schema, Types } from "mongoose";
 
-const PricingSchema = new Schema(
-  {
-    mrp: { type: Number, required: true, min: 0 },
-    sellingPrice: { type: Number, required: true, min: 0 },
-  },
-  { _id: false },
-);
-
 const SizeSchema = new Schema(
   {
     size: { type: String, required: true, trim: true },
+    mrp: { type: Number, required: true, min: 0 },
+    sellingPrice: { type: Number, required: true, min: 0 },
     stock: { type: Number, required: true, min: 0 },
   },
   { _id: false },
@@ -72,7 +66,6 @@ const ProductSchema = new Schema(
     subtitle: { type: String, required: true, trim: true },
     categoryId: { type: Types.ObjectId, ref: "Category", required: true },
     subcategoryId: { type: Types.ObjectId, ref: "Subcategory", required: true },
-    pricing: { type: PricingSchema, requied: true },
     thumbnail: { type: String, required: true },
     variety: { type: [VarietySchema], required: true },
     desc: { type: [DescriptionSchema], required: true },

@@ -75,16 +75,12 @@ export type ProductDataType = {
   subtitle: string;
   categoryId: string;
   subcategoryId: string;
-  pricing: {
-    mrp: number;
-    sellingPrice: number;
-  };
   thumbnail: string;
   variety: {
     id: string;
     color: string;
     imgLinks: string[];
-    sizes: { size: string; stock: number }[];
+    sizes: { size: string; stock: number; mrp: number; sellingPrice: number; }[];
   }[];
   desc: { key: string; value: string }[];
 };

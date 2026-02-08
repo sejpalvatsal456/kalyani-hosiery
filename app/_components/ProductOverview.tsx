@@ -85,12 +85,12 @@ export default function ProductOverview({
 
           <h1 className="text-3xl font-bold mb-5">{productData.title}</h1>
           <span className="line-through text-gray-500">
-            ₹ {productData.pricing.mrp}
+            ₹ {productData.variety[selectedColor].sizes[selectedSize].mrp}
           </span>
           <div className="flex gap-10 items-center">
-            <h1 className="text-2xl font-medium">₹ {productData.pricing.sellingPrice}</h1>
+            <h1 className="text-2xl font-medium">₹ {productData.variety[selectedColor].sizes[selectedSize].sellingPrice}</h1>
             <span className="text-sm text-white h-5 bg-green-500 px-3 rounded-full font-semibold">
-              {getDiscount(productData.pricing.mrp, productData.pricing.sellingPrice)}% off
+              {getDiscount(productData.variety[selectedColor].sizes[selectedSize].mrp, productData.variety[selectedColor].sizes[selectedSize].sellingPrice)}% off
             </span>
           </div>
 
