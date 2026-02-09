@@ -76,11 +76,15 @@ export default function ProductOverview({
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.data);
-        setProductData(data.data);
-        setIsOutOfStock(
-          data.data.variety[selectedColor].sizes[selectedSize].stock === 0,
-        );
+        if(data.data) {
+          console.log(data.data);
+          setProductData(data.data);
+          setIsOutOfStock(
+            data.data.variety[selectedColor].sizes[selectedSize].stock === 0,
+          );
+        } else {
+          alert("Data not found")
+        }
       })
       .catch((err) => alert(err));
   }, []);
