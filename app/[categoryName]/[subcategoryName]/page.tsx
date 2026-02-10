@@ -1,15 +1,20 @@
-import SubCateogryWrapper from '@/app/_components/SubCateogryWrapper';
-import React from 'react'
+import SubCategoryWrapper from "@/app/_components/SubCategoryWrapper";
 
-export default async function page(
-  { params } : { params: Promise<{ categoryName: string, subcategoryName: string }> }
-) {
+import React from "react";
 
+export default async function page({
+  params,
+}: {
+  params: Promise<{ categoryName: string; subcategoryName: string }>;
+}) {
   const { categoryName, subcategoryName } = await params;
 
   return (
     <div>
-      <SubCateogryWrapper categoryName={categoryName} subcategoryName={subcategoryName} />
+      <SubCategoryWrapper
+        categoryName={categoryName}
+        subcategoryName={subcategoryName}
+      />
     </div>
-  )
+  );
 }

@@ -85,5 +85,5 @@ export type ProductDataType = {
   desc: { key: string; value: string }[];
 };
 
-export type DisplayProductType = Omit<ProductDataType, "variety"|"categoryId"|"subcategoryId"|"desc"> & { category: Category, subcategory: SubCategory };
+export type DisplayProductType = Omit<ProductDataType, "categoryId"|"subcategoryId"|"desc"> & { categoryId: Category, subcategoryId: SubCategory };
 export type ProductOverviewType = Omit<ProductDataType, "categoryId"|"subcategoryId"|"thumbnail"> & { category: Category, subcategory: SubCategory };
