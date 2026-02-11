@@ -62,8 +62,8 @@ export const Subcategory =
 
 const ProductSchema = new Schema(
   {
-    title: { type: String, required: true, trim: true },
-    subtitle: { type: String, required: true, trim: true },
+    brandName: { type: String, required: true, trim: true },
+    productName: { type: String, required: true, trim: true },
     categoryId: { type: Types.ObjectId, ref: "Category", required: true },
     subcategoryId: { type: Types.ObjectId, ref: "Subcategory", required: true },
     thumbnail: { type: String, required: true },

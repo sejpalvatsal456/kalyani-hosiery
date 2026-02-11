@@ -106,7 +106,7 @@ export default function ProductOverview({
           <div className="w-[100%] md:ml-0 md:w-[45vw] flex justify-center">
             <img
               src={productData.variety[selectedColor].imgLinks[0]}
-              alt=""
+              alt="productImg"
               className="rounded-lg w-[95%]"
             />
           </div>
@@ -115,7 +115,7 @@ export default function ProductOverview({
           <div className="w-full md:w-[45vw] mt-10 ml-5  md:mt-0 md:ml-0 h-full">
             {/* Title and price display */}
 
-            <h1 className="text-3xl font-bold mb-5">{productData.title}</h1>
+            <h1 className="text-3xl font-bold mb-5">{productData.brandName}</h1>
             <span className="line-through text-gray-500">
               ₹ {productData.variety[selectedColor].sizes[selectedSize].mrp}
             </span>
@@ -140,7 +140,7 @@ export default function ProductOverview({
             {/* Product description */}
 
             <span className="inline-block mt-5 text-lg">
-              {productData.subtitle}
+              {productData.productName}
             </span>
 
             {/* Display colors */}

@@ -4,10 +4,10 @@ export type navLinksDataType = {
 };
 
 // const productData = {
-//   title: "T Shirts",
+//   brandName: "Brand",
+//   productName: "T Shirts",
 //   price: 200,
 //   mrp: 250,
-//   subtitle: "Subtitle...............",
 //   colors: ["9e846d", "956743"],
 //   sizes: [ "XS", "S", "L", "XL", "XXL" ],
 //   links: [
@@ -22,10 +22,11 @@ export type navLinksDataType = {
 // }
 
 const productData = {
-  title: "T Shirts",
+  brandName: "Brand",
+  productName: "T Shirts",
   price: 200,
   mrp: 250,
-  subtitle: "Subtitle...............",
+  
   varitey: [
     {
       color: "9e846d",
@@ -71,8 +72,8 @@ export type SubCategory = {
 
 export type ProductDataType = {
   _id: string;
-  title: string;
-  subtitle: string;
+  brandName: string;
+  productName: string;
   categoryId: string;
   subcategoryId: string;
   thumbnail: string;

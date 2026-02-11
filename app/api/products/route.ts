@@ -7,7 +7,7 @@ export const POST = async(req:NextRequest) => {
   try {
     
     await connectDB();
-    const { title, subtitle, categoryId, subcategoryId, thumbnail, variety, desc } = await req.json() as Omit<ProductDataType, "_id">;
+    const { brandName, productName, categoryId, subcategoryId, thumbnail, variety, desc } = await req.json() as Omit<ProductDataType, "_id">;
 
     const oldCat = await Category.findOne({ _id: categoryId });
     if (!oldCat)
@@ -24,8 +24,8 @@ export const POST = async(req:NextRequest) => {
       );
 
     const newProd = await Product.create({ 
-      title: title,
-      subtitle: subtitle,
+      brandName: brandName,
+      productName: productName,
       categoryId: categoryId,
       subcategoryId: subcategoryId,
       thumbnail: thumbnail,

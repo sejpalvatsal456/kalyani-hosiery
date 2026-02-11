@@ -3,8 +3,8 @@ import { ProductDataType, ProductOverviewType } from '@/lib/typeDefinitions';
 
 const productData:ProductOverviewType = {
   _id: "3",
-  title: "T Shirts",
-  subtitle: "Subtitle...............",
+  brandName: "Brand",
+  productName: "T Shirts",
   category: {
     _id: "1",
     name: "Men"
