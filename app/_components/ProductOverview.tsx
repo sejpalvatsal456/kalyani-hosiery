@@ -112,7 +112,7 @@ export default function ProductOverview({
           </div>
 
           {/* Product Overview */}
-          <div className="w-full md:w-[45vw] mt-10 ml-5  md:mt-0 md:ml-0 h-full">
+          <div className="w-full md:w-[45vw] mt-10 ml-5 md:mt-0 md:ml-0 h-full">
             {/* Title and price display */}
 
             <h1 className="text-3xl font-bold mb-5">{productData.brandName}</h1>
@@ -147,7 +147,7 @@ export default function ProductOverview({
             {/* FIXME: shades of white are blending to the background */}
             <div className="flex flex-col gap-4">
               <h1 className="text-lg mt-5 font-semibold">Colors</h1>
-              <div className="flex gap-10 mx-5">
+              <div className="grid grid-cols-3 md:grid-cols-5 gap-10 px-5">
                 {productData.variety.map(
                   ({ id, color, imgLinks, sizes }, key) => {
                     return (

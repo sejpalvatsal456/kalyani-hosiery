@@ -16,7 +16,6 @@ const navLinksData: navLinksDataType[] = [
 ];
 
 const sortOptions = [
-  { title: "Recommended", tag: "R" },
   { title: "What's new", tag: "W" },
   { title: "Price: High to Low", tag: "PHL" },
   { title: "Price: Low to High", tag: "PLH" },
