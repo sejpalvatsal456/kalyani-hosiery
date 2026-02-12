@@ -5,7 +5,6 @@ import Navbar from "./Navbar";
 import {
   DisplayProductType,
   navLinksDataType,
-  ProductDataType,
 } from "@/lib/typeDefinitions";
 import DisplayCard from "./DisplayCard";
 
@@ -92,8 +91,13 @@ export default function SubCateogryWrapper({
       return lowest >= priceRange.low && lowest <= priceRange.high;
     });
 
+    // Search filter 
+    updated = updated.filter((p) => {
+      return p.brandName.toLowerCase().includes(search.toLowerCase()) || p.productName.toLowerCase().includes(search.toLowerCase());
+    })
+
     setFilteredProducts(updated);
-  }, [brands, size, priceRange, sortCategory, products]);
+  }, [brands, size, priceRange, sortCategory, search, products]);
 
   const allBrandSelectionEl = allBrands.map((brand, key) => {
     return (
@@ -221,7 +225,7 @@ export default function SubCateogryWrapper({
             </div>
           </div>
           {/* Products */}
-          <div className="h-[80vh] w-[80vw] grid grid-cols-3 gap-5 mx-10">
+          <div className="h-[80vh] w-[80vw] grid grid-cols-3 gap-5 px-10 py-10 border-t-1 border-gray-300">
             {filteredProducts?.map((product, key) => {
               return <DisplayCard key={product._id} productData={product} />;
             })}
