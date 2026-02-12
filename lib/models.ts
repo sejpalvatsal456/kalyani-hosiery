@@ -74,3 +74,14 @@ const ProductSchema = new Schema(
 );
 
 export const Product = models.Product || model("Product", ProductSchema);
+
+const UserSchema = new Schema({
+  name: { type: String, required: true, trim: true },
+  role: { type: String, enum: [ 'user', 'admin' ], required: true },
+  phone: { type: Number, required: true },
+  hashedPassword: { type: String, required: true },
+  address: { type: String, trim: true },
+  cart: { type: [Types.ObjectId], required: true, ref: "Product" }
+}, { timestamps: true });
+
+export const User = models.User || model("User", UserSchema);

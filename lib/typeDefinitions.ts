@@ -29,9 +29,19 @@ export type ProductDataType = {
     sizes: { size: string; stock: number; mrp: number; sellingPrice: number; }[];
   }[];
   desc: { key: string; value: string }[];
-  createdAt: string,
-  updatedAt: string
+  createdAt: string;
+  updatedAt: string;
 };
 
-export type DisplayProductType = Omit<ProductDataType, "categoryId"|"subcategoryId"|"desc"> & { categoryId: Category, subcategoryId: SubCategory };
+export type DisplayProductType = Omit<ProductDataType, "categoryId"|"subcategoryId"> & { categoryId: Category, subcategoryId: SubCategory };
 export type ProductOverviewType = Omit<ProductDataType, "categoryId"|"subcategoryId"|"thumbnail"> & { category: Category, subcategory: SubCategory };
+
+export type User = {
+  _id: string;
+  name: string;
+  role: "user" | "admin";
+  phone: number;
+  hashedPassword: string;
+  address?: string;
+  cart: [string];
+};
