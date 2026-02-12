@@ -34,7 +34,7 @@ export type ProductDataType = {
 };
 
 export type DisplayProductType = Omit<ProductDataType, "categoryId"|"subcategoryId"> & { categoryId: Category, subcategoryId: SubCategory };
-export type ProductOverviewType = Omit<ProductDataType, "categoryId"|"subcategoryId"|"thumbnail"> & { category: Category, subcategory: SubCategory };
+export type ProductOverviewType = Omit<ProductDataType, "categoryId"|"subcategoryId"|"thumbnail"|"createdAt"|"updatedAt"> & { category: Category, subcategory: SubCategory };
 
 export type User = {
   _id: string;
