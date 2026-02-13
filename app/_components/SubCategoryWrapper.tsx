@@ -398,10 +398,11 @@ export default function SubCateogryWrapper({
               e.preventDefault();
               setIsFilterClicked(!isFilterClicked);
               setIsSortCategoryClicked(false);
-            }}>
+            }}
+          >
             Filter
             <FaFilter />
-            </button>
+          </button>
         </div>
 
       </div>
