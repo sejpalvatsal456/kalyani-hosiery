@@ -3,14 +3,21 @@ import { User } from "@/lib/models";
 import { NextRequest, NextResponse } from "next/server";
 import bcyrpt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { setCookie } from "@/lib/cookies";
+import { deleteCookie, getCookie, setCookie } from "@/lib/cookies";
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
 export const POST = async(req: NextRequest) => {
     try {
         await connectDB();
-        const { name, role, phone, password, address } = await req.json();
+        const { name, password, address } = await req.json();
+
+        const phone = await getCookie('tempPhone');
+        if(!phone)
+            return NextResponse.json(
+                { msg: "Phone number isn't set" },
+                { status: 401 }
+            )
 
         const oldUser = await User.findOne({ phone: phone });
         if(oldUser) return NextResponse.json(
@@ -22,7 +29,7 @@ export const POST = async(req: NextRequest) => {
 
         const newUser = await User.create({
             name: name,
-            role: role,
+            role: 'user',
             phone: phone,
             hashedPassword: hashedPassword,
             address: address,
@@ -37,15 +44,14 @@ export const POST = async(req: NextRequest) => {
         const user_token = jwt.sign({
             _id: newUser._id,
             name: newUser.name,
-            role: newUser.role,
+            role: 'user',
             phone: newUser.phone,
             address: newUser.address,
             cart: []
         }, JWT_SECRET);
 
-        // TODO: add logic to create the cookie for user_token
-
         await setCookie('user_token', user_token);
+        await deleteCookie('tempPhone');
 
         return NextResponse.json(
             { token: user_token },

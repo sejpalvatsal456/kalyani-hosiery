@@ -49,7 +49,7 @@ export default function page() {
         {/* gradient from - #faeaf1 to #fcf0e2 */}
         
         <div className='bg-white p-10 rounded w-[30vw] h-[50vh]'>
-            <h1 className='text-2xl font-semibold mb-10'>SignUp</h1>
+            <h1 className='text-2xl font-semibold mb-10'>Verify Phone</h1>
             <form className='flex flex-col'>
                 <input
                     type="number"
@@ -116,7 +116,7 @@ export default function page() {
                         + (!isVerified ? "bg-gray-500 cursor-not-allowed text-white disabled" : "bg-[#ff406c] text-white cursor-pointer")}
                     onClick={handleSubmit}
                 >
-                    SignUp
+                    Continue
                 </button>
             </form>
         </div>
