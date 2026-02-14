@@ -8,18 +8,50 @@ export async function proxy(request: NextRequest) {
 
   console.log('Middleware hit!');
 
+  if (pathname === '/') {
+    const user_token = request.cookies.get("user_token");
+    if (user_token) {
+      try {
+        await jwtVerify(user_token.value, JWT_SECRET);
+        return NextResponse.next();
+      } catch (error) {
+        const response = NextResponse.next();
+        response.cookies.delete('user_token');
+        return response;
+      }
+    }
+    return NextResponse.next();
+  }
+
+  // Check only or /auth/login
+  if (pathname === '/api/login') {
+    const user_token = request.cookies.get("user_token");
+    if (user_token) {
+        try {
+          await jwtVerify(user_token.value, JWT_SECRET);
+          const homeUrl = new URL("/", request.url);
+          return NextResponse.redirect(homeUrl);
+        } catch (error) {
+          const response = NextResponse.next();
+          response.cookies.delete('user_token');
+          return response;
+        }
+
+    }
+  }
+
   // Check only for /auth/signup
   if (pathname === "/auth/signup") {
     const user_token = request.cookies.get("user_token");
     if (user_token) {
         try {
-            await jwtVerify(user_token.value, JWT_SECRET);
-            const homeUrl = new URL("/", request.url);
-            return NextResponse.redirect(homeUrl);
+          await jwtVerify(user_token.value, JWT_SECRET);
+          const homeUrl = new URL("/", request.url);
+          return NextResponse.redirect(homeUrl);
         } catch (error) {
-            const response = NextResponse.next();
-            response.cookies.delete('user_token');
-            return response;
+          const response = NextResponse.next();
+          response.cookies.delete('user_token');
+          return response;
         }
 
     }

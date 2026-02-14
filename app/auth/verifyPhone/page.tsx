@@ -1,7 +1,9 @@
 'use client';
 
+import { auth } from '@/lib/firebase';
+import { ConfirmationResult, RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
-import React, { FormEvent, useEffect, useState } from 'react'
+import React, { FormEvent, useEffect, useState, useTransition } from 'react'
 
 export default function page() {
 
@@ -9,24 +11,6 @@ export default function page() {
 
     const [number, setNumber] = useState<string>("");
     const [isVerified, setIsVerified] = useState<boolean>(false);
-
-    // const sendOtp = async(e:FormEvent) => {
-    //     e.preventDefault();
-    //     const recaptcha = new RecaptchaVerifier(
-    //         auth,
-    //         "recaptcha-container",
-    //         { size: "invisible" }
-    //     );
-
-    //     const result = await signInWithPhoneNumber(auth, number, recaptcha);
-    //     setConfirmationResult(result);
-    //     alert("OTP Sent");
-    // }
-
-    // const verifyOtp = async() => {
-    //     await confirmationResult?.confirm(otp);
-    //     alert("OTP Verified");
-    // }
 
     const handleSubmit = async(e:FormEvent) => {
         e.preventDefault();
@@ -84,32 +68,8 @@ export default function page() {
                     className='border-1 border-gray-300 focus:border-gray-500 focus:outline-none text-gray-500 text-md py-2 pl-5 rounded'
                 />
 
-                {/* <button
-                    className='text-left mt-2 font-medium text-blue-400 cursor-pointer'
-                    onClick={sendOtp}
-                >
-                    GET OTP
-                </button>
-
-                <input
-                    type="number"
-                    name="otp"
-                    id="otpInput"
-                    placeholder='OTP...'
-                    className='mt-3 border-1 border-gray-300 focus:border-gray-500 focus:outline-none text-gray-500 text-md py-2 pl-5 rounded'
-                />
-
                 <button
-                    className='text-left mt-2 font-medium text-blue-400 cursor-pointer'
-                    onClick={verifyOtp}
-                >
-                    Verify
-                </button>
-
-                <div id="recaptcha-container"></div> */}
-
-                <button
-                    type="button"
+                    type="submit"
                     disabled={!isVerified}
                     className={
                         'py-2 mt-4 text-lg font-semibold transition-all duration-200 ' 
@@ -118,6 +78,7 @@ export default function page() {
                 >
                     Continue
                 </button>
+
             </form>
         </div>
 

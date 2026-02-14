@@ -18,6 +18,16 @@ export default function Home() {
   const [productDataList, setProductDataList] = useState<DisplayProductType[]>([]);
   const [search, setSearch] = useState<string>("");
 
+  useEffect(() => {
+    fetch('/api/auth/me', {
+      method: "GET",
+      credentials: "include"
+    })
+    .then(res => res.json())
+    .then(data => console.log(data.login))
+    .catch(err => console.log(err));
+  })
+
   return (
     <>
       <Header visibility={false} />
