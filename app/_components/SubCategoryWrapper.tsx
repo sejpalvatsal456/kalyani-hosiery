@@ -4,16 +4,9 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import {
   DisplayProductType,
-  navLinksDataType,
 } from "@/lib/typeDefinitions";
 import DisplayCard from "./DisplayCard";
 import { FaFilter, FaSort } from "react-icons/fa";
-
-const navLinksData: navLinksDataType[] = [
-  { name: "Men", tag: "men" },
-  { name: "Women", tag: "women" },
-  { name: "Kids", tag: "kids" },
-];
 
 const sortOptions = [
   { title: "What's new", tag: "W" },
@@ -183,8 +176,8 @@ export default function SubCateogryWrapper({
   return (
     <>
       <Navbar
+        isLogin={true} // TODO: add the logic here
         activePage={categoryName}
-        navLinksData={navLinksData}
         search={search}
         setSearch={setSearch}
         setPage={function (val: string): void {

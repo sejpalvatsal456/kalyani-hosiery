@@ -8,12 +8,6 @@ import {
   ProductOverviewType,
 } from "@/lib/typeDefinitions";
 
-const navLinksData: navLinksDataType[] = [
-  { name: "Men", tag: "men" },
-  { name: "Women", tag: "women" },
-  { name: "Kids", tag: "kids" },
-];
-
 const getDiscount = (mrp: number, price: number) => {
   const discount = ((mrp - price) / mrp) * 100;
   return Math.round(discount);
@@ -92,10 +86,10 @@ export default function ProductOverview({
   return (
     <>
       <Navbar
+        isLogin={true} // TODO: fix the logic here
         activePage="Product"
         search={search}
         setSearch={setSearch}
-        navLinksData={navLinksData}
         setPage={() => {}}
         cartCount={2}
         displayNavLinks={false}
