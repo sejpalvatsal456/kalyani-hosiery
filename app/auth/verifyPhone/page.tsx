@@ -32,7 +32,7 @@ export default function page() {
     <div className='w-[100vw] h-[100vh] bg-[linear-gradient(45deg,_#faeaf1,_#fcf0e2)] flex items-center justify-center'>
         {/* gradient from - #faeaf1 to #fcf0e2 */}
         
-        <div className='bg-white p-10 rounded w-[30vw] h-[50vh]'>
+        <div className='bg-white p-10 rounded w-[80vw] md:w-[30vw] h-[50vh]'>
             <h1 className='text-2xl font-semibold mb-10'>Verify Phone</h1>
             <form className='flex flex-col'>
                 <input
@@ -80,6 +80,10 @@ export default function page() {
                 </button>
 
             </form>
+            <p className='mt-5'>
+                <span>Already have an Account?</span>
+                <span className='font-medium text-blue-500 cursor-pointer' onClick={() => router.push('/auth/login/')}>Login</span>
+            </p>
         </div>
 
     </div>
