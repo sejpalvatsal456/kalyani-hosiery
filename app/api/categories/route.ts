@@ -21,3 +21,16 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json({ msg: "Internal Sever Error" }, { status: 500 });
   }
 };
+
+export const GET = async(req:NextRequest) => {
+  try {
+    await connectDB();
+    const cats = await Category.find();
+    return NextResponse.json(
+      { cats: cats },
+      { status: 200 }
+    )
+  } catch (error) {
+    return NextResponse.json({ msg: "Internal Sever Error" }, { status: 500 });
+  }
+}

@@ -1,19 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "@tailwindplus/elements";
 import { FiShoppingCart } from "react-icons/fi";
 import { FaRegUser, FaSearch } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { SubCategory } from '@/lib/typeDefinitions';
 
-const navLinksData = [
-  { name: "Men" },
-  { name: "Women" },
-  { name: "Kids" },
-  { name: "Sales" }
-]
+const convertToCapitilizeCase = (str: string) => {
+  let words = str.split(' ');
+  words = words.map(word => {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  });
+  return words.join(' ');
+}
 
 export default function Navbar({
   activePage,
@@ -35,21 +37,20 @@ export default function Navbar({
 
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
+  const [navLinks, setNavLinks] = useState<string[]>([]);
 
-  const navLinksEl = navLinksData.map((navLink, key) => {
-    return (
-      <li
-        key={key}
-        className={
-          "w-full h-10 text-center hover:font-medium border-[#fc2167] cursor-pointer hover:border-b-3 hover:border-[#fc2167] " +
-          (activePage === navLink.name ? "border-b-3 text-[#fc2167]" : "")
-        }
-        onClick={() => setPage(navLink.name)}
-      >
-        <span>{navLink.name}</span>
-      </li>
-    );
-  });
+  useEffect(() => {
+    fetch('/api/categories/', { method: "GET" })
+    .then(res => res.json())
+    .then(data => {
+      let temp:string[]  = [];
+      data.cats.map((cat: SubCategory) => {
+        temp.push(cat.name);
+      });
+      setNavLinks(temp);
+    })
+    .catch(err => console.log(err))
+  }, [])
 
   return (
     <nav className="border-b-1 border-gray-300">
@@ -62,7 +63,22 @@ export default function Navbar({
 
         {/* Nav links desktop */}
         {displayNavLinks ? (
-          <ul className="hidden md:flex items-center gap-10">{navLinksEl}</ul>
+          <ul className="hidden md:flex items-center gap-10">
+            {navLinks.map((name: string, key) => {
+              return (
+                <li
+                  key={key}
+                  className={
+                    "w-full h-10 text-center hover:font-medium border-[#fc2167] cursor-pointer hover:border-b-3 hover:border-[#fc2167] " +
+                    (activePage === name ? "border-b-3 text-[#fc2167]" : "")
+                  }
+                  onClick={() => setPage(name)}
+                >
+                  <span>{convertToCapitilizeCase(name)}</span>
+                </li>
+              );
+            })}
+          </ul>
         ) : null}
 
         {/* Nav Search desktop */}
@@ -95,12 +111,12 @@ export default function Navbar({
             )}
           </li>
           <li>
-            {isLogin 
-            ? <FaRegUser size={25} />
-            : (<button
-              className="border-2 px-5 py-2 rounded border-[#fc2167] text-[#fc2167] font-medium cursor-pointer hover:text-white hover:bg-[linear-gradient(135deg,_#fc2167,_#ef123e)] transistion-all duration-300"
-              onClick={e => router.push('/auth/login')}
-            >Login</button>) }            
+              {isLogin 
+              ? <FaRegUser size={25} />
+              : (<button
+                className="border-2 px-5 py-2 rounded border-[#fc2167] text-[#fc2167] font-medium cursor-pointer hover:text-white hover:bg-[linear-gradient(135deg,_#fc2167,_#ef123e)] transistion-all duration-300"
+                onClick={e => router.push('/auth/login')}
+              >Login</button>) }
           </li>
         </ul>
 
@@ -127,7 +143,22 @@ export default function Navbar({
 
       {/* Mobile links */}
       {displayNavLinks ? (
-        <ul className="flex justify-between md:hidden">{navLinksEl}</ul>
+        <ul className="flex justify-between md:hidden">
+          {navLinks.map((name: string, key) => {
+            return (
+              <li
+                key={key}
+                className={
+                  "w-full h-10 text-center hover:font-medium border-[#fc2167] cursor-pointer hover:border-b-3 hover:border-[#fc2167] " +
+                  (activePage === name ? "border-b-3 text-[#fc2167]" : "")
+                }
+                onClick={() => setPage(name)}
+              >
+                <span>{ name}</span>
+              </li>
+            );
+          })}
+        </ul>
       ) : null}
 
       {/* Foldable Menu for mobile view */}
