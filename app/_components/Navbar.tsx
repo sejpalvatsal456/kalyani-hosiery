@@ -85,7 +85,7 @@ export default function Navbar({
         </form>
 
         {/* Profile logos - desktop */}
-        <ul className="hidden md:flex items-center">
+        <ul className="hidden md:flex items-center gap-7">
           <li className="relative">
             <FiShoppingCart size={25} />
             {cartCount > 0 && (
