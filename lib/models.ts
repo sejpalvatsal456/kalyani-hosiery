@@ -2,6 +2,7 @@ import { model, models, Schema, Types } from "mongoose";
 
 const SizeSchema = new Schema(
   {
+    id: { type: String, required: true, trim: true },
     size: { type: String, required: true, trim: true },
     mrp: { type: Number, required: true, min: 0 },
     sellingPrice: { type: Number, required: true, min: 0 },
@@ -81,7 +82,7 @@ const UserSchema = new Schema({
   phone: { type: Number, required: true },
   hashedPassword: { type: String, required: true },
   address: { type: String, trim: true },
-  cart: { type: [Types.ObjectId], required: true, ref: "Product" }
+  cart: { type: [{ productId: Types.ObjectId, sizeId: String, colorId: String }], required: true, ref: "Product" }
 }, { timestamps: true });
 
 export const User = models.User || model("User", UserSchema);

@@ -7,7 +7,7 @@ import { FaRegUser, FaSearch } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { SubCategory } from '@/lib/typeDefinitions';
+import { SubCategory, User } from '@/lib/typeDefinitions';
 
 const convertToCapitilizeCase = (str: string) => {
   let words = str.split(' ');
@@ -22,22 +22,37 @@ export default function Navbar({
   search,
   setSearch,
   setPage,
-  cartCount,
   displayNavLinks,
-  isLogin=false
+  user,
+  setUser
 }: {
   activePage: string;
   search: string;
   setSearch: (search: string) => void;
   setPage: (val: string) => void;
-  cartCount: number;
   displayNavLinks: boolean;
-  isLogin: boolean;
+  user:User|null;
+  setUser: (val: (User|null)) => void;
 }) {
 
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
   const [navLinks, setNavLinks] = useState<string[]>([]);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
+
+    useEffect(() => {
+      fetch('/api/auth/me', {
+        method: "GET",
+        credentials: "include"
+      })
+      .then(res => res.json())
+      .then(data => {
+        setIsLogin(data.login);
+        console.log(data.data);
+        setUser(data.data)
+      })
+      .catch(err => console.log(err));
+    }, []);
 
   useEffect(() => {
     fetch('/api/categories/', { method: "GET" })
@@ -50,12 +65,13 @@ export default function Navbar({
       setNavLinks(temp);
     })
     .catch(err => console.log(err))
-  }, [])
+  }, []);
+
 
   return (
     <nav className="border-b-1 border-gray-300">
       {/* Top Bar */}
-      <div className="flex justify-evenly items-center h-20 pl-3 md:pl-6 pr-3 md:pr-10 gap-5">
+      <div className="flex justify-between items-center h-20 pl-3 md:pl-6 pr-3 md:pr-10 gap-5">
         {/* Logo */}
         <a href="/">
           <Image src="/logo1.png" alt="Next.js logo" width={150} height={50} />
@@ -70,11 +86,11 @@ export default function Navbar({
                   key={key}
                   className={
                     "w-full h-10 text-center hover:font-medium border-[#fc2167] cursor-pointer hover:border-b-3 hover:border-[#fc2167] " +
-                    (activePage === name ? "border-b-3 text-[#fc2167]" : "")
+                    (activePage.toLowerCase() === name ? "border-b-3 text-[#fc2167]" : "")
                   }
                   onClick={() => setPage(name)}
                 >
-                  <span>{convertToCapitilizeCase(name)}</span>
+                  <span className="text-sm font-semibold">{name.toUpperCase()}</span>
                 </li>
               );
             })}
@@ -101,12 +117,12 @@ export default function Navbar({
         </form>
 
         {/* Profile logos - desktop */}
-        <ul className="hidden md:flex items-center gap-7">
+        <ul className="hidden md:flex items-center gap-7 md:gap-10">
           <li className="relative">
             <FiShoppingCart size={25} />
-            {cartCount > 0 && (
+            {user && user.cart.length > 0 && (
               <div className="absolute -bottom-2 -right-3 bg-red-500 text-white text-[14px] h-[20px] min-w-[20px] flex items-center justify-center rounded-full px-1">
-                {cartCount}
+                {user?.cart.length}
               </div>
             )}
           </li>
@@ -124,9 +140,9 @@ export default function Navbar({
         <ul className="flex md:hidden items-center gap-7 w-20">
           <li className={"relative " + (!isLogin ? "hidden" : "")}>
             { isLogin && <FiShoppingCart size={25} /> }
-            {(cartCount > 0 && isLogin) && (
+            {(user && user.cart.length > 0 && isLogin) && (
               <div className="absolute -bottom-2 -right-3 bg-red-500 text-white text-[14px] h-[20px] min-w-[20px] flex items-center justify-center rounded-full px-1">
-                {cartCount}
+                {user.cart.length}
               </div>
             )}
           </li>
@@ -154,7 +170,7 @@ export default function Navbar({
                 }
                 onClick={() => setPage(name)}
               >
-                <span>{ name}</span>
+                <span>{name}</span>
               </li>
             );
           })}

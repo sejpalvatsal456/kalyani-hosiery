@@ -26,7 +26,7 @@ export type ProductDataType = {
     id: string;
     color: string;
     imgLinks: string[];
-    sizes: { size: string; stock: number; mrp: number; sellingPrice: number; }[];
+    sizes: { id: string, size: string; stock: number; mrp: number; sellingPrice: number; }[];
   }[];
   desc: { key: string; value: string }[];
   createdAt: string;
@@ -43,5 +43,5 @@ export type User = {
   phone: number;
   hashedPassword: string;
   address?: string;
-  cart: [string];
+  cart: { productId: string, colorId: string, sizeId: string }[];
 };

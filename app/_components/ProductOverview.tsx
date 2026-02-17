@@ -6,7 +6,9 @@ import {
   navLinksDataType,
   ProductDataType,
   ProductOverviewType,
+  User,
 } from "@/lib/typeDefinitions";
+import { useRouter } from "next/navigation";
 
 const getDiscount = (mrp: number, price: number) => {
   const discount = ((mrp - price) / mrp) * 100;
@@ -19,10 +21,12 @@ export default function ProductOverview({
   productData: ProductOverviewType;
   prodId: string;
 }) {
+  const router = useRouter();
   const [productData, setProductData] = useState<ProductDataType | null>(null);
   const [search, setSearch] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<number>(0);
   const [selectedSize, setSelectedSize] = useState<number>(0);
+  const [user, setUser] = useState<User|null>(null);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOutOfStock, setIsOutOfStock] = useState<boolean>(
@@ -31,18 +35,31 @@ export default function ProductOverview({
 
   const handleClick = () => {
     setIsLoading(true);
-    const selection = {
-      color: productData?.variety[selectedColor].color,
-      size: productData?.variety[selectedColor].sizes[selectedSize].size,
-    };
-    alert(
-      `Color: ${selection.color} | Size: ${selection.size} | Out of Stock: ${isOutOfStock}`,
-    );
+    if(!user) {
+      router.push('/auth/login/');
+      return;
+    }
+    if(!productData) {
+      console.log(user);
+      return;
+    }
+
+    const prodId = productData._id;
+    const colorId = productData.variety[selectedColor].id;
+    const sizeId = productData.variety[selectedColor].sizes[selectedSize].id;
+    
+    setUser({ ...user, cart: [...user?.cart, { productId: prodId, colorId: colorId, sizeId: sizeId }] });
+    fetch(`/api/cart`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ userId: user._id, prodId: prodId, colorId: colorId, sizeId: sizeId })
+    })
+    .catch(err => alert(err));
     setIsLoading(false);
   };
 
   const sizeListEl = productData?.variety[selectedColor].sizes.map(
-    ({ size, stock }, key) => {
+    ({ id, size, stock }, key) => {
       return (
         <button
           key={key}
@@ -86,13 +103,13 @@ export default function ProductOverview({
   return (
     <>
       <Navbar
-        isLogin={true} // TODO: fix the logic here
         activePage="Product"
         search={search}
         setSearch={setSearch}
         setPage={() => {}}
-        cartCount={2}
         displayNavLinks={false}
+        user={user}
+        setUser={setUser}
       />
       {productData ? (
         <div className="h-[100vh] w-[100vw] mt-10 flex flex-col md:flex-row justify-evenly">
@@ -191,14 +208,14 @@ export default function ProductOverview({
               <button
                 onClick={handleClick}
                 className={
-                  `mt-10 md:mt-5 w-[80vw] md:w-140 mx-4 h-14 rounded font-semibold text-white text-xl hover:bg-white hover:text-[#fc2167] hover:border-[#fc2167] hover:border-1 transition-all duration-300s ` +
+                  `mt-10 w-[80vw] md:w-140 mx-4 h-14 rounded font-semibold text-white text-xl hover:bg-white hover:text-[#fc2167] hover:border-[#fc2167] hover:border-1 transition-all duration-300s ` +
                   (isLoading
                     ? "bg-[#851136] cursor-not-allowed"
                     : "bg-[#fc2167] cursor-pointer")
                 }
                 disabled={isLoading}
               >
-                Buy Now
+                Add to Cart
               </button>
             ) : (
               <button
