@@ -18,7 +18,6 @@ const getDiscount = (mrp: number, price: number) => {
 export default function ProductOverview({
   prodId,
 }: {
-  productData: ProductOverviewType;
   prodId: string;
 }) {
   const router = useRouter();
