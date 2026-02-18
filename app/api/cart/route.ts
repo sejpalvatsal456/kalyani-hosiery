@@ -19,7 +19,7 @@ export const PUT = async(req: NextRequest) => {
 
         const oldCart = user.cart;
         const newCart = [ ...oldCart, { productId: prodId, colorId: colorId, sizeId: sizeId } ];
-        await User.updateOne({ _id: userId }, { $set: { cart: newCart } });
+        const res = await User.findOneAndUpdate({ _id: userId }, { $set: { cart: newCart } }, { new: true });
 
         const user_token = jwt.sign({
             _id: user._id,
@@ -33,7 +33,7 @@ export const PUT = async(req: NextRequest) => {
         await setCookie('user_token', user_token);
 
         return NextResponse.json(
-            { msg: "Successfully updated",  },
+            { msg: "Successfully updated", newCart: res.cart },
             { status: 200 }
         );
 

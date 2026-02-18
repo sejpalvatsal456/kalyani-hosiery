@@ -2,12 +2,14 @@
 
 import { auth } from '@/lib/firebase';
 import { ConfirmationResult, RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { FormEvent, useEffect, useState, useTransition } from 'react'
 
 export default function page() {
 
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get('callbackUrl');
 
     const [number, setNumber] = useState<string>("");
     const [isVerified, setIsVerified] = useState<boolean>(false);
@@ -25,7 +27,7 @@ export default function page() {
             return;
         }
         console.log(data.data);
-        router.push('/auth/signup');
+        router.push(`/auth/signup?callbackUrl=${encodeURIComponent(callbackUrl || "")}`);
     }
 
     return (
@@ -82,7 +84,7 @@ export default function page() {
             </form>
             <p className='mt-5'>
                 <span>Already have an Account?</span>
-                <span className='font-medium text-blue-500 cursor-pointer' onClick={() => router.push('/auth/login/')}>Login</span>
+                <span className='font-medium text-blue-500 cursor-pointer' onClick={() => router.push(`/auth/login?callbackUrl=${encodeURIComponent(callbackUrl || "")}`)}>Login</span>
             </p>
         </div>
 

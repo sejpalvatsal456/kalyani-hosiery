@@ -8,7 +8,7 @@ import {
   ProductOverviewType,
   User,
 } from "@/lib/typeDefinitions";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const getDiscount = (mrp: number, price: number) => {
   const discount = ((mrp - price) / mrp) * 100;
@@ -22,6 +22,8 @@ export default function ProductOverview({
   prodId: string;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
+
   const [productData, setProductData] = useState<ProductDataType | null>(null);
   const [search, setSearch] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<number>(0);
@@ -36,11 +38,14 @@ export default function ProductOverview({
   const handleClick = () => {
     setIsLoading(true);
     if(!user) {
-      router.push('/auth/login/');
+      setIsLoading(false); 
+      console.log(pathname);
+      console.log(encodeURIComponent(pathname));
+      router.push(`/auth/login?callbackUrl=${encodeURIComponent(pathname)}`);
       return;
     }
     if(!productData) {
-      console.log(user);
+      setIsLoading(false);
       return;
     }
 
@@ -48,11 +53,14 @@ export default function ProductOverview({
     const colorId = productData.variety[selectedColor].id;
     const sizeId = productData.variety[selectedColor].sizes[selectedSize].id;
     
-    setUser({ ...user, cart: [...user?.cart, { productId: prodId, colorId: colorId, sizeId: sizeId }] });
     fetch(`/api/cart`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId: user._id, prodId: prodId, colorId: colorId, sizeId: sizeId })
+    })
+    .then(res => res.json())
+    .then(data => {
+      setUser({...user, cart: data.newCart});
     })
     .catch(err => alert(err));
     setIsLoading(false);

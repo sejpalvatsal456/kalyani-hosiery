@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import {
   DisplayProductType,
+  User,
 } from "@/lib/typeDefinitions";
 import DisplayCard from "./DisplayCard";
 import { FaFilter, FaSort } from "react-icons/fa";
@@ -46,6 +47,7 @@ export default function SubCateogryWrapper({
 
   const [isSortCategoryClicked, setIsSortCategoryClicked] = useState<boolean>(false);
   const [isFilterClicked, setIsFilterClicked] = useState<boolean>(false);
+  const [user, setUser] = useState<User|null>(null);
 
   const [search, setSearch] = useState<string>("");
 
@@ -176,14 +178,14 @@ export default function SubCateogryWrapper({
   return (
     <>
       <Navbar
-        isLogin={true} // TODO: add the logic here
         activePage={categoryName}
         search={search}
         setSearch={setSearch}
         setPage={function (val: string): void {
           throw new Error("Function not implemented.");
         }}
-        cartCount={0}
+        user={user}
+        setUser={setUser}
         displayNavLinks={false}
       />
       <div className="flex flex-col">

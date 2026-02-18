@@ -1,12 +1,15 @@
 "use client";
 
-import { useRouter } from 'next/navigation';
-import { FormEvent, useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { FormEvent, useState } from 'react';
 import { FaRegEye, FaRegEyeSlash } from 'react-icons/fa';
 
 export default function page() {
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callbackUrl');
+  console.log(callbackUrl);
 
   // States for user Inputs
   const [number, setNumber] = useState("");
@@ -28,7 +31,7 @@ export default function page() {
         setMsg(data.msg);
         return;
     }
-    router.push("/");
+    router.push(callbackUrl || "/");
   }
 
   return (
@@ -106,7 +109,7 @@ export default function page() {
           
           <p>
             <span>Don't have an account? </span>
-            <span className='text-blue-500 font-medium cursor-pointer' onClick={() => router.push('/auth/signup')}>Signup</span>
+            <span className='text-blue-500 font-medium cursor-pointer' onClick={() => router.push(`/auth/verifyPhone?callbackUrl=${encodeURIComponent(callbackUrl || "")}`)}>Signup</span>
           </p>
 
         </form>
