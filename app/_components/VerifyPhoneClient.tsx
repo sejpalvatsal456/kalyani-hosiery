@@ -1,3 +1,5 @@
+"use client";
+
 import { useRouter } from 'next/router';
 import React, { FormEvent, useState } from 'react'
 
