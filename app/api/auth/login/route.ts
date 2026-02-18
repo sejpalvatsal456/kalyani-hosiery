@@ -29,6 +29,8 @@ export const POST = async(req: NextRequest) => {
             );
         } 
 
+        // FIXME: rewrite the code using user_token such that it only contains _id and role.
+
         const user_token = jwt.sign({
             _id: user._id,
             name: user.name,

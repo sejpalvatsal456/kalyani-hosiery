@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import "@tailwindplus/elements";
 import { FiShoppingCart } from "react-icons/fi";
 import { FaRegUser, FaSearch } from "react-icons/fa";
@@ -40,19 +40,24 @@ export default function Navbar({
   const [navLinks, setNavLinks] = useState<string[]>([]);
   const [isLogin, setIsLogin] = useState<boolean>(false);
 
-    useEffect(() => {
-      fetch('/api/auth/me', {
-        method: "GET",
-        credentials: "include"
-      })
-      .then(res => res.json())
-      .then(data => {
-        setIsLogin(data.login);
-        console.log(data.data);
-        setUser(data.data)
-      })
-      .catch(err => console.log(err));
-    }, []);
+  const handleUserClick = (e:FormEvent) => {
+    e.preventDefault();
+    router.push('/profile');
+  }
+
+  useEffect(() => {
+    fetch('/api/auth/me', {
+      method: "GET",
+      credentials: "include"
+    })
+    .then(res => res.json())
+    .then(data => {
+      setIsLogin(data.login);
+      console.log(data.data);
+      setUser(data.data)
+    })
+    .catch(err => console.log(err));
+  }, []);
 
   useEffect(() => {
     fetch('/api/categories/', { method: "GET" })
@@ -71,7 +76,7 @@ export default function Navbar({
   return (
     <nav className="border-b-1 border-gray-300">
       {/* Top Bar */}
-      <div className="flex justify-between items-center h-20 pl-3 md:pl-6 pr-3 md:pr-10 gap-5">
+      <div className="flex justify-between items-center h-[13vh] pl-3 md:pl-6 pr-3 md:pr-10 gap-5">
         {/* Logo */}
         <a href="/">
           <Image src="/logo1.png" alt="Next.js logo" width={150} height={50} />
@@ -128,7 +133,7 @@ export default function Navbar({
           </li>
           <li>
               {isLogin 
-              ? <FaRegUser size={25} />
+              ? <FaRegUser onClick={handleUserClick} size={25} />
               : (<button
                 className="border-2 px-5 py-2 rounded border-[#fc2167] text-[#fc2167] font-medium cursor-pointer hover:text-white hover:bg-[linear-gradient(135deg,_#fc2167,_#ef123e)] transistion-all duration-300"
                 onClick={e => router.push('/auth/login')}
