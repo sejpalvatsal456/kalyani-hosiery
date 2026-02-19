@@ -1,28 +1,10 @@
-"use client";
+import ProfilePageWrapper from '../_components/ProfilePageWrapper';
 
-import React, { useState } from 'react'
-import Navbar from '../_components/Navbar';
-import { User } from '@/lib/typeDefinitions';
-import ProfileSideBar from '../_components/ProfileSideBar';
+export default async function page(
+  { searchParams } : { searchParams: Promise<{ callbackUrl: string }> }
+) {
 
-export default function page() {
-
-  const [search, setSearch]  = useState<string>("");
-  const [user, setUser] = useState<User|null>(null);
-  const [section, setSection] = useState<string>("edit_profile");
+  const callbackUrl = (await searchParams).callbackUrl || "";
  
-  return (
-    <>
-      <Navbar
-        activePage="profile"
-        search={search}
-        setSearch={setSearch}
-        setPage={() => {}}
-        user={user}
-        setUser={setUser}
-        displayNavLinks={false}
-      />
-      <ProfileSideBar section={section} setSection={setSection} />
-    </>
-  )
+  return <ProfilePageWrapper callbackUrl={callbackUrl} />
 }

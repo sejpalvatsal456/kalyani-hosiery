@@ -175,6 +175,8 @@ export default function SubCateogryWrapper({
     );
   });
 
+  // TODO: Add filter based on colors
+
   return (
     <>
       <Navbar

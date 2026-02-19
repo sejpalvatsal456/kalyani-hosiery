@@ -6,7 +6,7 @@ import { FiShoppingCart } from "react-icons/fi";
 import { FaRegUser, FaSearch } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { SubCategory, User } from '@/lib/typeDefinitions';
 
 const convertToCapitilizeCase = (str: string) => {
@@ -36,13 +36,15 @@ export default function Navbar({
 }) {
 
   const router = useRouter();
+  const pathname = usePathname();
+
   const [open, setOpen] = useState<boolean>(false);
   const [navLinks, setNavLinks] = useState<string[]>([]);
   const [isLogin, setIsLogin] = useState<boolean>(false);
 
   const handleUserClick = (e:FormEvent) => {
     e.preventDefault();
-    router.push('/profile');
+    router.push(`/profile?callbackUrl=${encodeURIComponent(pathname)}`);
   }
 
   useEffect(() => {
@@ -133,7 +135,7 @@ export default function Navbar({
           </li>
           <li>
               {isLogin 
-              ? <FaRegUser onClick={handleUserClick} size={25} />
+              ? <FaRegUser className="cursor-pointer" onClick={handleUserClick} size={25} />
               : (<button
                 className="border-2 px-5 py-2 rounded border-[#fc2167] text-[#fc2167] font-medium cursor-pointer hover:text-white hover:bg-[linear-gradient(135deg,_#fc2167,_#ef123e)] transistion-all duration-300"
                 onClick={e => router.push('/auth/login')}
@@ -153,7 +155,7 @@ export default function Navbar({
           </li>
           <li className="flex items-center gap-5">
             {isLogin 
-            ? <FaRegUser size={25} />
+            ? <FaRegUser className="cursor-pointer" onClick={handleUserClick} size={25} />
             : (<button
               className="border-2 px-3 py-2 rounded border-[#fc2167] text-[#fc2167] font-medium cursor-pointer hover:text-white hover:bg-[linear-gradient(135deg,_#fc2167,_#ef123e)] transistion-all duration-300"
               onClick={e => router.push('/auth/login')}

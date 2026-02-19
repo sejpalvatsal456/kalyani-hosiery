@@ -45,3 +45,5 @@ export type User = {
   address?: string;
   cart: { productId: string, colorId: string, sizeId: string }[];
 };
+
+export type SectionType = "manage_profile" | "cart" | "previous_purchase";
