@@ -1,6 +1,6 @@
 import { useRouter } from 'next/navigation';
 import React, { JSX } from 'react'
-import { BiSolidLogOut, BiSolidPurchaseTag, BiSolidPurchaseTagAlt } from 'react-icons/bi';
+import { BiSolidContact, BiSolidLogOut, BiSolidPurchaseTag, BiSolidPurchaseTagAlt } from 'react-icons/bi';
 import { FaUserEdit } from 'react-icons/fa'
 import { FaCartShopping } from 'react-icons/fa6';
 import { IoMdArrowRoundBack } from 'react-icons/io';
@@ -8,9 +8,12 @@ import Cart from './Cart';
 import ManageProfile from './ManageProfile';
 import PreviousPurchase from './PreviousPurchase';
 import { SectionType } from '@/lib/typeDefinitions';
+import { RiLockPasswordFill } from 'react-icons/ri';
 
 const allSectionOptions:{tag: SectionType, icon: JSX.Element}[] = [
   { tag: 'manage_profile', icon: <FaUserEdit size={25} /> },
+  { tag: 'change_password', icon: <RiLockPasswordFill size={25} /> },
+  { tag: 'change_number', icon: <BiSolidContact size={25} /> },
   { tag: 'cart', icon: <FaCartShopping size={25} /> },
   { tag: 'previous_purchase', icon: <BiSolidPurchaseTag size={25} /> },
 ]

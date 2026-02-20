@@ -47,4 +47,4 @@ export type User = {
   cart: { productId: string, colorId: string, sizeId: string }[];
 };
 
-export type SectionType = "manage_profile" | "cart" | "previous_purchase";
+export type SectionType = "manage_profile" | "cart" | "previous_purchase" | "change_password" | "change_number";

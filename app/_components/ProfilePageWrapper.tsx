@@ -7,6 +7,8 @@ import { SectionType, User } from '@/lib/typeDefinitions';
 import ManageProfile from './ManageProfile';
 import Cart from './Cart';
 import PreviousPurchase from './PreviousPurchase';
+import ChangePasswordPage from './ChangePasswordPage';
+import ChangeNumberPage from './ChangeNumberPage';
 
 
 
@@ -20,6 +22,8 @@ export default function ProfilePageWrapper(
 
   const sectionComponents:Record<SectionType, JSX.Element> = {
     'manage_profile': <ManageProfile />,
+    'change_password': <ChangePasswordPage />,
+    'change_number': <ChangeNumberPage />,
     'cart': <Cart />,
     'previous_purchase': <PreviousPurchase />
   };

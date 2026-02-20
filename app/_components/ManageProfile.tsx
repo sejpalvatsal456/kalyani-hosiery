@@ -23,7 +23,7 @@ export default function ManageProfile() {
     const res = await fetch('/api/user/', {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: name, email: email, address: address })
+      body: JSON.stringify({ name: name, email: email, address: address, phone: null, password: null })
     });
     const data = await res.json();
     if(!res.ok) {
