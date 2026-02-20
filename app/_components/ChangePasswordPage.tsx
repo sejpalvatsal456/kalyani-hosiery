@@ -1,7 +1,7 @@
 "use client";
 
 import { User } from "firebase/auth";
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function ChangePasswordPage() {
@@ -13,25 +13,49 @@ export default function ChangePasswordPage() {
   const [oldPasswordEye, setOldPasswordEye] = useState<boolean>(false);
   const [newPasswordEye, setNewPasswordEye] = useState<boolean>(false);
   const [confirmPasswordEye, setConfirmPasswordEye] = useState<boolean>(false);
+  const [passwordMatched, setPasswordMatched] = useState<boolean>(false);
 
 
   const [msg, setMsg] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
-  const handleSubmit = async () => {};
+  const handleSubmit = async(e:FormEvent) => {
+    e.preventDefault();
+    if(oldPassword === "" || newPassword === "" || confirmPassword === "") {
+      setMsg("Fill all the fields.");
+      return;
+    }
+    const res = await fetch('/api/user/', {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ oldPassword: oldPassword, newPassword: newPassword })
+    });
+    const data = await res.json();
+    if(!res.ok) {
+      setMsg(data.msg);
+      setSuccess(null);
+      return;
+    }
+    setMsg(null);
+    setSuccess("Password Changed Successfully");
+  };
 
   useEffect(() => {
     if (newPassword === "" || confirmPassword === "") {
       setMsg(null);
+      setPasswordMatched(false);
       return;
     }
 
     if (newPassword !== confirmPassword) {
       setMsg("New Password and Confirm Password aren't same.");
+      setPasswordMatched(false);
       return;
     }
     setMsg(null);
     setSuccess(null);
+    setPasswordMatched(true);
+
 
   }, [newPassword, confirmPassword]);
 
@@ -85,7 +109,7 @@ export default function ChangePasswordPage() {
             {/* New Password */}
             <div className="relative w-full flex border border-gray-300 rounded-md">
               <input
-                type="password"
+                type={newPasswordEye ? "text" : "password"}
                 placeholder=" "
                 value={newPassword}
                 id="newPasswordInput"
@@ -124,7 +148,7 @@ export default function ChangePasswordPage() {
             {/* Confirm Password */}
             <div className="relative w-full flex border border-gray-300 rounded-md">
               <input
-                type="password"
+                type={confirmPasswordEye ? "text" : "password"}
                 placeholder=" "
                 value={confirmPassword}
                 id="confirmPasswordInput"
@@ -166,7 +190,11 @@ export default function ChangePasswordPage() {
           {/* Button */}
           <button
             onClick={handleSubmit}
-            className="bg-[#ff3f6c] w-full py-3 text-white font-semibold text-lg cursor-pointer"
+            disabled={!passwordMatched}
+            className={
+              "w-full py-3 font-semibold text-lg text-white "
+              + (passwordMatched ? "bg-[#ff3f6c] cursor-pointer" : "bg-[#8a223b] cursor-not-allowed")
+            }
           >
             Update
           </button>
