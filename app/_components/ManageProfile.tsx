@@ -1,9 +1,55 @@
-import React, { useState } from "react";
+import { User } from "@/lib/typeDefinitions";
+import { routerServerGlobal } from "next/dist/server/lib/router-utils/router-server-context";
+import React, { useEffect, useState } from "react";
 
 export default function ManageProfile() {
-  const [name, setName] = useState<string>("Vatsal");
+
+  const [user, setUser] = useState<User|null>(null);
+  const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [address, setAddress] = useState<string>("");
+
+  const [msg, setMsg] = useState<string|null>(null);
+  const [success, setSuccess] = useState<string|null>(null);
+
+  const handleSubmit = async() => {
+
+    if(name === "") {
+      setMsg("Fill the name Field");
+      setSuccess(null);
+      return;
+    }
+
+    const res = await fetch('/api/user/', {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: name, email: email, address: address })
+    });
+    const data = await res.json();
+    if(!res.ok) {
+      setMsg(data.msg);
+      setSuccess(null);
+      return;
+    }
+    setMsg(null);
+    setSuccess("Profile Changed Successfully");
+  }
+
+  useEffect(() => {
+    fetch('/api/auth/me', {
+      method: "GET",
+      credentials: "include"
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data.data);
+      setUser(data.data);
+      setName(data.data.name);
+      setEmail(data.data.email);
+      setAddress(data.data.address);
+    })
+    .catch(err => console.log(err));
+  }, []);
 
   return (
     <div className="flex h-full items-center justify-center">
@@ -19,12 +65,14 @@ export default function ManageProfile() {
                 type="text"
                 placeholder=" "
                 value={name}
+                id="nameInput"
                 onChange={(e) => setName(e.target.value)}
                 className="peer w-full border border-gray-300 rounded-md px-4 pt-5 pb-2 
 							text-gray-800 focus:outline-none focus:border-gray-500"
               />
 
               <label
+                htmlFor="nameInput"
                 className={`
 								absolute left-3 top-2 text-sm text-gray-500 transition-all
 								peer-placeholder-shown:top-4 
@@ -45,12 +93,14 @@ export default function ManageProfile() {
                 type="email"
                 placeholder=" "
                 value={email}
+                id="emailInput"
                 onChange={(e) => setEmail(e.target.value)}
                 className="peer w-full border border-gray-300 rounded-md px-4 pt-5 pb-2 
 							text-gray-800 focus:outline-none focus:border-gray-500"
               />
 
               <label
+                htmlFor="emailInput"
                 className={`
 								absolute left-3 top-2 text-sm text-gray-500 transition-all
 								peer-placeholder-shown:top-4 
@@ -71,12 +121,14 @@ export default function ManageProfile() {
                 type="text"
                 placeholder=" "
                 value={address}
+                id="addressInput"
                 onChange={(e) => setAddress(e.target.value)}
                 className="peer w-full border border-gray-300 rounded-md px-4 pt-5 pb-2 
 							text-gray-800 focus:outline-none focus:border-gray-500"
               />
 
               <label
+                htmlFor="addressInput"
                 className={`
 								absolute left-3 top-2 text-sm text-gray-500 transition-all
 								peer-placeholder-shown:top-4 
@@ -90,10 +142,12 @@ export default function ManageProfile() {
                 Address
               </label>
             </div>
+            { msg && <span className="text-red-500">{msg}</span> }
+            { success && <span className="text-green-500">{success}</span> }
           </div>
 
           {/* Button */}
-          <button className="bg-[#ff3f6c] w-full py-3 text-white font-semibold text-lg cursor-pointer">Save</button>
+          <button onClick={handleSubmit} className="bg-[#ff3f6c] w-full py-3 text-white font-semibold text-lg cursor-pointer">Save</button>
         </div>
       </div>
     </div>

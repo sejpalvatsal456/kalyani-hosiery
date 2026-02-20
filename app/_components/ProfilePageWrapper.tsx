@@ -8,11 +8,7 @@ import ManageProfile from './ManageProfile';
 import Cart from './Cart';
 import PreviousPurchase from './PreviousPurchase';
 
-const sectionComponents:Record<SectionType, JSX.Element> = {
-  'manage_profile': <ManageProfile />,
-  'cart': <Cart />,
-  'previous_purchase': <PreviousPurchase />
-};
+
 
 export default function ProfilePageWrapper(
   { callbackUrl } : { callbackUrl: string }
@@ -21,6 +17,12 @@ export default function ProfilePageWrapper(
   const [search, setSearch]  = useState<string>("");
   const [user, setUser] = useState<User|null>(null);
   const [section, setSection] = useState<SectionType>("manage_profile");
+
+  const sectionComponents:Record<SectionType, JSX.Element> = {
+    'manage_profile': <ManageProfile />,
+    'cart': <Cart />,
+    'previous_purchase': <PreviousPurchase />
+  };
   
 
   return (

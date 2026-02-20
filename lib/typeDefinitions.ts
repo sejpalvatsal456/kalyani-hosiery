@@ -39,6 +39,7 @@ export type ProductOverviewType = Omit<ProductDataType, "categoryId"|"subcategor
 export type User = {
   _id: string;
   name: string;
+  email: string;
   role: "user" | "admin";
   phone: number;
   hashedPassword: string;

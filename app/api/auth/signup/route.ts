@@ -30,6 +30,7 @@ export const POST = async(req: NextRequest) => {
         const newUser = await User.create({
             name: name,
             role: 'user',
+            email: "",
             phone: phone,
             hashedPassword: hashedPassword,
             address: address,
