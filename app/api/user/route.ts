@@ -41,6 +41,14 @@ export const PUT = async (req: NextRequest) => {
       }
     }
 
+    if(phone) {
+      const userWithPhone = await User.findOne({ phone: phone });
+      if(userWithPhone) return NextResponse.json(
+        { msg: "User with this Phone already exist" },
+        { status: 409 }
+      );
+    }
+
     const newUser = await User.findOneAndUpdate(
       { _id: user._id },
       { $set: { 
