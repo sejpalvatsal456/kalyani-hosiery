@@ -1,6 +1,7 @@
 // components/CartItem.tsx
 import Image from "next/image";
 import { X } from "lucide-react";
+import { JSX } from "react";
 
 interface CartItemProps {
   image: string;
@@ -11,6 +12,9 @@ interface CartItemProps {
   quantity: number;
   price: number;
   originalPrice: number;
+  isSelected: boolean;
+  onSelect: () => void;
+  onQuantityChange: (newQty: number) => void;
 }
 
 export default function CartItem({
@@ -22,6 +26,9 @@ export default function CartItem({
   quantity,
   price,
   originalPrice,
+  isSelected,
+  onSelect,
+  onQuantityChange
 }: CartItemProps) {
   const discount = originalPrice - price;
 
@@ -37,10 +44,9 @@ export default function CartItem({
         {/* Checkbox */}
         <input
           type="checkbox"
-          className="absolute top-2 left-2 w-4 h-4 
-            accent-black cursor-pointer 
-            bg-white border-gray-300 
-            rounded shadow-sm z-2"
+          checked={isSelected}
+          onChange={onSelect}
+          className="absolute top-2 left-2 z-10 w-4 h-4 accent-black cursor-pointer"
         />
 
         <Image
@@ -66,13 +72,23 @@ export default function CartItem({
 
         {/* Size & Qty */}
         <div className="flex gap-4 mt-3">
-          <select className="border rounded-md px-2 py-1 text-sm">
-            <option>Size: {size}</option>
-          </select>
+          <span className="border rounded-md px-2 py-1 text-sm">Size: {size}</span>
 
-          <select className="border rounded-md px-2 py-1 text-sm">
-            <option>Qty: {quantity}</option>
-          </select>
+          <input
+            type="number"
+            value={quantity}
+            onChange={(e) => {
+              const value = e.target.value;
+9
+              if (value === "") onQuantityChange(0); // allow temporary empty while typing
+
+              const numberValue = Number(value);
+              if (numberValue >= 1) {
+                onQuantityChange(numberValue);
+              }
+            }}
+            className="w-16 border rounded-md px-2 py-1 text-sm focus:outline-none focus:border-gray-500"
+          />
         </div>
 
         {/* Pricing */}
@@ -89,9 +105,6 @@ export default function CartItem({
             ₹{discount.toLocaleString()} OFF
           </span>
         </div>
-
-        {/* Return Policy */}
-        <p className="text-sm text-gray-600 mt-2">⟳ 7 days return available</p>
       </div>
     </div>
   );

@@ -83,7 +83,7 @@ const UserSchema = new Schema({
   phone: { type: Number, required: true },
   hashedPassword: { type: String, required: true },
   address: { type: String, trim: true },
-  cart: { type: [{ productId: Types.ObjectId, sizeId: String, colorId: String }], required: true, ref: "Product" }
+  cart: { type: [{ productId: {type: Types.ObjectId, ref: "Product", required: true}, sizeId: String, colorId: String }], required: true, ref: "Product" }
 }, { timestamps: true });
 
 export const User = models.User || model("User", UserSchema);
