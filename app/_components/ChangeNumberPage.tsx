@@ -52,7 +52,7 @@ export default function ChangeNumberPage() {
         <h1 className="text-xl font-semibold">Change Password</h1>
 
         {/* Form */}
-        <div className="flex flex-col w-[80%] h-[80%] justify-between">
+        <div className="flex flex-col w-full md:w-[80%] h-[80%] justify-between">
           <div className="flex flex-col mt-10 gap-10 w-full">
             {/* Phone Number */}
             <div className="relative w-full ">

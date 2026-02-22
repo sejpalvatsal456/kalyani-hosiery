@@ -40,9 +40,9 @@ export default function ProfilePageWrapper(
         setUser={setUser}
         displayNavLinks={false}
       />
-      <div className='flex'>
+      <div className='flex flex-col md:flex-row'>
         <ProfileSideBar section={section} setSection={setSection} callbackUrl={callbackUrl} />
-        <div className='w-[80vw] h-[87vh]'>
+        <div className='w-[100%] md:w-[80vw] h-[87vh]'>
           {sectionComponents[section]}
         </div>
       </div>

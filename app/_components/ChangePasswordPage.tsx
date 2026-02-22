@@ -65,7 +65,7 @@ export default function ChangePasswordPage() {
         <h1 className="text-xl font-semibold">Change Password</h1>
 
         {/* Form */}
-        <div className="flex flex-col w-[80%] h-[80%] justify-between">
+        <div className="flex flex-col w-full md:w-[80%] h-[80%] justify-between">
           <div className="flex flex-col mt-10 gap-10 w-full">
             {/* Old Password */}
             <div className="relative w-full flex border border-gray-300 rounded-md">
@@ -85,16 +85,16 @@ export default function ChangePasswordPage() {
 								absolute left-3 top-2 text-sm text-gray-500 transition-all
 								peer-placeholder-shown:top-4 
 								peer-placeholder-shown:text-base
-								peer-focus:top-[-9]
+								peer-focus:top-[-11]
 								peer-focus:text-sm
 								bg-white px-1
-								${oldPassword ? "top-[-9] text-sm" : "top-4 text-base"}
+								${oldPassword ? "top-[-11] text-sm" : "top-4 text-base"}
 							`}
               >
                 Old Password
               </label>
               <div 
-                className="w-[7%] h-full flex items-center justify-center"
+                className="w-[25%] md:w-[7%] h-full flex items-center justify-center"
                 onClick={e => {
                   e.preventDefault();
                   setOldPasswordEye(!oldPasswordEye);
@@ -124,16 +124,16 @@ export default function ChangePasswordPage() {
 								absolute left-3 top-2 text-sm text-gray-500 transition-all
 								peer-placeholder-shown:top-4 
 								peer-placeholder-shown:text-base
-								peer-focus:top-[-9]
+								peer-focus:top-[-11]
 								peer-focus:text-sm
 								bg-white px-1
-								${newPassword ? "top-[-9] text-sm" : "top-4 text-base"}
+								${newPassword ? "top-[-11] text-sm" : "top-4 text-base"}
 							`}
               >
                 New Password
               </label>
               <div 
-                className="w-[7%] h-full flex items-center justify-center"
+                className="w-[25%] md:w-[7%] h-full flex items-center justify-center"
                 onClick={e => {
                   e.preventDefault();
                   setNewPasswordEye(!newPasswordEye);
@@ -172,7 +172,7 @@ export default function ChangePasswordPage() {
                 Confirm Password
               </label>
               <div 
-                className="w-[7%] h-full flex items-center justify-center"
+                className="w-[25%] md:w-[7%] h-full flex items-center justify-center"
                 onClick={e => {
                   e.preventDefault();
                   setConfirmPasswordEye(!confirmPasswordEye);

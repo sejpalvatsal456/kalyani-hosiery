@@ -83,9 +83,9 @@ export default function Cart() {
 
   return (
     <div className='flex h-full items-center justify-center'>
-      <div className="w-[90%] h-[90%] py-5 px-10 border-1 border-gray-300 shadow-lg overflow-y-scroll">
-        <h1 className="text-xl font-semibold">Cart</h1>
-        <div className='mt-10 flex flex-row gap-5'>
+      <div className="w-full md:w-[90%] h-[90%] py-5 px-3 md:px-10 border-1 border-gray-300 shadow-lg overflow-y-scroll">
+        <h1 className="ml-2 md:ml-0 text-xl font-semibold">Cart</h1>
+        <div className='mt-10 ml-2 md:ml-0 flex flex-row gap-5'>
           <input
             type="checkbox"
             className='scale-[1.4]'

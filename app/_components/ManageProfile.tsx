@@ -57,7 +57,7 @@ export default function ManageProfile() {
         <h1 className="text-xl font-semibold">Manage Profile</h1>
 
         {/* Form */}
-        <div className="flex flex-col w-[80%] h-[80%] justify-between">
+        <div className="flex flex-col w-full md:w-[80%] h-[80%] justify-between">
           <div className="flex flex-col mt-10 gap-10 w-full">
             {/* Fullname */}
             <div className="relative w-full ">
