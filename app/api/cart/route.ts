@@ -28,34 +28,31 @@ export async function GET(req: NextRequest) {
 
     // Transform cart data
     const cartItems = user.cart.map((item: any) => {
-    const product = item.productId;
+      const product = item.productId;
 
-    const selectedVariety = product.variety.find(
-      (v: any) => v.id === item.colorId
-    );
+      const selectedVariety = product.variety.find(
+        (v: any) => v.id === item.colorId,
+      );
 
-    const selectedSize = selectedVariety?.sizes.find(
-      (s: any) => s.id === item.sizeId
-    );
+      const selectedSize = selectedVariety?.sizes.find(
+        (s: any) => s.id === item.sizeId,
+      );
 
-    return {
-      productId: product._id,
-      brand: product.brandName,
-      title: product.productName,
-      thumbnail: product.thumbnail,
-      color: selectedVariety?.color,
-      size: selectedSize?.size,
-      mrp: selectedSize?.mrp,
-      sellingPrice: selectedSize?.sellingPrice,
-      stock: selectedSize?.stock,
-      quantity: 1, // Add quantity in cart schema later
-    };
-  });
+      return {
+        productId: product._id,
+        brand: product.brandName,
+        title: product.productName,
+        thumbnail: product.thumbnail,
+        color: selectedVariety?.color,
+        size: selectedSize?.size,
+        mrp: selectedSize?.mrp,
+        sellingPrice: selectedSize?.sellingPrice,
+        stock: selectedSize?.stock,
+        quantity: 1, // Add quantity in cart schema later
+      };
+    });
 
-    return NextResponse.json(
-      { data: cartItems },
-      { status: 200 }
-    );
+    return NextResponse.json({ data: cartItems }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
       { msg: "Internal Server Error", error: error },
@@ -100,6 +97,58 @@ export const PUT = async (req: NextRequest) => {
 
     return NextResponse.json(
       { msg: "Successfully updated", newCart: res.cart },
+      { status: 200 },
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { msg: "Internal Server Error", error: error },
+      { status: 500 },
+    );
+  }
+};
+
+export const DELETE = async (req: NextRequest) => {
+  try {
+    await connectDB();
+
+    const { productId, sizeId, colorId } = await req.json();
+
+    if (!productId) {
+      return NextResponse.json(
+        { msg: "Product ID is required" },
+        { status: 400 },
+      );
+    }
+
+    // Get token
+    const user_token = req.cookies.get("user_token");
+    if (!user_token) {
+      return NextResponse.json({ msg: "Invalid Credentials" }, { status: 500 });
+    }
+    const userFromCookie = jwt.decode(user_token.value) as UserType; // temporary fix, change the type when the cookie system changes
+    const userId = userFromCookie._id;
+
+    // Remove from cart using $pull
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      {
+        $pull: {
+          cart: {
+            productId,
+            ...(sizeId && { sizeId }),
+            ...(colorId && { colorId }),
+          },
+        },
+      },
+      { new: true },
+    );
+
+    if (!updatedUser) {
+      return NextResponse.json({ msg: "User not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(
+      { msg: "Item removed successfully" },
       { status: 200 },
     );
   } catch (error) {

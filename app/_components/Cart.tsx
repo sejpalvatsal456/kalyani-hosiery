@@ -61,6 +61,20 @@ export default function Cart() {
     );
   };
 
+  const onDeleteItem = async(id: string) => {
+    const res = await fetch('/api/cart', {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ productId: id })
+    });
+    const data = await res.json();
+    if(!res.ok) {
+      alert(data.msg);
+      return;
+    }
+    setCartItems(cartItems.filter(item => item.productId !== id));
+  }
+
   useEffect(() => {
     const fetchCart = async () => {
       try {
@@ -102,6 +116,7 @@ export default function Cart() {
           {cartItems.map((item, key) => (
             <CartItem
               key={item.productId}
+              productId={item.productId}
               image={item.thumbnail}
               brand={item.brand}
               title={item.title}
@@ -115,6 +130,7 @@ export default function Cart() {
               onQuantityChange={(qty) =>
                 updateQuantity(item.productId, qty)
               }
+              onDeleteItem={onDeleteItem}
             />
           ))}
         </div>

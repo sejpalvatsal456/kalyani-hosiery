@@ -4,6 +4,7 @@ import { X } from "lucide-react";
 import { JSX } from "react";
 
 interface CartItemProps {
+  productId: string;
   image: string;
   brand: string;
   title: string;
@@ -15,9 +16,11 @@ interface CartItemProps {
   isSelected: boolean;
   onSelect: () => void;
   onQuantityChange: (newQty: number) => void;
+  onDeleteItem: (id: string) => void
 }
 
 export default function CartItem({
+  productId,
   image,
   brand,
   title,
@@ -28,7 +31,8 @@ export default function CartItem({
   originalPrice,
   isSelected,
   onSelect,
-  onQuantityChange
+  onQuantityChange,
+  onDeleteItem
 }: CartItemProps) {
   const discount = originalPrice - price;
 
@@ -36,7 +40,7 @@ export default function CartItem({
     <div className="relative flex gap-4 p-4 border rounded-lg bg-white shadow-sm">
       {/* Close Button */}
       <button className="absolute top-3 right-3 text-gray-500 hover:text-black">
-        <X size={18} />
+        <X onClick={e => onDeleteItem(productId)} size={18} />
       </button>
 
       {/* Product Image */}
