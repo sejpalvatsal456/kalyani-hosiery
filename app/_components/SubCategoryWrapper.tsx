@@ -23,6 +23,15 @@ const getLowestPrice = (product: DisplayProductType) => {
   );
 }
 
+export function formatLabel(input: string): string {
+  return input
+    .split("_")
+    .map(word => 
+      word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+    )
+    .join(" ");
+}
+
 export default function SubCateogryWrapper({
   categoryName,
   subcategoryName,
@@ -193,8 +202,8 @@ export default function SubCateogryWrapper({
       <div className="flex flex-col">
         <div className="mt-5 mx-5 flex items-center justify-between">
           <div>
-            Home / {categoryName} /{" "}
-            <span className="font-semibold">{subcategoryName}</span>
+            Home / {formatLabel(categoryName)} /{" "}
+            <span className="font-semibold">{formatLabel(subcategoryName)}</span>
           </div>
           <div className="hidden md:block">
             Sort By:
