@@ -92,8 +92,8 @@ export default function Home() {
         user={user}
         setUser={setUser}
       />
-      <div className="m-10">
-        <div className="flex flex-row gap-10 mt-5">
+      <div className="mt-10">
+        <div className="flex flex-row gap-10 mt-5 mx-5 md:mx-10">
           {subcategories?.map((subCat, key) => {
             return (
               <SubcategoryButton
@@ -107,9 +107,9 @@ export default function Home() {
         {/* <div className="p-6 mt-10 flex justify-center">
           <BannerSlider banners={banners} />
         </div> */}
-        <div className="p-6 mt-10 relative">
-          <h1 className="text-2xl font-semibold">Banners</h1>
-          <div className="ml-3 my-5 flex items-center w-full gap-5">
+        <div className="mt-10 mx-5 md:mx-10">
+          <h1 className="text-2xl font-semibold">Brands</h1>
+          <div className="bg-red-200 md:ml-3 my-5 w-full grid grid-cols-2 md:grid-cols-3 gap-10">
             {brands.map((brand, key) => {
               return (
                 <div key={key} className="bg-gray-200 h-35 w-35 p-3 rounded-lg flex items-center justify-center">
