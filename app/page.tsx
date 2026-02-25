@@ -15,6 +15,7 @@ import DisplayCard from "./_components/DisplayCard";
 import SubcategoryButton from "./_components/SubcategoryButton";
 import BannerSlider from "./_components/BannerSlider";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const banners = [
   {
@@ -44,11 +45,14 @@ const banners = [
 ];
 
 export default function Home() {
+
+  const router = useRouter();
+
   const [page, setPage] = useState<string>("men");
   const [subcategories, setSubcategories] = useState<SubCategory[] | null>(
     null,
   );
-  const [brands, setBrands] = useState<{ logo: string }[]>([]);
+  const [brands, setBrands] = useState<{ name: string, logo: string }[]>([]);
   const [search, setSearch] = useState<string>("");
   const [user, setUser] = useState<User | null>(null);
 
@@ -109,10 +113,16 @@ export default function Home() {
         </div> */}
         <div className="mt-10 mx-5 md:mx-10">
           <h1 className="text-2xl font-semibold">Brands</h1>
-          <div className="md:ml-3 my-5 w-full grid grid-cols-2 md:grid-cols-3 gap-10">
+          <div className="md:ml-3 my-5 w-full grid grid-cols-2 md:grid-cols-7 gap-10">
             {brands.map((brand, key) => {
               return (
-                <div key={key} className="bg-gray-200 h-35 w-35 p-3 rounded-lg flex items-center justify-center">
+                <div
+                  key={key}
+                  className="bg-gray-200 h-35 w-35 p-3 rounded-lg flex items-center justify-center cursor-pointer"
+                  onClick={e => {
+                    router.push(`/brand/${brand.name}`)
+                  }}
+                >
                   <Image
                     src={brand.logo}
                     alt="logo"
