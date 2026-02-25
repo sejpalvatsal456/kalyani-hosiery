@@ -3,6 +3,10 @@ export type navLinksDataType = {
   tag: string;
 };
 
+export type Brand = {
+  name: string;
+  logo: string;
+};
 
 export type Category = {
   _id: string;
@@ -15,6 +19,52 @@ export type SubCategory = {
   name: string; // Like Shirt, Tshirt, etc
 };
 
+export type ProductApiType = {
+  _id: string;
+
+  brandId: {
+    _id: string;
+    name: string;
+    logo: string;
+  };
+
+  categoryId: {
+    _id: string;
+    name: string;
+  };
+
+  subcategoryId: {
+    _id: string;
+    categoryId: string;
+    name: string;
+  };
+
+  productName: string;
+  thumbnail: string;
+
+  variety: {
+    id: string;
+    colorName: string;
+    color: string;
+    imgLinks: string[];
+    sizes: {
+      id: string;
+      size: string;
+      mrp: number;
+      sellingPrice: number;
+      stock: number;
+    }[];
+  }[];
+
+  desc: {
+    key: string;
+    value: string;
+  }[];
+
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type ProductDataType = {
   _id: string;
   brandName: string;
@@ -24,6 +74,7 @@ export type ProductDataType = {
   thumbnail: string;
   variety: {
     id: string;
+    colorName: string;
     color: string;
     imgLinks: string[];
     sizes: { id: string, size: string; stock: number; mrp: number; sellingPrice: number; }[];

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import {
   DisplayProductType,
+  ProductApiType,
   User,
 } from "@/lib/typeDefinitions";
 import DisplayCard from "./DisplayCard";
@@ -100,7 +101,29 @@ export default function SubCateogryWrapper({
     })
       .then((res) => res.json())
       .then((data) => {
-        setProducts(data.products);
+        const products:ProductApiType[] = data.products;
+        const displayProducts = products.map(product => {
+          return {
+            _id: product._id,
+            brandName: product.brandId.name,
+            productName: product.productName,
+            categoryId: {
+              _id: product.categoryId._id,
+              name: product.categoryId.name
+            },
+            subcategoryId: {
+              _id: product.subcategoryId._id,
+              categoryId: product.subcategoryId.categoryId,
+              name: product.subcategoryId.name
+            },
+            thumbnail: product.thumbnail,
+            variety: product.variety,
+            desc: product.desc,
+            createdAt: product.createdAt,
+            updatedAt: product.updatedAt
+          }
+        });
+        setProducts(displayProducts);
         setFilteredProducts(data.products);
       })
       .catch((err) => alert(err));

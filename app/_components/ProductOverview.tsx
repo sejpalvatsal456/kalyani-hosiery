@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import {
   navLinksDataType,
+  ProductApiType,
   ProductDataType,
   ProductOverviewType,
   User,
@@ -95,8 +96,20 @@ export default function ProductOverview({
       .then((res) => res.json())
       .then((data) => {
         if(data.data) {
-          console.log(data.data);
-          setProductData(data.data);
+          const product:ProductApiType = data.data;
+          console.log(product);
+          setProductData({
+            _id: product._id,
+            brandName: product.brandId.name,
+            productName: product.productName,
+            categoryId: product.categoryId._id,
+            subcategoryId: product.subcategoryId._id,
+            thumbnail: product.thumbnail,
+            variety: product.variety,
+            desc: product.desc,
+            createdAt: product.createdAt,
+            updatedAt: product.updatedAt
+          });
           setIsOutOfStock(
             data.data.variety[selectedColor].sizes[selectedSize].stock === 0,
           );

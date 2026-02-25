@@ -8,7 +8,7 @@ export const GET = async(req: NextRequest, { params }: { params: Promise<{ prodI
     await connectDB();
     const { prodId } = await params;
 
-    const prod = await Product.findOne({ _id: prodId });
+    const prod = await Product.findOne({ _id: prodId }).populate('brandId').populate('categoryId').populate('subcategoryId');
     if (!prod) return NextResponse.json(
       { msg: "Product doesn't exist" },
       { status: 404 }

@@ -1,5 +1,12 @@
 import { model, models, Schema, Types } from "mongoose";
 
+const BrandSchema = new Schema({
+  name: { type: String, required: true, trim: true },
+  logo: { type: String, required: true, trim: true }
+}, { timestamps: true });
+
+export const Brand = models.Brand || model("Brand", BrandSchema);
+
 const SizeSchema = new Schema(
   {
     id: { type: String, required: true, trim: true },
@@ -14,6 +21,7 @@ const SizeSchema = new Schema(
 const VarietySchema = new Schema(
   {
     id: { type: String, required: true, trim: true },
+    colorName: { type: String, required: true, trim: true },
     color: { type: String, required: true, trim: true },
     imgLinks: { type: [String], required: true },
     sizes: { type: [SizeSchema], required: true },
@@ -63,7 +71,7 @@ export const Subcategory =
 
 const ProductSchema = new Schema(
   {
-    brandName: { type: String, required: true, trim: true },
+    brandId: { type: Types.ObjectId, ref: "Brand", required: true },
     productName: { type: String, required: true, trim: true },
     categoryId: { type: Types.ObjectId, ref: "Category", required: true },
     subcategoryId: { type: Types.ObjectId, ref: "Subcategory", required: true },

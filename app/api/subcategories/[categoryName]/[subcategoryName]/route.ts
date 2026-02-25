@@ -27,7 +27,7 @@ export const GET = async (
         { status: 404 },
       );
     
-    const products = await Product.find({ subcategoryId: subCat._id }).populate(['categoryId', 'subcategoryId']);
+    const products = await Product.find({ subcategoryId: subCat._id }).populate(['brandId', 'categoryId', 'subcategoryId']);
 
     return NextResponse.json(
       { products: products },

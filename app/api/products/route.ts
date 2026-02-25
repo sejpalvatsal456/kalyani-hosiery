@@ -1,5 +1,5 @@
 import { connectDB } from "@/lib/connectDB";
-import { Category, Product, Subcategory } from "@/lib/models";
+import { Brand, Category, Product, Subcategory } from "@/lib/models";
 import { ProductDataType } from "@/lib/typeDefinitions";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -22,9 +22,15 @@ export const POST = async(req:NextRequest) => {
         { msg: "Sub Category doesn't existed", data: oldCat },
         { status: 404 },
       );
+    
+    const brand = await Brand.findOne({ name: brandName });
+    if(!brand) return NextResponse.json(
+      { msg: "Brand doesn't exist" },
+      { status: 404 }
+    );
 
     const newProd = await Product.create({ 
-      brandName: brandName,
+      brandId: brand._id,
       productName: productName,
       categoryId: categoryId,
       subcategoryId: subcategoryId,
