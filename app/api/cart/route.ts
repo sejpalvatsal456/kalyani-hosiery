@@ -115,7 +115,7 @@ export const DELETE = async (req: NextRequest) => {
   try {
     await connectDB();
 
-    const { productId, sizeId, colorId } = await req.json();
+    const { productId } = await req.json();
 
     if (!productId) {
       return NextResponse.json(
@@ -138,9 +138,7 @@ export const DELETE = async (req: NextRequest) => {
       {
         $pull: {
           cart: {
-            productId,
-            ...(sizeId && { sizeId }),
-            ...(colorId && { colorId }),
+            productId
           },
         },
       },

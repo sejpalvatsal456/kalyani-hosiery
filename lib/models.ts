@@ -1,9 +1,12 @@
 import { model, models, Schema, Types } from "mongoose";
 
-const BrandSchema = new Schema({
-  name: { type: String, required: true, trim: true },
-  logo: { type: String, required: true, trim: true }
-}, { timestamps: true });
+const BrandSchema = new Schema(
+  {
+    name: { type: String, required: true, trim: true },
+    logo: { type: String, required: true, trim: true },
+  },
+  { timestamps: true },
+);
 
 export const Brand = models.Brand || model("Brand", BrandSchema);
 
@@ -84,14 +87,55 @@ const ProductSchema = new Schema(
 
 export const Product = models.Product || model("Product", ProductSchema);
 
-const UserSchema = new Schema({
-  name: { type: String, required: true, trim: true },
-  email: { type: String, trim: true },
-  role: { type: String, enum: [ 'user', 'admin' ], required: true },
-  phone: { type: Number, required: true },
-  hashedPassword: { type: String, required: true },
-  address: { type: String, trim: true },
-  cart: { type: [{ productId: {type: Types.ObjectId, ref: "Product", required: true}, sizeId: String, colorId: String }], required: true, ref: "Product" }
-}, { timestamps: true });
+const UserSchema = new Schema(
+  {
+    name: { type: String, required: true, trim: true },
+    email: { type: String, trim: true },
+    role: { type: String, enum: ["user", "admin"], required: true },
+    phone: { type: Number, required: true },
+    hashedPassword: { type: String, required: true },
+    address: { type: String, trim: true },
+    cart: {
+      type: [
+        {
+          productId: { type: Types.ObjectId, ref: "Product", required: true },
+          sizeId: String,
+          colorId: String,
+        },
+      ],
+      required: true,
+      ref: "Product",
+    },
+  },
+  { timestamps: true },
+);
 
 export const User = models.User || model("User", UserSchema);
+
+const OrderSchema = new Schema(
+  {
+    userId: { type: Types.ObjectId, required: true, ref: "User" },
+    items: [
+      {
+        productId: { type: Types.ObjectId, ref: "Product", required: true },
+        name: String,
+        color: String,
+        size: String,
+        price: Number,
+        quantity: Number,
+      },
+    ],
+    totalAmount: { type: Number, required: true },
+    razorpayOrderId: String,
+    razorpayPaymentId: String,
+    razorpaySignature: String,
+    status: {
+      type: String,
+      enum: ["created", "paid", "failed"],
+      default: "created",
+    },
+  },
+  { timestamps: true },
+);
+
+export const Order = models.Order || model("Order", OrderSchema); 

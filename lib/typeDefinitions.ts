@@ -77,15 +77,27 @@ export type ProductDataType = {
     colorName: string;
     color: string;
     imgLinks: string[];
-    sizes: { id: string, size: string; stock: number; mrp: number; sellingPrice: number; }[];
+    sizes: {
+      id: string;
+      size: string;
+      stock: number;
+      mrp: number;
+      sellingPrice: number;
+    }[];
   }[];
   desc: { key: string; value: string }[];
   createdAt: string;
   updatedAt: string;
 };
 
-export type DisplayProductType = Omit<ProductDataType, "categoryId"|"subcategoryId"> & { categoryId: Category, subcategoryId: SubCategory };
-export type ProductOverviewType = Omit<ProductDataType, "categoryId"|"subcategoryId"|"thumbnail"|"createdAt"|"updatedAt"> & { category: Category, subcategory: SubCategory };
+export type DisplayProductType = Omit<
+  ProductDataType,
+  "categoryId" | "subcategoryId"
+> & { categoryId: Category; subcategoryId: SubCategory };
+export type ProductOverviewType = Omit<
+  ProductDataType,
+  "categoryId" | "subcategoryId" | "thumbnail" | "createdAt" | "updatedAt"
+> & { category: Category; subcategory: SubCategory };
 
 export type User = {
   _id: string;
@@ -95,7 +107,32 @@ export type User = {
   phone: number;
   hashedPassword: string;
   address?: string;
-  cart: { productId: string, colorId: string, sizeId: string }[];
+  cart: { productId: string; colorId: string; sizeId: string }[];
 };
 
-export type SectionType = "manage_profile" | "cart" | "previous_purchase" | "change_password" | "change_number";
+export type SectionType =
+  | "manage_profile"
+  | "cart"
+  | "previous_purchase"
+  | "change_password"
+  | "change_number";
+
+export type ItemsType = {
+  productId: string;
+  name: string;
+  color: string;
+  size: string;
+  price: number;
+  quantity: number;
+};
+
+export type OrderType = {
+  userId: string;
+  items: ItemsType[];
+  totalAmount: number;
+  razorpayOrderId?: string;
+  razorpayPaymentId?: string;
+  razorpaySignature?: string;
+  status: "created" | "paid" | "failed";
+  createdAt: Date;
+};

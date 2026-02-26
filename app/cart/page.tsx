@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Navbar from "../_components/Navbar";
-import { User } from "@/lib/typeDefinitions";
+import { ItemsType, User } from "@/lib/typeDefinitions";
 import { FormEvent, useEffect, useState } from "react";
 import CartItem from "../_components/CartItem";
 import Script from "next/script";
@@ -95,10 +95,22 @@ export default function CartPage() {
 
   const handlePlaceOrder = async (e: FormEvent) => {
     e.preventDefault();
+
+    const items: ItemsType[] = cartItems.map(item => {
+      return {
+        productId: item.productId,
+        name: item.title,
+        color: item.color,
+        size: item.size,
+        price: item.sellingPrice,
+        quantity: item.quantity
+      }
+    })
+
     const res = await fetch("/api/createOrder", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: selectedTotal * 100 }),
+      body: JSON.stringify({ amount: selectedTotal, items: items }),
     });
     const data = await res.json();
     if (!res.ok) {
@@ -106,13 +118,56 @@ export default function CartPage() {
       return;
     }
     console.log(data);
-    const paymentData = {
+    const options = {
       key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-      order_id: data.order.id,
-      handler: async function (responce: any) {},
+      amount: data.razorpayOrder.amount,
+      currency: data.razorpayOrder.currency,
+      name: "Your Store",
+      description: "Order Payment",
+      order_id: data.razorpayOrder.id,
+
+      handler: async function (response: any) {
+        // 4️⃣ Verify Payment
+        const verifyRes = await fetch("/api/verifyOrder", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(response),
+        });
+
+        const verifyData = await verifyRes.json();
+
+        if (verifyData.success) {
+          alert("Payment Successful 🎉");
+          // Redirect to success page
+          cartItems.forEach(async(item) => {
+            await fetch('/api/cart/', {
+              method: "DELETE",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ productId: item.productId })
+            });
+            if(res.ok) {
+              setCartItems(cartItems.filter((item) => item.productId !== item.productId));
+            }
+          })
+        } else {
+          alert("Payment verification failed");
+        }
+      },
+
+      modal: {
+        ondismiss: function () {
+          console.log("Payment popup closed");
+        },
+      },
+
+      theme: {
+        color: "#000000",
+      },
     };
 
-    const payment = new (window as any).Razorpay(paymentData);
+    const payment = new (window as any).Razorpay(options);
     payment.open();
   };
 
