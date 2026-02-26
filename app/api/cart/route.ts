@@ -18,17 +18,21 @@ export async function GET(req: NextRequest) {
     const userFromCookie = jwt.decode(user_token.value) as UserType; // temporary fix, change the type when the cookie system changes
     const userId = userFromCookie._id;
 
-    const user = await User.findById(userId).populate("cart.productId").lean();
+    const user = await User.findById(userId).populate("cart.productId");
+    const newUser = await user.populate("cart.productId.brandId");
+    // console.log("User data from /api/cart: ");
+    // console.log(newUser);
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    console.log(user.cart);
+    // console.log(user.cart[0].productId);
 
     // Transform cart data
     const cartItems = user.cart.map((item: any) => {
       const product = item.productId;
+      console.log(product);
 
       const selectedVariety = product.variety.find(
         (v: any) => v.id === item.colorId,
@@ -40,7 +44,7 @@ export async function GET(req: NextRequest) {
 
       return {
         productId: product._id,
-        brand: product.brandName,
+        brand: product.brandId.name,
         title: product.productName,
         thumbnail: product.thumbnail,
         color: selectedVariety?.color,

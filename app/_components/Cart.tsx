@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { FormEvent, useEffect, useState } from 'react';
 import CartItem from './CartItem';
+import Script from 'next/script';
 
 type CartItemType = {
   productId: string;
@@ -91,12 +92,38 @@ export default function Cart() {
     fetchCart();
   }, []);
 
+  const handlePlaceOrder = async(e:FormEvent) => {
+    e.preventDefault();
+    const res = await fetch('/api/createOrder', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ amount: selectedTotal*100 })
+    });
+    const data = await res.json();
+    if(!res.ok) {
+      alert(data.msg);
+      return;
+    }
+    console.log(data)
+    const paymentData = {
+      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
+      order_id: data.order.id,
+      handler: async function (responce: any) {
+
+      }
+    }
+
+    const payment = new (window as any).Razorpay(paymentData);
+    payment.open();
+  }
+
   
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
 
   return (
     <div className='flex h-full items-center justify-center'>
+      <Script type='text/javascript' src='https://checkout.razorpay.com/v1/checkout.js' />
       <div className="w-full md:w-[90%] h-[90%] py-5 px-3 md:px-10 border-1 border-gray-300 shadow-lg overflow-y-scroll">
         <h1 className="ml-2 md:ml-0 text-xl font-semibold">Cart</h1>
         <div className='mt-10 ml-2 md:ml-0 flex flex-row gap-5'>
@@ -138,7 +165,7 @@ export default function Cart() {
           Total: ₹{selectedTotal.toLocaleString()}
         </div>
         <button
-          onClick={() => {}}
+          onClick={handlePlaceOrder}
           className="bg-[#ff3f6c] w-full py-3 text-white font-semibold text-lg cursor-pointer mt-5"
         >
           Place Order

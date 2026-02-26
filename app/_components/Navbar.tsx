@@ -125,7 +125,10 @@ export default function Navbar({
 
         {/* Profile logos - desktop */}
         <ul className="hidden md:flex items-center gap-7 md:gap-10">
-          <li className="relative">
+          <li
+            className="relative cursor-pointer"
+            onClick={e => router.push('/cart/')}
+          >
             <FiShoppingCart size={25} />
             {user && user.cart.length > 0 && (
               <div className="absolute -bottom-2 -right-3 bg-red-500 text-white text-[14px] h-[20px] min-w-[20px] flex items-center justify-center rounded-full px-1">
@@ -145,7 +148,10 @@ export default function Navbar({
 
         {/* Profile logos - mobile */}
         <ul className="flex md:hidden items-center gap-7 w-20">
-          <li className={"relative " + (!isLogin ? "hidden" : "")}>
+          <li 
+            className={"relative cursor-pointer" + (!isLogin ? "hidden" : "")}
+            onClick={e => router.push('/cart/')}
+          >
             { isLogin && <FiShoppingCart size={25} /> }
             {(user && user.cart.length > 0 && isLogin) && (
               <div className="absolute -bottom-2 -right-3 bg-red-500 text-white text-[14px] h-[20px] min-w-[20px] flex items-center justify-center rounded-full px-1">
