@@ -2,7 +2,7 @@
 
 import React, { FormEvent, useEffect, useState } from "react";
 import "@tailwindplus/elements";
-import { FiShoppingCart } from "react-icons/fi";
+import { FiSearch, FiShoppingCart } from "react-icons/fi";
 import { FaRegUser, FaSearch } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import Image from "next/image";
@@ -109,8 +109,11 @@ export default function Navbar({
           action=""
           method="GET"
           className="flex items-center bg-[#f5f5f5] px-5 gap-5 rounded"
+          onSubmit={(e) => {
+            router.push(`/search?serachInput=${search}`)
+          }}
         >
-          <CiSearch size={20} className="hidden md:flex h-10 " />
+          
           {/* TODO: Fix size of search bar in mobile view */}
           <input
             className="w-30 md:w-auto h-10 focus:outline-none"
@@ -120,6 +123,13 @@ export default function Navbar({
             id="searchInput"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
+          />
+          <FiSearch
+            size={20} 
+            className="hidden md:flex h-10 cursor-pointer" 
+            onClick={(e) => {
+            router.push(`/search?serachInput=${search}`)
+          }}
           />
         </form>
 
