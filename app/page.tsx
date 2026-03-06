@@ -19,6 +19,14 @@ import { useRouter } from "next/navigation";
 import SingleBanner from "./_components/SingleBanner";
 import FiveItemSlider from "./_components/FiveItemSlider";
 import { Product } from "@/lib/models";
+import { FaInstagram, FaWhatsapp, FaYoutube } from "react-icons/fa";
+import { Josefin_Sans } from "next/font/google";
+
+const josefin = Josefin_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-josefin"
+});
 
 const banners = [
   {
@@ -490,14 +498,34 @@ export default function Home() {
 
       {/* Address Section */}
 
-      <div className="my-10 mx-10 h-[70vh] bg-red-200">
-        
+      <div className={"my-10 h-[70vh] bg-gray-300 flex flex-row items-center justify-center md:justify-between " + josefin.className}>
+        <div className=" w-[80vw] sm:w-90 md:w-110 bg-white mx-5 md:mx-10 px-10 py-7 flex flex-col gap-5">
+          <h1 className="text-xl md:text-2xl font-meduim">"Rajaveer Imitation "</h1>
+          <p className="text-sm md:text-lg">
+            Kalyani Hosiery <br />
+            Sir Lakhajiraj Main Road <br />
+            Near Shalimar Complex <br />
+            Opposite Prahlad cinema <br />
+            Rajkot Gujrat
+          </p>
+          <p className="text-sm md:text-lg">
+            Mon - Sat, 10:00 AM TO 9:00 PM <br />
+            Sunday, 11:00 AM TO 5:00 PM
+          </p>
+          <a href="/" className="text-white bg-black inline-block w-[50%] text-center py-2 px-2 mb-3">GET DIRECTION</a>
+        </div>
+        <img 
+          src="/brand-img.PNG" 
+          alt="" 
+          className="hidden md:flex md:w-[30vw] mr-10"
+        />
       </div>
 
       {/* Footer */}
 
-      <div className="w-full bg-black flex py-10 md:px-30 gap-20">
-        <div className="flex flex-col gap-5">
+      <div className="w-full bg-black flex flex-col md:flex-row py-10 md:px-30 gap-20">
+
+        <div className="flex flex-col gap-5 items-center md:items-start">
           <span className="text-white">About "Kalyani hosiery"</span>
           <span className="text-white flex gap-5">
             Mo.:- 
@@ -508,18 +536,35 @@ export default function Home() {
             <b>email@business.com</b>
           </span>
         </div>
-        <div className="flex flex-col gap-5">
+
+        <div className="flex flex-col gap-5 items-center md:items-start">
           <span className="text-white text-xl">CUSTMOR SERVICE</span>
-          <ul className="text-white">
-            <li><a href="/aboutus">About Us</a></li>
-            <li><a href="/search">Search</a></li>
-            <li><a href="/contactus">Contact Us</a></li>
+          <ul className="text-white flex flex-col gap-2">
+            <li className="hover:underline"><a href="/aboutus">About Us</a></li>
+            <li className="hover:underline"><a href="/search">Search</a></li>
+            <li className="hover:underline"><a href="/contactus">Contact Us</a></li>
           </ul>
         </div>
-        <div></div>
-        <div></div>
-      </div>
 
+        <div className="flex flex-col gap-5 items-center md:items-start">
+          <span className="text-white text-xl">POLICIES</span>
+          <ul className="text-white flex flex-col gap-2">
+            <li className="hover:underline"><a href="/policy/privacy">Privacy Policys</a></li>
+            <li className="hover:underline"><a href="/policy/return">Return & Exchange</a></li>
+            <li className="hover:underline"><a href="/policy/shipping">Shipping Policy</a></li>
+            <li className="hover:underline"><a href="/policy/service">Terms Of Service</a></li>
+          </ul>
+        </div>
+
+        <div className="flex flex-col gap-5 h-[35vh] md:w-[20vw] px-10 md:px-0">
+          <div className="h-[30%] w-full flex items-center gap-5 justify-end text-white px-5">
+            <FaInstagram size={35} />
+            <FaYoutube size={35} />
+            <FaWhatsapp size={35} />
+          </div>
+          <span className="text-white text-right">&copy; 2026 Kalyani Hosiery, RAJKOT</span>
+        </div>
+      </div>
     </>
   );
 }
