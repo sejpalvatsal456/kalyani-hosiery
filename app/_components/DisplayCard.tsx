@@ -1,4 +1,4 @@
-import { DisplayProductType, ProductDataType } from "@/lib/typeDefinitions";
+import { IDisplayProduct } from "@/lib/typeDefinitions";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { FormEvent } from "react";
@@ -6,7 +6,7 @@ import React, { FormEvent } from "react";
 export default function DisplayCard({
   productData,
 }: {
-  productData: DisplayProductType;
+  productData: IDisplayProduct;
 }) {
   const router = useRouter();
 
@@ -19,7 +19,7 @@ export default function DisplayCard({
     let minMrp = Infinity;
     let minSelling = Infinity;
 
-    productData.variety.forEach((v) => {
+    productData.varients.forEach((v) => {
       v.sizes.forEach((s) => {
         if (s.sellingPrice < minSelling) {
           minSelling = s.sellingPrice;

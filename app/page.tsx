@@ -1,13 +1,4 @@
 "use client";
-
-import {
-  Category,
-  DisplayProductType,
-  navLinksDataType,
-  ProductDataType,
-  SubCategory,
-  User,
-} from "@/lib/typeDefinitions";
 import Header from "./_components/Header";
 import Navbar from "./_components/Navbar";
 import { useEffect, useState } from "react";
@@ -21,6 +12,7 @@ import FiveItemSlider from "./_components/FiveItemSlider";
 import { Product } from "@/lib/models";
 import { FaInstagram, FaWhatsapp, FaYoutube } from "react-icons/fa";
 import { Josefin_Sans } from "next/font/google";
+import { IDisplayProduct, ISubcategory, IUser } from "@/lib/typeDefinitions";
 
 const josefin = Josefin_Sans({
   subsets: ["latin"],
@@ -59,12 +51,12 @@ export default function Home() {
   const router = useRouter();
 
   const [page, setPage] = useState<string>("men");
-  const [subcategories, setSubcategories] = useState<SubCategory[] | null>(
+  const [subcategories, setSubcategories] = useState<ISubcategory[] | null>(
     null,
   );
   const [brands, setBrands] = useState<{ name: string; logo: string }[]>([]);
   const [search, setSearch] = useState<string>("");
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
 
   // Fetch the brand data
 
@@ -83,303 +75,299 @@ export default function Home() {
 
   // Fetch the categories data as per page state
 
-  useEffect(() => {
-    fetch("/api/subcategories/" + page.toLowerCase(), { method: "GET" })
-      .then((res) => res.json())
-      .then((data) => {
-        setSubcategories(data.subCats);
-      })
-      .catch((err) => console.log(err));
-  }, [page]);
+  // useEffect(() => {
+  //   fetch("/api/subcategories/" + page.toLowerCase(), { method: "GET" })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setSubcategories(data.subCats);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, [page]);
+
+  // Dev only category data as per page state
+
 
   // Dev only part - replace it when backend is completed
-  const salesProducts:DisplayProductType[] = [
+  const salesProducts: IDisplayProduct[] = [
     {
       _id: "1",
       brandName: "Powerlook",
       productName: "Men Alphanumeric Printed Pullover",
-      categoryId: {
+      slug: "",
+      category: {
         _id: "123",
+        slug: "men",
         name: "Men"
       },
-      subcategoryId: {
+      subcategory: {
         _id: "1234",
         categoryId: "123",
+        slug: "sweaters",
         name: "Sweaters"
       },
       thumbnail: "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-      variety: [
+      varients: [
         {
-          id: "color1",
+          colorID: "color1",
           colorName: "Orange",
           imgLinks: ["https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg"],
-          color: "#ff5f1f",
+          colorCode: "#ff5f1f",
           sizes: [
             {
-              id: "size1",
-              size: "S",
+              sizeID: "size1",
+              sizeName: "S",
+              sku: "sku1",
               stock: 10,
               mrp: 2999,
               sellingPrice: 670,
+              discountPercent: 77
             }
           ]
         }
       ],
+      tags: [],
       desc: [],
-      createdAt: "",
-      updatedAt: ""
     },
 
-    {
-      _id: "2",
-      brandName: "Powerlook",
-      productName: "Men Alphanumeric Printed Pullover",
-      categoryId: {
-        _id: "123",
-        name: "Men"
-      },
-      subcategoryId: {
-        _id: "1234",
-        categoryId: "123",
-        name: "Sweaters"
-      },
-      thumbnail: "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-      variety: [
-        {
-          id: "color1",
-          colorName: "Orange",
-          imgLinks: ["https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg"],
-          color: "#ff5f1f",
-          sizes: [
-            {
-              id: "size1",
-              size: "S",
-              stock: 10,
-              mrp: 2999,
-              sellingPrice: 670,
-            }
-          ]
-        }
-      ],
-      desc: [],
-      createdAt: "",
-      updatedAt: ""
-    },
-
-    {
-      _id: "3",
-      brandName: "Powerlook",
-      productName: "Men Alphanumeric Printed Pullover",
-      categoryId: {
-        _id: "123",
-        name: "Men"
-      },
-      subcategoryId: {
-        _id: "1234",
-        categoryId: "123",
-        name: "Sweaters"
-      },
-      thumbnail: "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-      variety: [
-        {
-          id: "color1",
-          colorName: "Orange",
-          imgLinks: ["https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg"],
-          color: "#ff5f1f",
-          sizes: [
-            {
-              id: "size1",
-              size: "S",
-              stock: 10,
-              mrp: 2999,
-              sellingPrice: 670,
-            }
-          ]
-        }
-      ],
-      desc: [],
-      createdAt: "",
-      updatedAt: ""
-    },
-
-    {
-      _id: "4",
-      brandName: "Powerlook",
-      productName: "Men Alphanumeric Printed Pullover",
-      categoryId: {
-        _id: "123",
-        name: "Men"
-      },
-      subcategoryId: {
-        _id: "1234",
-        categoryId: "123",
-        name: "Sweaters"
-      },
-      thumbnail: "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-      variety: [
-        {
-          id: "color1",
-          colorName: "Orange",
-          imgLinks: ["https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg"],
-          color: "#ff5f1f",
-          sizes: [
-            {
-              id: "size1",
-              size: "S",
-              stock: 10,
-              mrp: 2999,
-              sellingPrice: 670,
-            }
-          ]
-        }
-      ],
-      desc: [],
-      createdAt: "",
-      updatedAt: ""
-    },
     {
       _id: "1",
       brandName: "Powerlook",
       productName: "Men Alphanumeric Printed Pullover",
-      categoryId: {
+      slug: "",
+      category: {
         _id: "123",
+        slug: "men",
         name: "Men"
       },
-      subcategoryId: {
+      subcategory: {
         _id: "1234",
         categoryId: "123",
+        slug: "sweaters",
         name: "Sweaters"
       },
       thumbnail: "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-      variety: [
+      varients: [
         {
-          id: "color1",
+          colorID: "color1",
           colorName: "Orange",
           imgLinks: ["https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg"],
-          color: "#ff5f1f",
+          colorCode: "#ff5f1f",
           sizes: [
             {
-              id: "size1",
-              size: "S",
+              sizeID: "size1",
+              sizeName: "S",
+              sku: "sku1",
               stock: 10,
               mrp: 2999,
               sellingPrice: 670,
+              discountPercent: 77
             }
           ]
         }
       ],
+      tags: [],
       desc: [],
-      createdAt: "",
-      updatedAt: ""
     },
 
     {
-      _id: "2",
+      _id: "1",
       brandName: "Powerlook",
       productName: "Men Alphanumeric Printed Pullover",
-      categoryId: {
+      slug: "",
+      category: {
         _id: "123",
+        slug: "men",
         name: "Men"
       },
-      subcategoryId: {
+      subcategory: {
         _id: "1234",
         categoryId: "123",
+        slug: "sweaters",
         name: "Sweaters"
       },
       thumbnail: "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-      variety: [
+      varients: [
         {
-          id: "color1",
+          colorID: "color1",
           colorName: "Orange",
           imgLinks: ["https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg"],
-          color: "#ff5f1f",
+          colorCode: "#ff5f1f",
           sizes: [
             {
-              id: "size1",
-              size: "S",
+              sizeID: "size1",
+              sizeName: "S",
+              sku: "sku1",
               stock: 10,
               mrp: 2999,
               sellingPrice: 670,
+              discountPercent: 77
             }
           ]
         }
       ],
+      tags: [],
       desc: [],
-      createdAt: "",
-      updatedAt: ""
     },
 
     {
-      _id: "3",
+      _id: "1",
       brandName: "Powerlook",
       productName: "Men Alphanumeric Printed Pullover",
-      categoryId: {
+      slug: "",
+      category: {
         _id: "123",
+        slug: "men",
         name: "Men"
       },
-      subcategoryId: {
+      subcategory: {
         _id: "1234",
         categoryId: "123",
+        slug: "sweaters",
         name: "Sweaters"
       },
       thumbnail: "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-      variety: [
+      varients: [
         {
-          id: "color1",
+          colorID: "color1",
           colorName: "Orange",
           imgLinks: ["https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg"],
-          color: "#ff5f1f",
+          colorCode: "#ff5f1f",
           sizes: [
             {
-              id: "size1",
-              size: "S",
+              sizeID: "size1",
+              sizeName: "S",
+              sku: "sku1",
               stock: 10,
               mrp: 2999,
               sellingPrice: 670,
+              discountPercent: 77
             }
           ]
         }
       ],
+      tags: [],
       desc: [],
-      createdAt: "",
-      updatedAt: ""
     },
 
     {
-      _id: "4",
+      _id: "1",
       brandName: "Powerlook",
       productName: "Men Alphanumeric Printed Pullover",
-      categoryId: {
+      slug: "",
+      category: {
         _id: "123",
+        slug: "men",
         name: "Men"
       },
-      subcategoryId: {
+      subcategory: {
         _id: "1234",
         categoryId: "123",
+        slug: "sweaters",
         name: "Sweaters"
       },
       thumbnail: "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-      variety: [
+      varients: [
         {
-          id: "color1",
+          colorID: "color1",
           colorName: "Orange",
           imgLinks: ["https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg"],
-          color: "#ff5f1f",
+          colorCode: "#ff5f1f",
           sizes: [
             {
-              id: "size1",
-              size: "S",
+              sizeID: "size1",
+              sizeName: "S",
+              sku: "sku1",
               stock: 10,
               mrp: 2999,
               sellingPrice: 670,
+              discountPercent: 77
             }
           ]
         }
       ],
+      tags: [],
       desc: [],
-      createdAt: "",
-      updatedAt: ""
-    }
+    },
+
+    {
+      _id: "1",
+      brandName: "Powerlook",
+      productName: "Men Alphanumeric Printed Pullover",
+      slug: "",
+      category: {
+        _id: "123",
+        slug: "men",
+        name: "Men"
+      },
+      subcategory: {
+        _id: "1234",
+        categoryId: "123",
+        slug: "sweaters",
+        name: "Sweaters"
+      },
+      thumbnail: "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+      varients: [
+        {
+          colorID: "color1",
+          colorName: "Orange",
+          imgLinks: ["https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg"],
+          colorCode: "#ff5f1f",
+          sizes: [
+            {
+              sizeID: "size1",
+              sizeName: "S",
+              sku: "sku1",
+              stock: 10,
+              mrp: 2999,
+              sellingPrice: 670,
+              discountPercent: 77
+            }
+          ]
+        }
+      ],
+      tags: [],
+      desc: [],
+    },
+
+    {
+      _id: "1",
+      brandName: "Powerlook",
+      productName: "Men Alphanumeric Printed Pullover",
+      slug: "",
+      category: {
+        _id: "123",
+        slug: "men",
+        name: "Men"
+      },
+      subcategory: {
+        _id: "1234",
+        categoryId: "123",
+        slug: "sweaters",
+        name: "Sweaters"
+      },
+      thumbnail: "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+      varients: [
+        {
+          colorID: "color1",
+          colorName: "Orange",
+          imgLinks: ["https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg"],
+          colorCode: "#ff5f1f",
+          sizes: [
+            {
+              sizeID: "size1",
+              sizeName: "S",
+              sku: "sku1",
+              stock: 10,
+              mrp: 2999,
+              sellingPrice: 670,
+              discountPercent: 77
+            }
+          ]
+        }
+      ],
+      tags: [],
+      desc: [],
+    },
   ]
 
   return (
