@@ -72,6 +72,7 @@ export interface ICategory {
   _id?: string;
   name: string;
   slug: string;
+  theme: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

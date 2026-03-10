@@ -12,7 +12,7 @@ import FiveItemSlider from "./_components/FiveItemSlider";
 import { Product } from "@/lib/models";
 import { FaInstagram, FaWhatsapp, FaYoutube } from "react-icons/fa";
 import { Josefin_Sans } from "next/font/google";
-import { IDisplayProduct, ISubcategory, IUser } from "@/lib/typeDefinitions";
+import { ICategory, IDisplayProduct, ISubcategory, IUser } from "@/lib/typeDefinitions";
 
 const josefin = Josefin_Sans({
   subsets: ["latin"],
@@ -55,6 +55,7 @@ export default function Home() {
     null,
   );
   const [brands, setBrands] = useState<{ name: string; logo: string }[]>([]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
   const [search, setSearch] = useState<string>("");
   const [user, setUser] = useState<IUser | null>(null);
 
@@ -71,20 +72,46 @@ export default function Home() {
         setBrands(data.data);
       })
       .catch((err) => console.log(err));
+    setCategories([
+    {
+      name: "Men",
+      slug: "men",
+      theme: "red"
+    },
+    {
+      name: "Women",
+      slug: "women",
+      theme: "red"
+    },
+    {
+      name: "Kids",
+      slug: "kids",
+      theme: "red"
+    },
+    {
+      name: "Sales",
+      slug: "sales",
+      theme: "red"
+    },
+  ])
   }, []);
 
-  // Fetch the categories data as per page state
+  // Dev only - Fetch the categories data as per page state
 
-  // useEffect(() => {
-  //   fetch("/api/subcategories/" + page.toLowerCase(), { method: "GET" })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setSubcategories(data.subCats);
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, [page]);
+  
+
+  useEffect(() => {
+
+    fetch("/api/subcategories/" + page.toLowerCase(), { method: "GET" })
+      .then((res) => res.json())
+      .then((data) => {
+        setSubcategories(data.subCats);
+      })
+      .catch((err) => console.log(err));
+  }, [page]);
 
   // Dev only category data as per page state
+
 
 
   // Dev only part - replace it when backend is completed
@@ -375,6 +402,7 @@ export default function Home() {
       <Header visibility={true} />
       <Navbar
         displayNavLinks={true}
+        categories={categories}
         activePage={page}
         setPage={setPage}
         search={search}

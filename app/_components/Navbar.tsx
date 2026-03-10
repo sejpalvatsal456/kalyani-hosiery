@@ -7,39 +7,32 @@ import { FaRegUser, FaSearch } from "react-icons/fa";
 import { CiSearch } from "react-icons/ci";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { SubCategory, User } from '@/lib/typeDefinitions';
-
-const convertToCapitilizeCase = (str: string) => {
-  let words = str.split(' ');
-  words = words.map(word => {
-    return word.charAt(0).toUpperCase() + word.slice(1);
-  });
-  return words.join(' ');
-}
+import { ICategory, ISubcategory, IUser } from "@/lib/typeDefinitions";
 
 export default function Navbar({
   activePage,
+  setPage,
+  categories,
   search,
   setSearch,
-  setPage,
   displayNavLinks,
   user,
   setUser
 }: {
   activePage: string;
+  setPage: (val: string) => void;
+  categories: ICategory[];
   search: string;
   setSearch: (search: string) => void;
-  setPage: (val: string) => void;
   displayNavLinks: boolean;
-  user:User|null;
-  setUser: (val: (User|null)) => void;
+  user:IUser|null;
+  setUser: (val: (IUser|null)) => void;
 }) {
 
   const router = useRouter();
   const pathname = usePathname();
 
   const [open, setOpen] = useState<boolean>(false);
-  const [navLinks, setNavLinks] = useState<string[]>([]);
   const [isLogin, setIsLogin] = useState<boolean>(false);
 
   const handleUserClick = (e:FormEvent) => {
@@ -62,32 +55,35 @@ export default function Navbar({
   }, []);
 
   useEffect(() => {
-    fetch('/api/categories/', { method: "GET" })
-    .then(res => res.json())
-    .then(data => {
-      let temp:string[]  = [];
-      data.cats.map((cat: SubCategory) => {
-        temp.push(cat.name);
-      });
-      setNavLinks(temp);
-    })
-    .catch(err => console.log(err))
+    // fetch('/api/categories/', { method: "GET" })
+    // .then(res => res.json())
+    // .then(data => {
+    //   let temp:string[]  = [];
+    //   data.cats.map((cat: ISubcategory) => {
+    //     temp.push(cat.name);
+    //   });
+    //   setNavLinks(temp);
+    // })
+    // .catch(err => console.log(err));
+
   }, []);
 
 
+
+
   return (
-    <nav className="border-b-1 border-gray-300">
+    <nav className="border-b-1 border-gray-300 w-[100vw] bg-[linear-gradient(180deg,_#f5b5c9_0%,_#fbe6ed_100%)] md:bg-none md:bg-white">
       {/* Top Bar */}
-      <div className="flex justify-between items-center h-[13vh] pl-3 md:pl-6 pr-3 md:pr-10 gap-5">
+      <div className="flex justify-between items-center h-[13vh] md:px-5 px-5 pr-10 md:pr-10 gap-5 w-[100vw]">
         {/* Logo */}
-        <a href="/">
+        <a href="/" className="hidden md:flex">
           <Image src="/logo1.png" alt="Next.js logo" width={150} height={50} />
         </a>
 
         {/* Nav links desktop */}
         {displayNavLinks ? (
           <ul className="hidden md:flex items-center gap-10">
-            {navLinks.map((name: string, key) => {
+            {/* {navLinks.map((name: string, key) => {
               return (
                 <li
                   key={key}
@@ -100,6 +96,20 @@ export default function Navbar({
                   <span className="text-sm font-semibold">{name.toUpperCase()}</span>
                 </li>
               );
+            })} */}
+            {categories.map((cat, key) => {
+              return (
+                <li
+                  key={key}
+                  className={
+                    "w-full h-10 text-center hover:font-medium border-[#fc2167] cursor-pointer hover:border-b-3 hover:border-[#fc2167] " +
+                    (activePage.toLowerCase() === cat.slug ? "border-b-3 text-[#fc2167]" : "")
+                  }
+                  onClick={() => setPage(cat.slug)}
+                >
+                  <span className="text-sm font-semibold">{cat.name}</span>
+                </li>
+              )
             })}
           </ul>
         ) : null}
@@ -108,12 +118,14 @@ export default function Navbar({
         <form
           action=""
           method="GET"
-          className="flex items-center bg-[#f5f5f5] px-5 gap-5 rounded"
+          className="flex items-center bg-[#f5f5f5] pl-3 md:pl-5 pr-5 gap-5 rounded-lg border-1 border-gray-400"
           onSubmit={(e) => {
             router.push(`/search?serachInput=${search}`)
           }}
         >
-          
+          <a href="/" className="md:hidden">
+            <Image src="/cropped_logo.png" alt="Next.js logo" width={30} height={50} />
+          </a>
           {/* TODO: Fix size of search bar in mobile view */}
           <input
             className="w-30 md:w-auto h-10 focus:outline-none"
@@ -157,7 +169,7 @@ export default function Navbar({
         </ul>
 
         {/* Profile logos - mobile */}
-        <ul className="flex md:hidden items-center gap-7 w-20">
+        <ul className="flex md:hidden items-center gap-7">
           <li 
             className={"relative cursor-pointer" + (!isLogin ? "hidden" : "")}
             onClick={e => router.push('/cart/')}
@@ -183,7 +195,7 @@ export default function Navbar({
       {/* Mobile links */}
       {displayNavLinks ? (
         <ul className="flex justify-between md:hidden">
-          {navLinks.map((name: string, key) => {
+          {/* {navLinks.map((name: string, key) => {
             return (
               <li
                 key={key}
@@ -196,6 +208,20 @@ export default function Navbar({
                 <span>{name}</span>
               </li>
             );
+          })} */}
+          {categories.map((cat, key) => {
+            return (
+              <li
+                key={key}
+                className={
+                  "w-full h-10 text-center hover:font-medium border-[#fc2167] cursor-pointer hover:border-b-3 hover:border-[#fc2167] " +
+                  (activePage === cat.slug ? "border-b-3 text-[#fc2167]" : "")
+                }
+                onClick={() => setPage(cat.slug)}
+              >
+                <span>{cat.name}</span>
+              </li>
+            )
           })}
         </ul>
       ) : null}
@@ -212,6 +238,9 @@ export default function Navbar({
           method="GET"
           className="flex items-center bg-[#f5f5f5] px-5 gap-5 rounded mb-3"
         >
+          <a href="/" className="md:hidden">
+            <Image src="/logo1.png" alt="Next.js logo" width={0} height={50} />
+          </a>
           <CiSearch size={20} />
           <input
             className="h-10 bg-transparent focus:outline-none w-full"
