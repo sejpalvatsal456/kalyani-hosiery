@@ -50,14 +50,14 @@ export default function DisplayCard({
         className="w-full h-60 object-cover rounded-t-lg"
       />
 
-      <span className="text-lg font-bold inline-block mt-3 pl-3">
+      <span className="text-xl md:text-lg font-bold inline-block mt-3 pl-3">
         {productData.brandName}
       </span>
-      <span className="text-sm inline-block ml-3 text-gray-500">
+      <span className="text-lg md:text-sm inline-block ml-3 text-gray-500">
         {productData.productName}
       </span>
 
-      <div className="flex items-center justify-between m-3">
+      <div className="hidden md:flex items-center justify-between m-3">
         <div className="flex flex-col">
           <div className="flex gap-1">
             <span className="text-xs text-gray-500 font-semibold line-through">
@@ -70,6 +70,19 @@ export default function DisplayCard({
           {getDiscount(mrp, sellingPrice)}% off
         </span>
       </div>
+
+      <div className="flex md:hidden items-center justify-left gap-2 m-3">
+        <span className="text-lg text-gray-500 font-semibold line-through">
+          Rs. {mrp}
+        </span>
+        <span className="text-xl font-semibold">Rs. {sellingPrice}</span>
+      </div>
+
+      <div className="block md:hidden w-[60%] text-xl text-center text-white bg-green-500 mx-3 mt-3 rounded-full font-semibold">
+        {getDiscount(mrp, sellingPrice)}% OFF
+      </div>
+
+
     </div>
   );
 }

@@ -50,7 +50,7 @@ const banners = [
 export default function Home() {
   const router = useRouter();
 
-  const [page, setPage] = useState<string>("men");
+  const [page, setPage] = useState<ICategory|null>(null);
   const [subcategories, setSubcategories] = useState<ISubcategory[] | null>(
     null,
   );
@@ -72,28 +72,39 @@ export default function Home() {
         setBrands(data.data);
       })
       .catch((err) => console.log(err));
+    
+      // Men - #b6d7fc
+      // Women - #fcb6c5
+      /// Kids - #fcb6b6
+      // Sales - #fcecb6
     setCategories([
     {
       name: "Men",
       slug: "men",
-      theme: "red"
+      theme: "#b6d7fc"
     },
     {
       name: "Women",
       slug: "women",
-      theme: "red"
+      theme: "#fcb6c9"
     },
     {
       name: "Kids",
       slug: "kids",
-      theme: "red"
+      theme: "#f5bf88"
     },
     {
       name: "Sales",
       slug: "sales",
-      theme: "red"
+      theme: "#fcecb6"
     },
-  ])
+  ]);
+
+  setPage({
+    name: "Men",
+    slug: "men",
+    theme: "#b6d7fc"
+  });
   }, []);
 
   // Dev only - Fetch the categories data as per page state
@@ -101,8 +112,8 @@ export default function Home() {
   
 
   useEffect(() => {
-
-    fetch("/api/subcategories/" + page.toLowerCase(), { method: "GET" })
+    if(!page) return;
+    fetch("/api/subcategories/" + page.name.toLowerCase(), { method: "GET" })
       .then((res) => res.json())
       .then((data) => {
         setSubcategories(data.subCats);
@@ -413,12 +424,12 @@ export default function Home() {
 
       {/* Banner 1 */}
 
-      <div className="p-6 mt-10 flex justify-center">
+      <div className="md:p-6 py-3 md:mt-10 flex justify-center">
         <SingleBanner banner="https://assets.myntassets.com/w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2026/FEBRUARY/27/obphjJzo_1ad3360b53864bd2beda235cf8a373c0.jpg" />
       </div>
 
       {/* Banner 2 */}
-      <div className="p-6 mt-10 flex justify-center">
+      <div className="md:p-6 md:mt-10 flex justify-center">
         <SingleBanner banner="https://assets.myntassets.com/w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2026/FEBRUARY/26/VUKUZgUj_b4dda5139af545218f9aea110ab7b12e.jpg" />
       </div>
 
@@ -487,7 +498,7 @@ export default function Home() {
               <SubcategoryButton
                 key={key}
                 name={subCat.name}
-                categoryName={page}
+                categoryName={page ? page.name : ""}
               />
             );
           })}
@@ -501,13 +512,14 @@ export default function Home() {
 
       {/* Product on sales */}
 
-      <div className="mt-10 mx-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 place-items-center gap-5">
+      <div className="mt-10 mx-2 md:mx-5 grid grid-cols-2 md:grid-cols-4 place-items-center gap-0 md:gap-10">
         {salesProducts.map((product, key) => {
           return (
-            <DisplayCard
-              key={key}
-              productData={product}
-            />
+            <div key={key} className="scale-[.8] md:scale-[1] m-0">
+              <DisplayCard
+                productData={product}
+              />
+            </div>
           )
         })}
       </div>

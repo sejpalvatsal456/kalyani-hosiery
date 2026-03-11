@@ -8,6 +8,7 @@ import { CiSearch } from "react-icons/ci";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { ICategory, ISubcategory, IUser } from "@/lib/typeDefinitions";
+import { category } from "@/lib/category";
 
 export default function Navbar({
   activePage,
@@ -19,8 +20,8 @@ export default function Navbar({
   user,
   setUser
 }: {
-  activePage: string;
-  setPage: (val: string) => void;
+  activePage: ICategory|null;
+  setPage: (val: ICategory|null) => void;
   categories: ICategory[];
   search: string;
   setSearch: (search: string) => void;
@@ -68,11 +69,21 @@ export default function Navbar({
 
   }, []);
 
-
+  const themeColor: string = "#fcecb6";
+  // Men - #b6d7fc
+  // Women - #fcb6c5
+  /// Kids - #fcb6b6
+  // Sales - #fcecb6
 
 
   return (
-    <nav className="border-b-1 border-gray-300 w-[100vw] bg-[linear-gradient(180deg,_#f5b5c9_0%,_#fbe6ed_100%)] md:bg-none md:bg-white">
+    <nav className={
+      `border-b-1 border-gray-300 w-[100vw] md:bg-none md:bg-white transition-all duration-300`
+    }
+    style={{
+      background: `linear-gradient(180deg, ${activePage?.theme} 0%, white 110%)`
+    }}
+    >
       {/* Top Bar */}
       <div className="flex justify-between items-center h-[13vh] md:px-5 px-5 pr-10 md:pr-10 gap-5 w-[100vw]">
         {/* Logo */}
@@ -97,15 +108,15 @@ export default function Navbar({
                 </li>
               );
             })} */}
-            {categories.map((cat, key) => {
+            {activePage && categories.map((cat, key) => {
               return (
                 <li
                   key={key}
                   className={
                     "w-full h-10 text-center hover:font-medium border-[#fc2167] cursor-pointer hover:border-b-3 hover:border-[#fc2167] " +
-                    (activePage.toLowerCase() === cat.slug ? "border-b-3 text-[#fc2167]" : "")
+                    (activePage.slug.toLowerCase() === cat.slug ? "border-b-3 text-[#fc2167]" : "")
                   }
-                  onClick={() => setPage(cat.slug)}
+                  onClick={() => setPage(cat)}
                 >
                   <span className="text-sm font-semibold">{cat.name}</span>
                 </li>
@@ -209,15 +220,15 @@ export default function Navbar({
               </li>
             );
           })} */}
-          {categories.map((cat, key) => {
+          {activePage && categories.map((cat, key) => {
             return (
               <li
                 key={key}
                 className={
                   "w-full h-10 text-center hover:font-medium border-[#fc2167] cursor-pointer hover:border-b-3 hover:border-[#fc2167] " +
-                  (activePage === cat.slug ? "border-b-3 text-[#fc2167]" : "")
+                  (activePage.slug.toLowerCase() === cat.slug ? "border-b-3 text-[#fc2167]" : "")
                 }
-                onClick={() => setPage(cat.slug)}
+                onClick={() => setPage(cat)}
               >
                 <span>{cat.name}</span>
               </li>
