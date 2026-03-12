@@ -1,3 +1,4 @@
+import { ISubcategory } from '@/lib/typeDefinitions';
 import { useRouter } from 'next/navigation';
 import React, { FormEvent } from 'react';
 
@@ -11,8 +12,8 @@ export function formatLabel(input: string): string {
 }
 
 export default function SubcategoryButton(
-  { name, categoryName } : {
-    name: string;
+  { subCat, categoryName } : {
+    subCat: ISubcategory;
     categoryName: string;
   }
 ) {
@@ -22,17 +23,17 @@ export default function SubcategoryButton(
   return (
     <div
       onClick={(e:FormEvent) => {
-        router.push(`/${categoryName}/${name}`);
+        router.push(`/${categoryName}/${subCat.name}`);
       }}
       className='cursor-pointer px-3 py-2 rounded-xl text-center hover:scale-[1.2] transition-all duration-300'
     >
       <img 
-        src="https://assets.myntassets.com/w_163,c_limit,fl_progressive,dpr_2.0/assets/images/2020/7/8/89f1bd9d-3a28-456d-888a-beff717a06f81594222908155-Shirts.jpg" 
+        src={subCat.logoLink} 
         alt="img"
         width={75}
-        className='bg-gray-100 w-20 h-20 rounded-xl'
+        className='bg-gray-100 w-30 h-30 rounded-xl'
       />
-      <span className='block mt-2'>{formatLabel(name)}</span>
+      <span className='text-lg block mt-2 w-30 text-center'>{formatLabel(subCat.name)}</span>
     </div>
   )
 }

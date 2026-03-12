@@ -42,17 +42,18 @@ export default function Navbar({
   }
 
   useEffect(() => {
-    fetch('/api/auth/me', {
-      method: "GET",
-      credentials: "include"
-    })
-    .then(res => res.json())
-    .then(data => {
-      setIsLogin(data.login);
-      console.log(data.data);
-      setUser(data.data)
-    })
-    .catch(err => console.log(err));
+    // fetch('/api/auth/me', {
+    //   method: "GET",
+    //   credentials: "include"
+    // })
+    // .then(res => res.json())
+    // .then(data => {
+    //   setIsLogin(data.login);
+    //   console.log(data.data);
+    //   setUser(data.data)
+    // })
+    // .catch(err => console.log(err));
+    
   }, []);
 
   useEffect(() => {
