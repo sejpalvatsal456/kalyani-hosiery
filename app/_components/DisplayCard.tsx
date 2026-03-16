@@ -40,7 +40,7 @@ export default function DisplayCard({
   return (
     <div
       onClick={handleClick}
-      className="cursor-pointer w-55 md:w-50 h-100 rounded hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col"
+      className="cursor-pointer w-50 md:w-50 h-100 rounded hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col"
     >
       <Image
         src={productData.thumbnail}
@@ -71,7 +71,7 @@ export default function DisplayCard({
         </span>
       </div>
 
-      <div className="flex md:hidden items-center justify-left gap-2 m-3">
+      <div className="flex md:hidden items-center justify-left gap-2 ml-3">
         <span className="text-xs text-gray-500 font-semibold line-through">
           Rs. {mrp}
         </span>
