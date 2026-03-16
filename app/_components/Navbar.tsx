@@ -140,7 +140,7 @@ export default function Navbar({
           </a>
           {/* TODO: Fix size of search bar in mobile view */}
           <input
-            className="w-30 md:w-auto h-10 focus:outline-none"
+            className="w-25 md:w-auto h-10 focus:outline-none"
             placeholder="Search..."
             type="text"
             name="serachInput"
