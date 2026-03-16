@@ -1,83 +1,91 @@
+"use client"
+
+import Image from "next/image"
+import { Heart, ShoppingBag, Star } from "lucide-react"
 import { IDisplayProduct } from "@/lib/typeDefinitions";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import React, { FormEvent } from "react";
+import { useEffect } from "react";
 
-export default function DisplayCard({
-  productData,
-}: {
-  productData: IDisplayProduct;
-}) {
-  const router = useRouter();
+interface Props {
+  product: IDisplayProduct
+}
 
-  const getDiscount = (mrp: number, price: number) => {
-    if (!mrp) return 0;
-    return Math.round((mrp-price)/mrp*100);
-  };
+export default function DisplayCard({ product }: Props) {
 
-  const getLowestPrice = () => {
-    let minMrp = Infinity;
-    let minSelling = Infinity;
+  
+  const variant = product.varients[0];
+  const size = variant?.sizes[0]
 
-    productData.varients.forEach((v) => {
-      v.sizes.forEach((s) => {
-        if (s.sellingPrice < minSelling) {
-          minSelling = s.sellingPrice;
-          minMrp = s.mrp;
-        }
-      });
-    });
+  const image = variant?.imgLinks?.[0] || product.thumbnail
 
-    return { mrp: minMrp, sellingPrice: minSelling };
-  };
+  const price = size?.sellingPrice
+  const mrp = size?.mrp
+  const discount = size?.discountPercent
 
-  const { mrp, sellingPrice } = getLowestPrice();
+  useEffect(() => {
+    console.log(`Product Id: ${product._id}`)
+  console.log(product);
 
-  const handleClick = () => {
-    router.push("/product/" + productData._id);
-  };
+  }, []);
 
   return (
-    <div
-      onClick={handleClick}
-      className="cursor-pointer w-50 md:w-50 h-100 rounded hover:shadow-lg hover:scale-[1.02] transition-all duration-300 flex flex-col"
-    >
-      <Image
-        src={productData.thumbnail}
-        alt="ProductImage"
-        width={300}
-        height={240}
-        className="w-full h-60 object-cover rounded-t-lg"
-      />
+    <div className="w-full">
 
-      <span className="text-xl md:text-lg font-bold inline-block mt-3 pl-3">
-        {productData.brandName}
-      </span>
-      <span className="text-lg md:text-sm inline-block ml-3 text-gray-500">
-        {productData.productName}
-      </span>
+      {/* Product Image */}
+      <div className="relative rounded-2xl overflow-hidden bg-gray-100 h-[230px]">
+        <Image
+          src={image}
+          alt={product.productName}
+          fill
+          className="object-cover"
+        />
 
-      <div className="hidden md:flex items-center justify-between m-3">
-        <div className="flex flex-col">
-          <div className="flex gap-1">
-            <span className="text-xs text-gray-500 font-semibold line-through">
-              Rs. {mrp}
+        {/* <button className="absolute top-3 right-3 bg-white rounded-full p-1 shadow">
+          <Heart size={18} />
+        </button> */}
+
+        {/* <div className="absolute bottom-3 left-3 bg-white rounded-full px-2 py-1 flex items-center gap-1 text-sm shadow">
+          <span>4.5</span>
+          <Star size={14} className="text-green-500 fill-green-500" />
+          <span className="text-gray-500">19</span>
+        </div> */}
+
+        <button className="absolute bottom-3 right-3 bg-white border border-pink-400 text-pink-500 rounded-full px-4 py-1 flex items-center gap-1 text-sm font-medium">
+          <ShoppingBag size={14} />
+          Add
+        </button>
+      </div>
+
+      {/* Product Info */}
+      <div className="mt-2">
+
+        <p className="font-semibold">{product.brandName}</p>
+
+        <p className="text-gray-500 text-sm line-clamp-1">
+          {product.productName}
+        </p>
+
+        <div className="flex items-center gap-2 mt-1">
+
+          <span className="font-semibold">
+            ₹{price}
+          </span>
+
+          {mrp && (
+            <span className="line-through text-gray-400 text-sm">
+              ₹{mrp}
             </span>
-          </div>
-          <span className="text-lg font-semibold">Rs. {sellingPrice}</span>
+          )}
+
+          {discount && (
+            <span className="text-orange-500 text-sm font-medium">
+              {discount}% OFF
+            </span>
+          )}
+
         </div>
-        <span className="text-sm text-white bg-green-500 px-3 rounded-full font-semibold">
-          {getDiscount(mrp, sellingPrice)}% off
-        </span>
+
       </div>
 
-      <div className="flex md:hidden items-center justify-left gap-2 ml-3">
-        <span className="text-xs text-gray-500 font-semibold line-through">
-          Rs. {mrp}
-        </span>
-        <span className="text-md font-semibold">Rs. {sellingPrice}</span>
-        <span className="text-md font-semibold text-[#c97c00]">{getDiscount(mrp, sellingPrice)}% OFF</span>
-      </div>
     </div>
-  );
+  )
 }

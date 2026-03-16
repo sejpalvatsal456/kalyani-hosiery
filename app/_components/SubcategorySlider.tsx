@@ -7,7 +7,7 @@ export default function CategorySlider(
   { subCats }: { subCats: ISubcategory[] }
 ) {
   return (
-    <div className="w-full overflow-x-auto">
+    <div className="w-full overflow-x-auto mb-4">
       <div className="grid grid-rows-2 grid-flow-col gap-3 w-max px-4 py-3">
         {subCats.map((cat, index) => (
           <div

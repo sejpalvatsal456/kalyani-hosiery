@@ -14,6 +14,7 @@ import { FaInstagram, FaWhatsapp, FaYoutube } from "react-icons/fa";
 import { Josefin_Sans } from "next/font/google";
 import { ICategory, IDisplayProduct, ISubcategory, IUser, IBrand } from "@/lib/typeDefinitions";
 import SubcategorySlider from "./_components/SubcategorySlider";
+import DisplayCardGrid from "./_components/DisplayCardGrid";
 
 const josefin = Josefin_Sans({
   subsets: ["latin"],
@@ -295,7 +296,7 @@ export default function Home() {
     },
 
     {
-      _id: "1",
+      _id: "2",
       brandName: "Powerlook",
       productName: "Men Alphanumeric Printed Pullover",
       slug: "",
@@ -335,7 +336,7 @@ export default function Home() {
     },
 
     {
-      _id: "1",
+      _id: "3",
       brandName: "Powerlook",
       productName: "Men Alphanumeric Printed Pullover",
       slug: "",
@@ -375,7 +376,7 @@ export default function Home() {
     },
 
     {
-      _id: "1",
+      _id: "4",
       brandName: "Powerlook",
       productName: "Men Alphanumeric Printed Pullover",
       slug: "",
@@ -415,7 +416,7 @@ export default function Home() {
     },
 
     {
-      _id: "1",
+      _id: "5",
       brandName: "Powerlook",
       productName: "Men Alphanumeric Printed Pullover",
       slug: "",
@@ -455,7 +456,7 @@ export default function Home() {
     },
 
     {
-      _id: "1",
+      _id: "6",
       brandName: "Powerlook",
       productName: "Men Alphanumeric Printed Pullover",
       slug: "",
@@ -495,7 +496,7 @@ export default function Home() {
     },
 
     {
-      _id: "1",
+      _id: "7",
       brandName: "Powerlook",
       productName: "Men Alphanumeric Printed Pullover",
       slug: "",
@@ -583,7 +584,7 @@ export default function Home() {
 
       {/* Product on sales */}
 
-      <div className="md:mt-10 mx-2 md:mx-5 grid grid-cols-2 md:grid-cols-4 place-items-center gap-0 md:gap-10">
+      {/* <div className="md:mt-10 mx-2 md:mx-5 grid grid-cols-2 md:grid-cols-4 place-items-center gap-0 md:gap-10">
         {salesProducts.map((product, key) => {
           return (
             <div key={key} className="scale-[.8] md:scale-[1] m-0">
@@ -593,7 +594,9 @@ export default function Home() {
             </div>
           )
         })}
-      </div>
+      </div> */}
+
+      <DisplayCardGrid products={salesProducts} />
 
       {/* Address Section */}
 
