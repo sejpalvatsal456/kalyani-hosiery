@@ -4,7 +4,7 @@ import React, { FormEvent, useEffect, useState } from "react";
 import "@tailwindplus/elements";
 import { FiSearch, FiShoppingCart } from "react-icons/fi";
 import { FaRegUser, FaSearch } from "react-icons/fa";
-import { CiSearch } from "react-icons/ci";
+import { CiBellOn, CiSearch, CiShoppingCart, CiUser } from "react-icons/ci";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { ICategory, ISubcategory, IUser } from "@/lib/typeDefinitions";
@@ -86,7 +86,7 @@ export default function Navbar({
     }}
     >
       {/* Top Bar */}
-      <div className="flex justify-between items-center h-[13vh] md:px-5 px-5 pr-10 md:pr-10 gap-5 w-[100vw]">
+      <div className="flex justify-between items-center h-[13vh] md:px-5 px-5 pr-5 md:pr-10 gap-5 w-[100vw]">
         {/* Logo */}
         <a href="/" className="hidden md:flex">
           <Image src="/logo1.png" alt="Next.js logo" width={150} height={50} />
@@ -181,8 +181,8 @@ export default function Navbar({
         </ul>
 
         {/* Profile logos - mobile */}
-        <ul className="flex md:hidden items-center gap-7">
-          <li 
+        <ul className="flex md:hidden items-center gap-4 md:gap-7">
+          {/* <li 
             className={"relative cursor-pointer" + (!isLogin ? "hidden" : "")}
             onClick={e => router.push('/cart/')}
           >
@@ -200,6 +200,23 @@ export default function Navbar({
               className="border-2 px-3 py-2 rounded border-[#fc2167] text-[#fc2167] font-medium cursor-pointer hover:text-white hover:bg-[linear-gradient(135deg,_#fc2167,_#ef123e)] transistion-all duration-300"
               onClick={e => router.push('/auth/login')}
             >Login</button>) }  
+          </li> */}
+          <li className="flex items-center md:gap-5">
+            <CiBellOn size={30} />
+          </li>
+          <li className="flex relative items-center gap-5">
+            <CiShoppingCart size={30} />
+            {/* {user && user.cart.length > 0 && (
+              <div className="absolute -bottom-2 -right-3 bg-red-500 text-white text-[14px] h-[20px] min-w-[20px] flex items-center justify-center rounded-full px-1">
+                {user?.cart.length}
+              </div>
+            )} */}
+            <div className="absolute -bottom-2 -right-2 bg-red-500 text-white text-[14px] h-[20px] min-w-[20px] flex items-center justify-center rounded-full px-1">
+              2
+              </div>
+          </li>
+          <li className="flex items-center gap-5">
+            <CiUser size={30} />
           </li>
         </ul>
       </div>
