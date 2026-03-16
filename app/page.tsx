@@ -191,7 +191,55 @@ export default function Home() {
             category: "men",
             slug: "tshirts",
             logoLink: "/tshirts.png",
-          }
+          },
+          {
+            name: "T Shirts",
+            category: "men",
+            slug: "tshirts",
+            logoLink: "/tshirts.png",
+          },
+          {
+            name: "T Shirts",
+            category: "men",
+            slug: "tshirts",
+            logoLink: "/tshirts.png",
+          },
+          {
+            name: "T Shirts",
+            category: "men",
+            slug: "tshirts",
+            logoLink: "/tshirts.png",
+          },
+          {
+            name: "T Shirts",
+            category: "men",
+            slug: "tshirts",
+            logoLink: "/tshirts.png",
+          },
+          {
+            name: "T Shirts",
+            category: "men",
+            slug: "tshirts",
+            logoLink: "/tshirts.png",
+          },
+          {
+            name: "T Shirts",
+            category: "men",
+            slug: "tshirts",
+            logoLink: "/tshirts.png",
+          },
+          {
+            name: "T Shirts",
+            category: "men",
+            slug: "tshirts",
+            logoLink: "/tshirts.png",
+          },
+          {
+            name: "T Shirts",
+            category: "men",
+            slug: "tshirts",
+            logoLink: "/tshirts.png",
+          },
         ])
         break;
     
@@ -511,32 +559,6 @@ export default function Home() {
       <div className="md:p-6 md:mt-10 flex justify-center">
         <SingleBanner banner="https://assets.myntassets.com/w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2026/FEBRUARY/26/VUKUZgUj_b4dda5139af545218f9aea110ab7b12e.jpg" />
       </div>
-
-      {/* Brands Slider */}
-      {/* <div className="mt-10 mx-5 md:mx-10">
-        <h1 className="text-2xl font-semibold">Brands</h1>
-        <div className="md:ml-3 my-5 w-full grid grid-cols-2 md:grid-cols-7 gap-10">
-          {brands.map((brand, key) => {
-            return (
-              <div
-                key={key}
-                className="bg-gray-200 h-35 w-35 p-3 rounded-lg flex items-center justify-center cursor-pointer"
-                onClick={(e) => {
-                  router.push(`/brand/${brand.name}`);
-                }}
-              >
-                <Image
-                  src={brand.logo}
-                  alt="logo"
-                  width={100}
-                  height={100}
-                  className="object-cover"
-                />
-              </div>
-            );
-          })}
-        </div>
-      </div> */}
 
       <div className="max-w-7xl mx-auto mt-10">
         <FiveItemSlider brands={brands} />

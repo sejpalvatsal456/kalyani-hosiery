@@ -31,9 +31,9 @@ export default function SubcategoryButton(
         src={subCat.logoLink} 
         alt="img"
         width={75}
-        className='bg-gray-100 w-30 h-30 rounded-xl'
+        className='bg-gray-100 w-15 h-15 rounded-xl'
       />
-      <span className='text-lg block mt-2 w-30 text-center'>{formatLabel(subCat.name)}</span>
+      <span className='text-xs block mt-2 w-30 text-center'>{formatLabel(subCat.name)}</span>
     </div>
   )
 }
