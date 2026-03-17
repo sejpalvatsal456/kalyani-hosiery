@@ -31,12 +31,12 @@ export default function DisplayCard({ product }: Props) {
     <div className="w-full">
 
       {/* Product Image */}
-      <div className="relative rounded-2xl overflow-hidden bg-gray-100 h-[230px]">
+      <div className="relative rounded-2xl bg-gray-100 h-[230px]">
         <Image
           src={image}
           alt={product.productName}
           fill
-          className="object-cover"
+          className="object-cover rounded-2xl"
         />
 
         {/* <button className="absolute top-3 right-3 bg-white rounded-full p-1 shadow">
@@ -49,7 +49,7 @@ export default function DisplayCard({ product }: Props) {
           <span className="text-gray-500">19</span>
         </div> */}
 
-        <button className="absolute bottom-3 right-3 bg-white border border-pink-400 text-pink-500 rounded-full px-4 py-1 flex items-center gap-1 text-sm font-medium">
+        <button className="absolute -bottom-2 right-3 bg-white border border-pink-400 text-pink-500 rounded-lg px-4 py-1 flex items-center gap-1 text-sm font-medium">
           <ShoppingBag size={14} />
           Add
         </button>
@@ -66,15 +66,15 @@ export default function DisplayCard({ product }: Props) {
 
         <div className="flex items-center gap-2 mt-1">
 
-          <span className="font-semibold">
-            ₹{price}
-          </span>
-
           {mrp && (
             <span className="line-through text-gray-400 text-sm">
               ₹{mrp}
             </span>
           )}
+
+          <span className="font-semibold text-lg">
+            ₹{price}
+          </span>
 
           {discount && (
             <span className="text-orange-500 text-sm font-medium">

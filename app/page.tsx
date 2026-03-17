@@ -602,7 +602,7 @@ export default function Home() {
 
       <div className={"my-10 h-[70vh] bg-gray-300 flex flex-row items-center justify-center md:justify-between " + josefin.className}>
         <div className=" w-[80vw] sm:w-90 md:w-110 bg-white mx-5 md:mx-10 px-10 py-7 flex flex-col gap-5">
-          <h1 className="text-xl md:text-2xl font-meduim">"Rajaveer Imitation "</h1>
+          <h1 className="text-xl md:text-2xl font-meduim">"Kalyani Hosiery"</h1>
           <p className="text-sm md:text-lg">
             Kalyani Hosiery <br />
             Sir Lakhajiraj Main Road <br />
