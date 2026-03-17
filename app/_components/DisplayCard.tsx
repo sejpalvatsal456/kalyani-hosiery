@@ -58,26 +58,26 @@ export default function DisplayCard({ product }: Props) {
       {/* Product Info */}
       <div className="mt-2">
 
-        <p className="font-semibold">{product.brandName}</p>
+        <p className="text-sm font-semibold">{product.brandName}</p>
 
-        <p className="text-gray-500 text-sm line-clamp-1">
+        <p className="text-gray-500 text-xs line-clamp-1">
           {product.productName}
         </p>
 
         <div className="flex items-center gap-2 mt-1">
 
           {mrp && (
-            <span className="line-through text-gray-400 text-sm">
+            <span className="line-through text-gray-400 text-xs">
               ₹{mrp}
             </span>
           )}
 
-          <span className="font-semibold text-lg">
+          <span className="font-semibold text-sm">
             ₹{price}
           </span>
 
           {discount && (
-            <span className="text-orange-500 text-sm font-medium">
+            <span className="text-orange-500 text-xs font-medium">
               {discount}% OFF
             </span>
           )}
