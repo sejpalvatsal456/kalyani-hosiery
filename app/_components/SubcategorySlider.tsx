@@ -15,10 +15,10 @@ export default function CategorySlider(
             className="w-20 h-[90px] rounded-xl p-2 bg-gradient-to-b from-[#f7ecd8] to-[#edd5e5] flex flex-col justify-between"
           >
             <p className="text-xs font-medium text-gray-700">
-              {cat.name} <span>›</span>
+              {cat.name} <span></span>
             </p>
 
-            <div className="flex justify-center items-end h-full">
+            <div className="h-[60px] flex justify-center items-end h-full">
               <Image
                 src={cat.logoLink}
                 alt={cat.name}

@@ -15,6 +15,7 @@ import { Josefin_Sans } from "next/font/google";
 import { ICategory, IDisplayProduct, ISubcategory, IUser, IBrand } from "@/lib/typeDefinitions";
 import SubcategorySlider from "./_components/SubcategorySlider";
 import DisplayCardGrid from "./_components/DisplayCardGrid";
+import ItemSlider from "./_components/ItemSlider";
 
 const josefin = Josefin_Sans({
   subsets: ["latin"],
@@ -114,6 +115,11 @@ export default function Home() {
       // Sales - #fcecb6
     setCategories([
     {
+      name: "Sales",
+      slug: "sales",
+      theme: "#fcecb6"
+    },
+    {
       name: "Men",
       slug: "men",
       theme: "#b6d7fc"
@@ -128,17 +134,13 @@ export default function Home() {
       slug: "kids",
       theme: "#f5bf88"
     },
-    {
-      name: "Sales",
-      slug: "sales",
-      theme: "#fcecb6"
-    },
+    
   ]);
 
   setPage({
-    name: "Men",
-    slug: "men",
-    theme: "#b6d7fc"
+    name: "Sales",
+    slug: "sales",
+    theme: "#fcecb6"
   });
   }, []);
 
@@ -155,92 +157,111 @@ export default function Home() {
     //   })
     //   .catch((err) => console.log(err));
     switch (page.slug) {
-      case "men":
+      case "sales":
         setSubcategories([
           {
             name: "T Shirts",
-            category: "men",
+            category: "sales",
+            slug: "tshirts",
+            logoLink: "/tshirts.png",
+          },
+          {
+            name: "Bra",
+            category: "sales",
+            slug: "bra",
+            logoLink: "/bra-logo.png",
+          },
+          {
+            name: "Korean Pants",
+            category: "sales",
+            slug: "korean_pants",
+            logoLink: "/korean-pants.png",
+          },
+          {
+            name: "Couple NX",
+            category: "sales",
+            slug: "couple_night_dress",
+            logoLink: "/couple-night-dress.jpeg",
+          },
+          {
+            name: "T Shirts",
+            category: "sales",
             slug: "tshirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
-            category: "men",
+            category: "sales",
             slug: "tshirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
-            category: "men",
+            category: "sales",
             slug: "tshirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
-            category: "men",
+            category: "sales",
             slug: "tshirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
-            category: "men",
+            category: "sales",
             slug: "tshirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
-            category: "men",
+            category: "sales",
             slug: "tshirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
-            category: "men",
+            category: "sales",
             slug: "tshirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
-            category: "men",
+            category: "sales",
             slug: "tshirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
-            category: "men",
+            category: "sales",
             slug: "tshirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
-            category: "men",
+            category: "sales",
             slug: "tshirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
-            category: "men",
+            category: "sales",
             slug: "tshirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
-            category: "men",
+            category: "sales",
             slug: "tshirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
-            category: "men",
+            category: "sales",
             slug: "tshirts",
             logoLink: "/tshirts.png",
           },
-          {
-            name: "T Shirts",
-            category: "men",
-            slug: "tshirts",
-            logoLink: "/tshirts.png",
-          },
+          
         ])
         break;
     
@@ -254,7 +275,7 @@ export default function Home() {
 
 
   // Dev only part - replace it when backend is completed
-  const salesProducts: IDisplayProduct[] = [
+  const displayProducts: IDisplayProduct[] = [
     {
       _id: "1",
       brandName: "Powerlook",
@@ -499,7 +520,7 @@ export default function Home() {
       _id: "7",
       brandName: "Powerlook",
       productName: "Men Alphanumeric Printed Pullover",
-      slug: "",
+      slug: "man-alphanumeric-printed-pullover",
       category: {
         _id: "123",
         slug: "men",
@@ -534,6 +555,34 @@ export default function Home() {
       tags: [],
       desc: [],
     },
+  ];
+
+  const salesProduct = [
+    {
+      thumbnail: 'https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg',
+      slug: 'man-alphanumeric-printed-pullover',
+      discountPercent: 70,
+    },
+    {
+      thumbnail: 'https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg',
+      slug: 'man-alphanumeric-printed-pullover',
+      discountPercent: 70,
+    },
+    {
+      thumbnail: 'https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg',
+      slug: 'man-alphanumeric-printed-pullover',
+      discountPercent: 70,
+    },
+    {
+      thumbnail: 'https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg',
+      slug: 'man-alphanumeric-printed-pullover',
+      discountPercent: 70,
+    },
+    {
+      thumbnail: 'https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg',
+      slug: 'man-alphanumeric-printed-pullover',
+      discountPercent: 70,
+    },
   ]
 
   return (
@@ -552,8 +601,14 @@ export default function Home() {
 
       {/* Banner 1 */}
 
-      <div className="md:p-6 py-3 md:mt-10 flex justify-center">
+      <div className="md:p-6 px-2 py-3 md:mt-10 flex justify-center">
         <SingleBanner banner="https://assets.myntassets.com/w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2026/FEBRUARY/27/obphjJzo_1ad3360b53864bd2beda235cf8a373c0.jpg" />
+      </div>
+
+      {/* Banner Slider */}
+
+      <div className="md:p-6 px-2 py-3 md:mt-10 flex justify-center">
+        <BannerSlider banners={banners} />
       </div>
 
       {/* Banner 2 */}
@@ -561,8 +616,18 @@ export default function Home() {
         <SingleBanner banner="https://assets.myntassets.com/w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2026/FEBRUARY/26/VUKUZgUj_b4dda5139af545218f9aea110ab7b12e.jpg" />
       </div>
 
-      <div className="max-w-7xl mx-auto mt-10">
-        <FiveItemSlider brands={brands} />
+      <div className="max-w-7xl mt-3 mx-auto md:mt-10">
+        {/* <FiveItemSlider brands={brands} /> */}
+        <ItemSlider
+          items={brands}
+          renderItem={(brand) => (
+            <img
+              src={brand.brandLogo}
+              alt={brand.brandName}
+              className="w-20 h-20 object-contain rounded-lg transition shadow-xl"
+            />
+          )}
+        />
       </div>
 
       {/* Banner 3 */}
@@ -578,6 +643,30 @@ export default function Home() {
       </div>
 
       {/* Banner 4 */}
+      <div className="md:p-6 md:mt-10 flex justify-center">
+        <SingleBanner banner="https://assets.myntassets.com/w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2026/FEBRUARY/26/VUKUZgUj_b4dda5139af545218f9aea110ab7b12e.jpg" />
+      </div>
+
+      <div className="max-w-7xl mt-3 mx-auto md:mt-10">
+        {/* <FiveItemSlider brands={brands} /> */}
+        <ItemSlider
+          items={salesProduct}
+          renderItem={(product) => (
+            <div className="relative">
+              <img
+                src={product.thumbnail}
+                alt={product.slug}
+                className="w-27 rounded-xl object-contain transition"
+              />
+              <div className="absolute -bottom-[4px] bg-[linear-gradient(#00ff0000_0%,_#00aa00ff_40%)] w-full rounded-b-xl text-center h-10 flex justify-center items-center">
+                <span className="text-xl font-semibold text-[#abf7b1] shadow-xl">{product.discountPercent}% OFF</span>
+              </div>
+            </div>
+          )}
+        />
+      </div>
+
+      {/* Banner 5 */}
       <div className="md:p-6 px-6 md:mt-10 flex justify-center">
         <SingleBanner banner="https://assets.myntassets.com/w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2026/FEBRUARY/26/VUKUZgUj_b4dda5139af545218f9aea110ab7b12e.jpg" />
       </div>
@@ -585,7 +674,7 @@ export default function Home() {
       {/* Product on sales */}
 
       {/* <div className="md:mt-10 mx-2 md:mx-5 grid grid-cols-2 md:grid-cols-4 place-items-center gap-0 md:gap-10">
-        {salesProducts.map((product, key) => {
+        {displayProducts.map((product, key) => {
           return (
             <div key={key} className="scale-[.8] md:scale-[1] m-0">
               <DisplayCard
@@ -596,12 +685,12 @@ export default function Home() {
         })}
       </div> */}
 
-      <DisplayCardGrid products={salesProducts} />
+      <DisplayCardGrid products={displayProducts} />
 
       {/* Address Section */}
 
-      <div className={"my-10 h-[70vh] bg-gray-300 flex flex-row items-center justify-center md:justify-between " + josefin.className}>
-        <div className=" w-[80vw] sm:w-90 md:w-110 bg-white mx-5 md:mx-10 px-10 py-7 flex flex-col gap-5">
+      <div className={"mt-10 h-[70vh] bg-gray-300 flex flex-row items-center justify-center md:justify-between " + josefin.className}>
+        <div className=" w-[80vw] sm:w-90 md:w-110 mx-5 md:mx-10 px-10 py-7 flex flex-col gap-5">
           <h1 className="text-xl md:text-2xl font-meduim">"Kalyani Hosiery"</h1>
           <p className="text-sm md:text-lg">
             Kalyani Hosiery <br />

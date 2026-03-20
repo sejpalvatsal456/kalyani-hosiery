@@ -8,6 +8,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <title>Kalyani Hosiery</title>
+      </head>
       <body>
         {children}
       </body>
