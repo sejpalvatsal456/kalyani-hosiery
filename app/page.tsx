@@ -617,9 +617,9 @@ export default function Home() {
 
       {/* Banner 1 */}
 
-      <div className="md:p-6 px-2 py-3 md:mt-10 flex justify-center">
+      {/* <div className="md:p-6 px-2 py-3 md:mt-10 flex justify-center">
         <SingleBanner banner="https://assets.myntassets.com/w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2026/FEBRUARY/27/obphjJzo_1ad3360b53864bd2beda235cf8a373c0.jpg" />
-      </div>
+      </div> */}
 
       {/* Banner Slider */}
 
@@ -642,7 +642,7 @@ export default function Home() {
             <img
               src={brand.brandLogo}
               alt={brand.brandName}
-              className="w-20 h-20 object-contain rounded-lg transition shadow-xl"
+              className="w-20 h-20 md:w-40 md:h-40 object-contain rounded-lg transition shadow-xl"
             />
           )}
         />
@@ -687,20 +687,6 @@ export default function Home() {
       <div className="md:p-6 px-6 md:mt-10 flex justify-center">
         <SingleBanner banner="https://assets.myntassets.com/w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2026/FEBRUARY/26/VUKUZgUj_b4dda5139af545218f9aea110ab7b12e.jpg" />
       </div>
-
-      {/* Product on sales */}
-
-      {/* <div className="md:mt-10 mx-2 md:mx-5 grid grid-cols-2 md:grid-cols-4 place-items-center gap-0 md:gap-10">
-        {displayProducts.map((product, key) => {
-          return (
-            <div key={key} className="scale-[.8] md:scale-[1] m-0">
-              <DisplayCard
-                productData={product}
-              />
-            </div>
-          )
-        })}
-      </div> */}
 
       <DisplayCardGrid products={displayProducts} />
 

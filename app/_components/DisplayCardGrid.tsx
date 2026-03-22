@@ -33,7 +33,7 @@ export default function DisplayCardGrid({ products }: { products: IDisplayProduc
   const cards = products.map(mapProductToCard)
 
   return (
-    <div className="grid grid-cols-2 gap-4 px-4 mt-4">
+    <div className="grid grid-cols-2 md:grid-cols-5 gap-4 px-4 mt-4">
       {products.map((product) => (
         <DisplayCard key={product._id} product={product} />
       ))}

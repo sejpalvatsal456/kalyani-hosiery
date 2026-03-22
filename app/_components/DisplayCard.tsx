@@ -28,7 +28,7 @@ export default function DisplayCard({ product }: Props) {
   }, []);
 
   return (
-    <div className="w-full">
+    <div className="w-full md:w-45">
 
       {/* Product Image */}
       <div className="relative rounded-2xl bg-gray-100 h-[230px]">
