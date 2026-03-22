@@ -22,6 +22,8 @@ export default function ReelsSlider({ reels }: ReelsSliderProps) {
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const startX = useRef(0);
+  const endX = useRef(0);
 
   // 📱 Responsive
   useEffect(() => {
@@ -105,12 +107,46 @@ export default function ReelsSlider({ reels }: ReelsSliderProps) {
     setActiveIndex((prev) => (prev + 1) % reels.length);
   };
 
+  const handleStart = (x: number) => {
+    startX.current = x;
+  };
+
+  const handleMove = (x: number) => {
+    endX.current = x;
+  };
+
+  const handleEnd = () => {
+    const distance = startX.current - endX.current;
+    const threshold = 50;
+
+    if (distance > threshold) {
+      setActiveIndex((prev) => (prev + 1) % reels.length);
+    } else if (distance < -threshold) {
+      setActiveIndex((prev) => (prev - 1 + reels.length) % reels.length);
+    }
+
+    startX.current = 0;
+    endX.current = 0;
+  };
+
   return (
     <div
       ref={containerRef}
       className="w-full py-16 overflow-hidden flex justify-center"
     >
-      <div className="relative flex items-center justify-center h-[450px] w-full max-w-7xl overflow-hidden">
+      <div
+        className="relative flex items-center justify-center h-[450px] w-full max-w-7xl overflow-hidden"
+        onTouchStart={(e) => handleStart(e.touches[0].clientX)}
+        onTouchMove={(e) => handleMove(e.touches[0].clientX)}
+        onTouchEnd={handleEnd}
+        // 🖱️ Mouse Events (for desktop drag)
+        onMouseDown={(e) => handleStart(e.clientX)}
+        onMouseMove={(e) => {
+          if (startX.current !== 0) handleMove(e.clientX);
+        }}
+        onMouseUp={handleEnd}
+        onMouseLeave={handleEnd}
+      >
         {getVisibleItems().map(({ reel, position, actualIndex }) => {
           const isCenter = position === 0;
 
