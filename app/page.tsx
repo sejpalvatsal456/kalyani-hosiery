@@ -676,7 +676,7 @@ export default function Home() {
               <img
                 src={product.thumbnail}
                 alt={product.slug}
-                className="w-40 mx-3 rounded-xl object-contain transition"
+                className="w-40 rounded-xl object-contain transition"
               />
             </div>
           )}
