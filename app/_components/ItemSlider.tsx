@@ -2,20 +2,24 @@ import React, { useEffect, useState } from "react";
 
 interface ItemSliderProps<T> {
   items: T[];
+  itemCountDesktop: number;
+  itemCountMobile: number;
   renderItem: (item: T, index: number) => React.ReactNode;
 }
 
 export default function ItemSlider<T>({
   items,
+  itemCountDesktop,
+  itemCountMobile,
   renderItem,
 }: ItemSliderProps<T>) {
   const [index, setIndex] = useState(0);
-  const [visibleItems, setVisibleItems] = useState(5);
+  const [visibleItems, setVisibleItems] = useState(itemCountDesktop);
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 768) setVisibleItems(2);
-      else setVisibleItems(5);
+      if (window.innerWidth < 768) setVisibleItems(itemCountMobile);
+      else setVisibleItems(itemCountDesktop);
     };
 
     handleResize();
@@ -32,6 +36,8 @@ export default function ItemSlider<T>({
     return () => clearInterval(interval);
   }, [items.length, visibleItems]);
 
+  console.log(`flex justify-center items-center min-w-[${(100/itemCountMobile).toFixed(2)}%] md:min-w-[${100/itemCountDesktop}%] md:px-6`);
+
   return (
     <div className="w-full overflow-hidden md:py-10">
       <div
@@ -43,7 +49,10 @@ export default function ItemSlider<T>({
         {items.map((item, i) => (
           <div
             key={i}
-            className="flex justify-center items-center min-w-[50%] md:min-w-[20%] md:px-6"
+            className="flex justify-center items-center md:px-6 flex-shrink-0"
+            style={{
+              minWidth: `${100 / visibleItems}%`,
+            }}
           >
             {renderItem(item, i)}
           </div>

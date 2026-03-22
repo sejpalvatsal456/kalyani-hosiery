@@ -139,7 +139,7 @@ export default function ReelsSlider({ reels }: ReelsSliderProps) {
   return (
     <div
       ref={containerRef}
-      className="w-full py-16 overflow-hidden flex justify-center"
+      className="w-full py-4 overflow-hidden flex justify-center"
     >
       <div
         className="relative flex items-center justify-center h-[450px] w-full max-w-7xl overflow-hidden"

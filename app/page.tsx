@@ -636,6 +636,8 @@ export default function Home() {
         {/* <FiveItemSlider brands={brands} /> */}
         <ItemSlider
           items={brands}
+          itemCountDesktop={5}
+          itemCountMobile={3}
           renderItem={(brand) => (
             <img
               src={brand.brandLogo}
@@ -667,12 +669,14 @@ export default function Home() {
         {/* <FiveItemSlider brands={brands} /> */}
         <ItemSlider
           items={salesProduct}
+          itemCountDesktop={5}
+          itemCountMobile={2}
           renderItem={(product) => (
             <div className="relative">
               <img
                 src={product.thumbnail}
                 alt={product.slug}
-                className="w-45 rounded-xl object-contain transition"
+                className="w-40 mx-3 rounded-xl object-contain transition"
               />
             </div>
           )}
@@ -699,6 +703,8 @@ export default function Home() {
       </div> */}
 
       <DisplayCardGrid products={displayProducts} />
+
+      <h1 className="text-center mt-8 text-3xl font-semibold">Trending Products</h1>
 
       {/* Reels Section */}
       <ReelsSlider reels={reels} />
