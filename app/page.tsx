@@ -16,12 +16,19 @@ import { ICategory, IDisplayProduct, ISubcategory, IUser, IBrand } from "@/lib/t
 import SubcategorySlider from "./_components/SubcategorySlider";
 import DisplayCardGrid from "./_components/DisplayCardGrid";
 import ItemSlider from "./_components/ItemSlider";
+import ReelsSlider from "./_components/ReelsSlider";
 
 const josefin = Josefin_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   variable: "--font-josefin"
 });
+
+export interface ReelItem {
+  id: string;
+  videoUrl: string;
+  thumbnail?: string;
+}
 
 const banners = [
   {
@@ -48,6 +55,15 @@ const banners = [
     subtitle: "Buy 1 Get 1 Free",
     cta: "Grab Deal",
   },
+];
+
+const reels: ReelItem[] = [
+  { id: "1", videoUrl: "/reels1.mp4" },
+  { id: "2", videoUrl: "/reels2.mp4" },
+  { id: "3", videoUrl: "/reels1.mp4" },
+  { id: "4", videoUrl: "/reels2.mp4" },
+  { id: "5", videoUrl: "/reels1.mp4" },
+  { id: "6", videoUrl: "/reels2.mp4" },
 ];
 
 export default function Home() {
@@ -656,11 +672,8 @@ export default function Home() {
               <img
                 src={product.thumbnail}
                 alt={product.slug}
-                className="w-27 rounded-xl object-contain transition"
+                className="w-45 rounded-xl object-contain transition"
               />
-              <div className="absolute -bottom-[4px] bg-[linear-gradient(#00ff0000_0%,_#00aa00ff_40%)] w-full rounded-b-xl text-center h-10 flex justify-center items-center">
-                <span className="text-xl font-semibold text-[#abf7b1] shadow-xl">{product.discountPercent}% OFF</span>
-              </div>
             </div>
           )}
         />
@@ -686,6 +699,9 @@ export default function Home() {
       </div> */}
 
       <DisplayCardGrid products={displayProducts} />
+
+      {/* Reels Section */}
+      <ReelsSlider reels={reels} />
 
       {/* Address Section */}
 

@@ -14,7 +14,7 @@ export default function ItemSlider<T>({
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 768) setVisibleItems(3);
+      if (window.innerWidth < 768) setVisibleItems(2);
       else setVisibleItems(5);
     };
 
@@ -43,7 +43,7 @@ export default function ItemSlider<T>({
         {items.map((item, i) => (
           <div
             key={i}
-            className="flex justify-center items-center min-w-[33.33%] md:min-w-[20%] md:px-6"
+            className="flex justify-center items-center min-w-[50%] md:min-w-[20%] md:px-6"
           >
             {renderItem(item, i)}
           </div>
