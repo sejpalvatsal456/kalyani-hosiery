@@ -24,6 +24,7 @@ export default function ReelsSlider({ reels }: ReelsSliderProps) {
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const startX = useRef(0);
   const endX = useRef(0);
+  const isInteracting = useRef(false);
 
   // 📱 Responsive
   useEffect(() => {
@@ -108,6 +109,7 @@ export default function ReelsSlider({ reels }: ReelsSliderProps) {
   };
 
   const handleStart = (x: number) => {
+    if (isInteracting.current) return;
     startX.current = x;
   };
 
@@ -116,6 +118,11 @@ export default function ReelsSlider({ reels }: ReelsSliderProps) {
   };
 
   const handleEnd = () => {
+    if (isInteracting.current) {
+      isInteracting.current = false;
+      return;
+    }
+
     const distance = startX.current - endX.current;
     const threshold = 50;
 
@@ -177,6 +184,14 @@ export default function ReelsSlider({ reels }: ReelsSliderProps) {
                   <>
                     {/* ▶️ Play / Pause - Top Left */}
                     <button
+                      onMouseDown={(e) => {
+                        e.stopPropagation();
+                        isInteracting.current = true;
+                      }}
+                      onTouchStart={(e) => {
+                        e.stopPropagation();
+                        isInteracting.current = true;
+                      }}
                       onClick={(e) => {
                         e.stopPropagation();
                         setIsPlaying((prev) => !prev);
@@ -188,6 +203,14 @@ export default function ReelsSlider({ reels }: ReelsSliderProps) {
 
                     {/* 🔊 Mute / Unmute - Bottom Right */}
                     <button
+                      onMouseDown={(e) => {
+                        e.stopPropagation();
+                        isInteracting.current = true;
+                      }}
+                      onTouchStart={(e) => {
+                        e.stopPropagation();
+                        isInteracting.current = true;
+                      }}
                       onClick={(e) => {
                         e.stopPropagation();
                         setIsMuted((prev) => !prev);
