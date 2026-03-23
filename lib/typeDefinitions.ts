@@ -111,8 +111,8 @@ export interface IProduct {
   tags: string[];
   varients: IVariety[];
   desc: IProductDescription[];
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface IDisplayProduct extends Omit<IProduct, 'category' | 'subcategory' | 'brand'> {

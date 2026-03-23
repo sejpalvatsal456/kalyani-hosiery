@@ -36,8 +36,6 @@ export default function ItemSlider<T>({
     return () => clearInterval(interval);
   }, [items.length, visibleItems]);
 
-  console.log(`flex justify-center items-center min-w-[${(100/itemCountMobile).toFixed(2)}%] md:min-w-[${100/itemCountDesktop}%] md:px-6`);
-
   return (
     <div className="w-full overflow-hidden md:py-10">
       <div

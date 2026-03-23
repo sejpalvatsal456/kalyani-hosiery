@@ -22,7 +22,7 @@ export default function Navbar({
 }: {
   activePage: ICategory|null;
   setPage: (val: ICategory|null) => void;
-  categories: ICategory[];
+  categories: ICategory[]|null;
   search: string;
   setSearch: (search: string) => void;
   displayNavLinks: boolean;
@@ -109,7 +109,7 @@ export default function Navbar({
                 </li>
               );
             })} */}
-            {activePage && categories.map((cat, key) => {
+            {activePage && categories?.map((cat, key) => {
               return (
                 <li
                   key={key}
@@ -128,11 +128,11 @@ export default function Navbar({
 
         {/* Nav Search desktop */}
         <form
-          action=""
+          action="/search"
           method="GET"
           className="flex items-center bg-[#f5f5f5] pl-3 md:pl-5 pr-5 gap-5 rounded-lg border-1 border-gray-400"
           onSubmit={(e) => {
-            router.push(`/search?serachInput=${search}`)
+            router.push(`/search?searchQuery=${search}`)
           }}
         >
           <a href="/" className="md:hidden">
@@ -143,7 +143,7 @@ export default function Navbar({
             className="w-25 md:w-auto h-10 focus:outline-none"
             placeholder="Search..."
             type="text"
-            name="serachInput"
+            name="searchQuery"
             id="searchInput"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -238,7 +238,7 @@ export default function Navbar({
               </li>
             );
           })} */}
-          {activePage && categories.map((cat, key) => {
+          {activePage && categories?.map((cat, key) => {
             return (
               <li
                 key={key}
@@ -264,8 +264,12 @@ export default function Navbar({
       >
         {/* Mobile search */}
         <form
+          action="/search"
           method="GET"
           className="flex items-center bg-[#f5f5f5] px-5 gap-5 rounded mb-3"
+          onSubmit={(e) => {
+            router.push(`/search?searchQuery=${search}`)
+          }}
         >
           <a href="/" className="md:hidden">
             <Image src="/logo1.png" alt="Next.js logo" width={0} height={50} />
@@ -275,7 +279,7 @@ export default function Navbar({
             className="h-10 bg-transparent focus:outline-none w-full"
             placeholder="Search..."
             type="text"
-            name="searchInput"
+            name="searchQuery"
           />
         </form>
 
