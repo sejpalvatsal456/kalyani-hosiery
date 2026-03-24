@@ -256,17 +256,16 @@ export default function Navbar({
       ) : null}
 
       {/* Foldable Menu for mobile view */}
-      <div
+      {/* <div
         className={
           "md:hidden px-6 transistion-[max-height] duration-300 ease-in-out " +
           (open ? "max-h-100 opacity-100" : "max-h-0 opacity-0")
         }
       >
-        {/* Mobile search */}
         <form
           action="/search"
           method="GET"
-          className="flex items-center bg-[#f5f5f5] px-5 gap-5 rounded mb-3"
+          className="flex hidden items-center bg-[#f5f5f5] px-5 gap-5 rounded mb-3"
           onSubmit={(e) => {
             router.push(`/search?searchQuery=${search}`)
           }}
@@ -282,10 +281,8 @@ export default function Navbar({
             name="searchQuery"
           />
         </form>
-
-        {/* Mobile icons */}
         <ul className="flex flex-col gap-5 pb-6"></ul>
-      </div>
+      </div> */}
     </nav>
   );
 }

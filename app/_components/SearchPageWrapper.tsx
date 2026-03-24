@@ -6,6 +6,7 @@ import { ICategory, IDisplayProduct, IUser } from "@/lib/typeDefinitions";
 import DisplayCard from "./DisplayCard";
 import { FaFilter, FaSort } from "react-icons/fa";
 import DisplayCardGrid from "./DisplayCardGrid";
+import PriceSlider from "./PriceSlider";
 
 const sortOptions = [
   { title: "What's new", tag: "W" },
@@ -349,8 +350,10 @@ export function formatLabel(input: string): string {
 
 export default function SearchPageWrapper({
   searchQuery,
+  brand
 }: {
   searchQuery: string;
+  brand: string;
 }) {
   // const [products, setProducts] = useState<IDisplayProduct[] | null>(null);
   const [products, setProducts] = useState<IDisplayProduct[] | null>(displayProducts); // dev only
@@ -538,12 +541,12 @@ export default function SearchPageWrapper({
 
       <div className="flex flex-col">
         <div className="mt-5 mx-5 flex items-center justify-between">
-          {/* <div>
-            Home / {formatLabel(categoryName)} /{" "}
+          <div className="hidden md:flex">
+            Home / {searchQuery !== "" ? "Search" : "Other"} /{" "}
             <span className="font-semibold">
-              {formatLabel(subcategoryName)}
+              {formatLabel(searchQuery)}
             </span>
-          </div> */}
+          </div>
           <div className="hidden md:block">
             Sort By:
             <select
@@ -586,7 +589,9 @@ export default function SearchPageWrapper({
                 {allSizesSelectionEl}
               </select>
             </div>
-            <div className="border-gray-300 border-1 py-3 pl-6">
+
+            {/* Old Price Input */}
+            {/* <div className="border-gray-300 border-1 py-3 pl-6">
               <span className="text-xl font-semibold">PRICE</span>
               <ul className="mt-3 text-md ml-3 flex flex-col gap-5">
                 <li className="flex gap-5 items-center">
@@ -623,6 +628,11 @@ export default function SearchPageWrapper({
                   />
                 </li>
               </ul>
+            </div> */}
+
+            {/* New Price Range Slider */}
+            <div className="border-gray-300 border-1 py-3 pl-6">
+              <PriceSlider priceRange={priceRange} setPriceRange={setPriceRange} />
             </div>
           </div>
 
@@ -695,8 +705,8 @@ export default function SearchPageWrapper({
             </select>
           </div>
 
-          {/* Price Filter */}
-          <div className="p-5 border-b-1 border-gray-300">
+          {/* Old Price Filter */}
+          {/* <div className="p-5 border-b-1 border-gray-300">
             <span className="text-lg font-medium">PRICE</span>
             <ul className="mt-3 text-md ml-3 flex flex-col gap-5">
               <li className="flex gap-5 items-center">
@@ -732,7 +742,13 @@ export default function SearchPageWrapper({
                 />
               </li>
             </ul>
+          </div> */}
+
+          {/* New Price Filter */}
+          <div className="p-5 border-b-1 border-gray-300">
+            <PriceSlider priceRange={priceRange} setPriceRange={setPriceRange} />
           </div>
+
         </div>
 
         {/* Filter and Sort options for mobile view */}

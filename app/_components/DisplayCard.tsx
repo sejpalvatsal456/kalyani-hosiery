@@ -35,7 +35,7 @@ export default function DisplayCard({ product }: Props) {
           src={image}
           alt={product.productName}
           fill
-          className="object-cover rounded-2xl"
+          className="object-cover rounded-md"
           onClick={(e) => {
             router.push(`/product/${product.slug}`);
           }}
