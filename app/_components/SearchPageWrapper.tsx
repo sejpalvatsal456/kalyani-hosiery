@@ -284,7 +284,7 @@ const displayProducts: IDisplayProduct[] = [
     tags: [],
     desc: [],
   },
-  
+
 ];
 
 const getLowestPrice = (product: IDisplayProduct) => {
@@ -505,6 +505,13 @@ export default function SearchPageWrapper({
       return lowest >= priceRange.low && lowest <= priceRange.high;
     });
 
+    // Color filter
+    if(colorCode.length > 0) {
+      updated = updated.filter((p) => 
+        p.varients.some(v => colorCode.includes(v.colorCode))
+      );
+    }
+
     // Search filter
     updated = updated.filter((p) => {
       return (
@@ -530,7 +537,7 @@ export default function SearchPageWrapper({
     }
 
     setFilteredProducts(updated);
-  }, [brands, size, priceRange, sortCategory, search, products]);
+  }, [brands, size, priceRange, colorCode, sortCategory, search, products]);
 
   return (
     <>
