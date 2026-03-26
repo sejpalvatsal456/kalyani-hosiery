@@ -62,9 +62,9 @@ const displayProducts: IDisplayProduct[] = [
 
   {
     _id: "2",
-    brandName: "Powerlook",
-    productName: "Men Alphanumeric Printed Pullover",
-    slug: "man-alphanumeric-printed-pullover",
+    brandName: "glitchez",
+    productName: "Men Printed Polo Collar T-shirt",
+    slug: "men-printed-polo-collar-t-shirt",
     createdAt: "2026-02-25T14:50:24.481Z",
     updatedAt: "2026-02-25T14:50:24.481Z",
     category: {
@@ -73,30 +73,30 @@ const displayProducts: IDisplayProduct[] = [
       name: "Men",
     },
     subcategory: {
-      _id: "1234",
+      _id: "1235",
       categoryId: "123",
-      slug: "sweaters",
-      name: "Sweaters",
+      slug: "t-shirts",
+      name: "T Shirts",
     },
     thumbnail:
-      "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+      "https://assets.myntassets.com/w_360,q_50,,dpr_2,fl_progressive,f_webp/assets/images/2026/MARCH/5/iBX250Hm_944daf02f6a5496e878fc3404c8253fd.jpg",
     varients: [
       {
         colorID: "color1",
-        colorName: "Orange",
+        colorName: "White",
         imgLinks: [
-          "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+          "https://assets.myntassets.com/w_360,q_50,,dpr_2,fl_progressive,f_webp/assets/images/2026/MARCH/5/iBX250Hm_944daf02f6a5496e878fc3404c8253fd.jpg",
         ],
-        colorCode: "#ff5f1f",
+        colorCode: "#ffffff",
         sizes: [
           {
             sizeID: "size1",
-            sizeName: "S",
+            sizeName: "M",
             sku: "sku1",
             stock: 10,
-            mrp: 2999,
-            sellingPrice: 670,
-            discountPercent: 77,
+            mrp: 1299,
+            sellingPrice: 249,
+            discountPercent: 81,
           },
         ],
       },
@@ -107,9 +107,9 @@ const displayProducts: IDisplayProduct[] = [
 
   {
     _id: "3",
-    brandName: "Powerlook",
-    productName: "Men Alphanumeric Printed Pullover",
-    slug: "man-alphanumeric-printed-pullover",
+    brandName: "Pepe Jeans",
+    productName: "Men Crew Neck Relaxed Fit Lounge Tshirt",
+    slug: "men-crew-neck-relaxed-fit-lounge-tshirt",
     createdAt: "2026-02-25T14:50:24.481Z",
     updatedAt: "2026-02-25T14:50:24.481Z",
     category: {
@@ -118,30 +118,30 @@ const displayProducts: IDisplayProduct[] = [
       name: "Men",
     },
     subcategory: {
-      _id: "1234",
+      _id: "1235",
       categoryId: "123",
-      slug: "sweaters",
-      name: "Sweaters",
+      slug: "t-shirts",
+      name: "T Shirts",
     },
     thumbnail:
-      "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+      "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2026/MARCH/23/yBgZ806s_095c44aa6f344380b0e75635a0eae06f.jpg",
     varients: [
       {
         colorID: "color1",
-        colorName: "Orange",
+        colorName: "Black",
         imgLinks: [
-          "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+          "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2026/MARCH/23/yBgZ806s_095c44aa6f344380b0e75635a0eae06f.jpg",
         ],
-        colorCode: "#ff5f1f",
+        colorCode: "#000000",
         sizes: [
           {
             sizeID: "size1",
             sizeName: "S",
             sku: "sku1",
             stock: 10,
-            mrp: 2999,
-            sellingPrice: 670,
-            discountPercent: 77,
+            mrp: 799,
+            sellingPrice: 487,
+            discountPercent: 39,
           },
         ],
       },
@@ -197,9 +197,9 @@ const displayProducts: IDisplayProduct[] = [
 
   {
     _id: "5",
-    brandName: "Powerlook",
-    productName: "Men Alphanumeric Printed Pullover",
-    slug: "man-alphanumeric-printed-pullover",
+    brandName: "glitchez",
+    productName: "Men Printed Polo Collar T-shirt",
+    slug: "men-printed-polo-collar-t-shirt",
     createdAt: "2026-02-25T14:50:24.481Z",
     updatedAt: "2026-02-25T14:50:24.481Z",
     category: {
@@ -208,30 +208,30 @@ const displayProducts: IDisplayProduct[] = [
       name: "Men",
     },
     subcategory: {
-      _id: "1234",
+      _id: "1235",
       categoryId: "123",
-      slug: "sweaters",
-      name: "Sweaters",
+      slug: "t-shirts",
+      name: "T Shirts",
     },
     thumbnail:
-      "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+      "https://assets.myntassets.com/w_360,q_50,,dpr_2,fl_progressive,f_webp/assets/images/2026/MARCH/5/iBX250Hm_944daf02f6a5496e878fc3404c8253fd.jpg",
     varients: [
       {
         colorID: "color1",
-        colorName: "Orange",
+        colorName: "White",
         imgLinks: [
-          "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+          "https://assets.myntassets.com/w_360,q_50,,dpr_2,fl_progressive,f_webp/assets/images/2026/MARCH/5/iBX250Hm_944daf02f6a5496e878fc3404c8253fd.jpg",
         ],
-        colorCode: "#ff5f1f",
+        colorCode: "#ffffff",
         sizes: [
           {
             sizeID: "size1",
-            sizeName: "S",
+            sizeName: "M",
             sku: "sku1",
             stock: 10,
-            mrp: 2999,
-            sellingPrice: 670,
-            discountPercent: 77,
+            mrp: 1299,
+            sellingPrice: 249,
+            discountPercent: 81,
           },
         ],
       },
@@ -242,9 +242,9 @@ const displayProducts: IDisplayProduct[] = [
 
   {
     _id: "6",
-    brandName: "Powerlook",
-    productName: "Men Alphanumeric Printed Pullover",
-    slug: "man-alphanumeric-printed-pullover",
+    brandName: "Pepe Jeans",
+    productName: "Men Crew Neck Relaxed Fit Lounge Tshirt",
+    slug: "men-crew-neck-relaxed-fit-lounge-tshirt",
     createdAt: "2026-02-25T14:50:24.481Z",
     updatedAt: "2026-02-25T14:50:24.481Z",
     category: {
@@ -253,30 +253,30 @@ const displayProducts: IDisplayProduct[] = [
       name: "Men",
     },
     subcategory: {
-      _id: "1234",
+      _id: "1235",
       categoryId: "123",
-      slug: "sweaters",
-      name: "Sweaters",
+      slug: "t-shirts",
+      name: "T Shirts",
     },
     thumbnail:
-      "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+      "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2026/MARCH/23/yBgZ806s_095c44aa6f344380b0e75635a0eae06f.jpg",
     varients: [
       {
         colorID: "color1",
-        colorName: "Orange",
+        colorName: "Black",
         imgLinks: [
-          "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+          "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2026/MARCH/23/yBgZ806s_095c44aa6f344380b0e75635a0eae06f.jpg",
         ],
-        colorCode: "#ff5f1f",
+        colorCode: "#000000",
         sizes: [
           {
             sizeID: "size1",
             sizeName: "S",
             sku: "sku1",
             stock: 10,
-            mrp: 2999,
-            sellingPrice: 670,
-            discountPercent: 77,
+            mrp: 799,
+            sellingPrice: 487,
+            discountPercent: 39,
           },
         ],
       },
@@ -284,51 +284,7 @@ const displayProducts: IDisplayProduct[] = [
     tags: [],
     desc: [],
   },
-
-  {
-    _id: "7",
-    brandName: "Powerlook",
-    productName: "Men Alphanumeric Printed Pullover",
-    slug: "man-alphanumeric-printed-pullover",
-    createdAt: "2026-02-25T14:50:24.481Z",
-    updatedAt: "2026-02-25T14:50:24.481Z",
-    category: {
-      _id: "123",
-      slug: "men",
-      name: "Men",
-    },
-    subcategory: {
-      _id: "1234",
-      categoryId: "123",
-      slug: "sweaters",
-      name: "Sweaters",
-    },
-    thumbnail:
-      "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-    varients: [
-      {
-        colorID: "color1",
-        colorName: "Orange",
-        imgLinks: [
-          "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-        ],
-        colorCode: "#ff5f1f",
-        sizes: [
-          {
-            sizeID: "size1",
-            sizeName: "S",
-            sku: "sku1",
-            stock: 10,
-            mrp: 2999,
-            sellingPrice: 670,
-            discountPercent: 77,
-          },
-        ],
-      },
-    ],
-    tags: [],
-    desc: [],
-  },
+  
 ];
 
 const getLowestPrice = (product: IDisplayProduct) => {
@@ -473,11 +429,6 @@ export default function SearchPageWrapper({
           type="checkbox"
           className="mr-3"
           onChange={(e) => {
-            // e.target.checked
-            //   ? setBrands([...brands, brand.name])
-            //   : setBrands(
-            //       brands.filter((brandName) => brandName !== brand.name),
-            //     );
             e.target.checked
               ? setColorCode([...colorCode, color.colorCode])
               : setColorCode(
@@ -487,7 +438,7 @@ export default function SearchPageWrapper({
         />
         <div
           style={{ backgroundColor: color.colorCode }}
-          className="w-4.5 h-4.5 rounded-full"
+          className="w-4.5 h-4.5 rounded-full border-1 border-black"
         ></div>
         <span className="text-sm">{color.colorName.toUpperCase()}</span>
       </li>
@@ -655,7 +606,7 @@ export default function SearchPageWrapper({
             </div>
             <div className="border-gray-300 border-1 py-3 pl-6">
               <span className="text-md font-semibold">COLOR</span>
-              <ul className="mt-3 text-md ml-3">{allColorsSelectionEl}</ul>
+              <ul className="mt-3 text-md ml-3 flex flex-col gap-2">{allColorsSelectionEl}</ul>
             </div>
           </div>
 
