@@ -20,8 +20,8 @@ const displayProducts: IDisplayProduct[] = [
     brandName: "Powerlook",
     productName: "Men Alphanumeric Printed Pullover",
     slug: "man-alphanumeric-printed-pullover",
-    createdAt: '2026-02-25T14:50:24.481Z',
-    updatedAt: '2026-02-25T14:50:24.481Z',
+    createdAt: "2026-02-25T14:50:24.481Z",
+    updatedAt: "2026-02-25T14:50:24.481Z",
     category: {
       _id: "123",
       slug: "men",
@@ -65,8 +65,8 @@ const displayProducts: IDisplayProduct[] = [
     brandName: "Powerlook",
     productName: "Men Alphanumeric Printed Pullover",
     slug: "man-alphanumeric-printed-pullover",
-    createdAt: '2026-02-25T14:50:24.481Z',
-    updatedAt: '2026-02-25T14:50:24.481Z',
+    createdAt: "2026-02-25T14:50:24.481Z",
+    updatedAt: "2026-02-25T14:50:24.481Z",
     category: {
       _id: "123",
       slug: "men",
@@ -110,8 +110,8 @@ const displayProducts: IDisplayProduct[] = [
     brandName: "Powerlook",
     productName: "Men Alphanumeric Printed Pullover",
     slug: "man-alphanumeric-printed-pullover",
-    createdAt: '2026-02-25T14:50:24.481Z',
-    updatedAt: '2026-02-25T14:50:24.481Z',
+    createdAt: "2026-02-25T14:50:24.481Z",
+    updatedAt: "2026-02-25T14:50:24.481Z",
     category: {
       _id: "123",
       slug: "men",
@@ -155,8 +155,8 @@ const displayProducts: IDisplayProduct[] = [
     brandName: "Powerlook",
     productName: "Men Alphanumeric Printed Pullover",
     slug: "man-alphanumeric-printed-pullover",
-    createdAt: '2026-02-25T14:50:24.481Z',
-    updatedAt: '2026-02-25T14:50:24.481Z',
+    createdAt: "2026-02-25T14:50:24.481Z",
+    updatedAt: "2026-02-25T14:50:24.481Z",
     category: {
       _id: "123",
       slug: "men",
@@ -200,8 +200,8 @@ const displayProducts: IDisplayProduct[] = [
     brandName: "Powerlook",
     productName: "Men Alphanumeric Printed Pullover",
     slug: "man-alphanumeric-printed-pullover",
-    createdAt: '2026-02-25T14:50:24.481Z',
-    updatedAt: '2026-02-25T14:50:24.481Z',
+    createdAt: "2026-02-25T14:50:24.481Z",
+    updatedAt: "2026-02-25T14:50:24.481Z",
     category: {
       _id: "123",
       slug: "men",
@@ -245,8 +245,8 @@ const displayProducts: IDisplayProduct[] = [
     brandName: "Powerlook",
     productName: "Men Alphanumeric Printed Pullover",
     slug: "man-alphanumeric-printed-pullover",
-    createdAt: '2026-02-25T14:50:24.481Z',
-    updatedAt: '2026-02-25T14:50:24.481Z',
+    createdAt: "2026-02-25T14:50:24.481Z",
+    updatedAt: "2026-02-25T14:50:24.481Z",
     category: {
       _id: "123",
       slug: "men",
@@ -290,8 +290,8 @@ const displayProducts: IDisplayProduct[] = [
     brandName: "Powerlook",
     productName: "Men Alphanumeric Printed Pullover",
     slug: "man-alphanumeric-printed-pullover",
-    createdAt: '2026-02-25T14:50:24.481Z',
-    updatedAt: '2026-02-25T14:50:24.481Z',
+    createdAt: "2026-02-25T14:50:24.481Z",
+    updatedAt: "2026-02-25T14:50:24.481Z",
     category: {
       _id: "123",
       slug: "men",
@@ -333,35 +333,34 @@ const displayProducts: IDisplayProduct[] = [
 
 const getLowestPrice = (product: IDisplayProduct) => {
   return Math.min(
-    ...product.varients.flatMap(v =>
-      v.sizes.map(s => s.sellingPrice)
-    )
+    ...product.varients.flatMap((v) => v.sizes.map((s) => s.sellingPrice)),
   );
-}
+};
 
 export function formatLabel(input: string): string {
   return input
     .split("_")
-    .map(word => 
-      word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-    )
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(" ");
 }
 
 export default function SearchPageWrapper({
   searchQuery,
-  brand
+  brand,
 }: {
   searchQuery: string;
   brand: string;
 }) {
   // const [products, setProducts] = useState<IDisplayProduct[] | null>(null);
-  const [products, setProducts] = useState<IDisplayProduct[] | null>(displayProducts); // dev only
+  const [products, setProducts] = useState<IDisplayProduct[] | null>(
+    displayProducts,
+  ); // dev only
   const [filteredProducts, setFilteredProducts] = useState<IDisplayProduct[]>(
     [],
   );
   const [brands, setBrands] = useState<string[]>([]);
   const [size, setSize] = useState<string>("");
+  const [colorCode, setColorCode] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<{ low: number; high: number }>({
     low: 100,
     high: 10000,
@@ -377,7 +376,7 @@ export default function SearchPageWrapper({
   const [search, setSearch] = useState<string>(searchQuery);
   const [user, setUser] = useState<IUser | null>(null);
 
-  // Fetch all brands, size, colore from the products
+  // Fetch all brands, size, colors from the products
 
   const allBrands = React.useMemo(() => {
     if (!products) return [];
@@ -388,6 +387,9 @@ export default function SearchPageWrapper({
       const currentCount = brandMap.get(product.brandName) || 0;
       brandMap.set(product.brandName, currentCount + 1);
     });
+
+    console.log("All Brand Set: ");
+    console.log(brandMap);
 
     return Array.from(brandMap.entries()).map(([name, stock]) => ({
       name,
@@ -411,11 +413,35 @@ export default function SearchPageWrapper({
     return Array.from(sizeSet);
   }, [products]);
 
+  const allColors = React.useMemo(() => {
+    if (!products) return [];
+
+    const colorSet = new Map<string, string>();
+
+    products.forEach((product) => {
+      product.varients.forEach((v) => {
+        colorSet.set(v.colorName, v.colorCode);
+      });
+    });
+
+    console.log(
+      Array.from(colorSet.entries()).map(([name, code]) => ({
+        colorName: name,
+        colorCode: code,
+      })),
+    );
+
+    return Array.from(colorSet.entries()).map(([name, code]) => ({
+      colorName: name,
+      colorCode: code,
+    }));
+  }, [products]);
+
   // Elements or options for brands, sizes and colors
 
   const allBrandSelectionEl = allBrands.map((brand, key) => {
     return (
-      <li className="w-full flex gap-5" key={key}>
+      <li className="w-full flex gap-5 items-center" key={key}>
         <input
           type="checkbox"
           onChange={(e) => {
@@ -437,6 +463,34 @@ export default function SearchPageWrapper({
       <option key={key} value={size}>
         {size}
       </option>
+    );
+  });
+
+  const allColorsSelectionEl = allColors.map((color, key) => {
+    return (
+      <li className="w-full flex gap-2 items-center" key={key}>
+        <input
+          type="checkbox"
+          className="mr-3"
+          onChange={(e) => {
+            // e.target.checked
+            //   ? setBrands([...brands, brand.name])
+            //   : setBrands(
+            //       brands.filter((brandName) => brandName !== brand.name),
+            //     );
+            e.target.checked
+              ? setColorCode([...colorCode, color.colorCode])
+              : setColorCode(
+                  colorCode.filter((code) => code != color.colorCode),
+                );
+          }}
+        />
+        <div
+          style={{ backgroundColor: color.colorCode }}
+          className="w-4.5 h-4.5 rounded-full"
+        ></div>
+        <span className="text-sm">{color.colorName.toUpperCase()}</span>
+      </li>
     );
   });
 
@@ -500,9 +554,12 @@ export default function SearchPageWrapper({
       return lowest >= priceRange.low && lowest <= priceRange.high;
     });
 
-    // Search filter 
+    // Search filter
     updated = updated.filter((p) => {
-      return p.brandName.toLowerCase().includes(search.toLowerCase()) || p.productName.toLowerCase().includes(search.toLowerCase());
+      return (
+        p.brandName.toLowerCase().includes(search.toLowerCase()) ||
+        p.productName.toLowerCase().includes(search.toLowerCase())
+      );
     });
 
     // Sorting
@@ -517,14 +574,12 @@ export default function SearchPageWrapper({
     if (sortCategory.tag === "W") {
       updated.sort(
         (a, b) =>
-          new Date(b.createdAt).getTime() -
-          new Date(a.createdAt).getTime()
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
       );
     }
 
     setFilteredProducts(updated);
   }, [brands, size, priceRange, sortCategory, search, products]);
-
 
   return (
     <>
@@ -543,7 +598,7 @@ export default function SearchPageWrapper({
         <div className="mt-5 mx-5 flex items-center justify-between">
           <div className="hidden md:flex">
             Home / {searchQuery !== "" ? "Search" : "Other"} /{" "}
-            <span className="font-semibold">
+            <span className="ml-1 font-semibold">
               {formatLabel(searchQuery)}
             </span>
           </div>
@@ -570,18 +625,19 @@ export default function SearchPageWrapper({
             </select>
           </div>
         </div>
-        <div className="flex justify-evenly mt-5">
+        <div className="flex justify-evenly md:mt-5">
           {/* Filter options */}
-          <div className="h-[80vh] w-[20vw] hidden md:block">
-            <div className="border-gray-300 border-1 py-3 pl-6">
+          <div className="w-60 hidden md:block">
+            <div className="w-60 border-gray-300 border-1 py-3 pl-6">
               <span className="text-md font-semibold">BRAND</span>
               <ul className="mt-3 text-md ml-3">{allBrandSelectionEl}</ul>
             </div>
+
             <div className="border-gray-300 border-1 py-3 pl-6">
               <span className="text-lg font-semibold">SIZES</span>
               <select
                 name="sizeInput"
-                className="block w-[10vw] text-sm border-1 py-1.5 my-3 ml-3 rounded px-2"
+                className="block w-40 text-sm border-1 py-1.5 my-3 ml-3 rounded px-2"
                 id="sizeInput"
                 onChange={(e) => setSize(e.target.value)}
               >
@@ -590,59 +646,25 @@ export default function SearchPageWrapper({
               </select>
             </div>
 
-            {/* Old Price Input */}
-            {/* <div className="border-gray-300 border-1 py-3 pl-6">
-              <span className="text-xl font-semibold">PRICE</span>
-              <ul className="mt-3 text-md ml-3 flex flex-col gap-5">
-                <li className="flex gap-5 items-center">
-                  Min:
-                  <input
-                    type="number"
-                    value={
-                      isNaN(priceRange.low) || priceRange.low === 0
-                        ? ""
-                        : priceRange.low
-                    }
-                    onChange={(e) =>
-                      setPriceRange({
-                        ...priceRange,
-                        low:
-                          e.target.value === "" ? 0 : parseInt(e.target.value),
-                      })
-                    }
-                    className="w-[10vw] border border-default-medium text-heading text-sm rounded focus:ring-brand focus:border-brand px-3 py-1.5 shadow-xs placeholder:text-body"
-                  />
-                </li>
-                <li className="flex gap-5 items-center">
-                  Max:
-                  <input
-                    type="number"
-                    value={isNaN(priceRange.high) ? "" : priceRange.high}
-                    onChange={(e) =>
-                      setPriceRange({
-                        ...priceRange,
-                        high: parseInt(e.target.value),
-                      })
-                    }
-                    className="w-[10vw] border border-default-medium text-heading text-sm rounded focus:ring-brand focus:border-brand px-3 py-1.5 shadow-xs placeholder:text-body"
-                  />
-                </li>
-              </ul>
-            </div> */}
-
             {/* New Price Range Slider */}
             <div className="border-gray-300 border-1 py-3 pl-6">
-              <PriceSlider priceRange={priceRange} setPriceRange={setPriceRange} />
+              <PriceSlider
+                priceRange={priceRange}
+                setPriceRange={setPriceRange}
+              />
+            </div>
+            <div className="border-gray-300 border-1 py-3 pl-6">
+              <span className="text-md font-semibold">COLOR</span>
+              <ul className="mt-3 text-md ml-3">{allColorsSelectionEl}</ul>
             </div>
           </div>
 
           {/* Products */}
-          {/* <div className="h-full w-full md:w-[80vw] grid grid-cols-1 md:grid-cols-4 place-items-center gap-x-5 px-10 pt-10 pb-20 md:border-t-1  border-gray-300 overflow-y-scroll">
-            {filteredProducts?.map((product, key) => {
-              return <DisplayCard key={product._id} product={product} />;
-            })}
-          </div> */}
-          <div className="w-full md:px-3 md:py-3 md:border-t-1  border-gray-300 overflow-y-scroll">
+
+          <div
+            style={{ marginBottom: "5rem" }}
+            className="w-full md:px-3 md:py-3 md:border-t-1 border-gray-300"
+          >
             <DisplayCardGrid products={filteredProducts} />
           </div>
         </div>
@@ -650,7 +672,7 @@ export default function SearchPageWrapper({
         {/* Sort By Element for mobile */}
         <div
           className={
-            "md:hidden w-full bg-white bottom-[10vh] transition-all duration-300 ease-in-out border-1 border-gray-300 fixed " +
+            "md:hidden w-full bg-white bottom-[10vh] transition-all duration-300 ease-in-out border-1 border-gray-300 fixed z-50 " +
             (isSortCategoryClicked
               ? "opacity-100 translate-y-0"
               : "opacity-0 translate-y-full pointer-events-none")
@@ -677,9 +699,16 @@ export default function SearchPageWrapper({
           </ul>
         </div>
 
+        {(isFilterClicked || isSortCategoryClicked) && (
+          <div
+            className="fixed inset-0 bg-black/40 z-40"
+            onClick={() => setIsFilterClicked(false)}
+          />
+        )}
+
         <div
           className={
-            "md:hidden w-full bg-white bottom-[10vh] transition-all duration-300 ease-in-out border-1 border-gray-300 fixed " +
+            "md:hidden w-full bg-white fixed z-41 bottom-[10vh] max-h-[80vh] overflow-y-auto transition-all duration-300 ease-in-out border border-gray-300" +
             (isFilterClicked
               ? "opacity-100 translate-y-0"
               : "opacity-0 translate-y-full pointer-events-none")
@@ -705,54 +734,22 @@ export default function SearchPageWrapper({
             </select>
           </div>
 
-          {/* Old Price Filter */}
-          {/* <div className="p-5 border-b-1 border-gray-300">
-            <span className="text-lg font-medium">PRICE</span>
-            <ul className="mt-3 text-md ml-3 flex flex-col gap-5">
-              <li className="flex gap-5 items-center">
-                Min:
-                <input
-                  type="number"
-                  value={
-                    isNaN(priceRange.low) || priceRange.low === 0
-                      ? ""
-                      : priceRange.low
-                  }
-                  onChange={(e) =>
-                    setPriceRange({
-                      ...priceRange,
-                      low: e.target.value === "" ? 0 : parseInt(e.target.value),
-                    })
-                  }
-                  className="w-[50vw] border border-default-medium text-heading text-sm rounded focus:ring-brand focus:border-brand px-3 py-1.5 shadow-xs placeholder:text-body"
-                />
-              </li>
-              <li className="flex gap-5 items-center">
-                Max:
-                <input
-                  type="number"
-                  value={isNaN(priceRange.high) ? "" : priceRange.high}
-                  onChange={(e) =>
-                    setPriceRange({
-                      ...priceRange,
-                      high: parseInt(e.target.value),
-                    })
-                  }
-                  className="w-[50vw] border border-default-medium text-heading text-sm rounded focus:ring-brand focus:border-brand px-3 py-1.5 shadow-xs placeholder:text-body"
-                />
-              </li>
-            </ul>
-          </div> */}
-
           {/* New Price Filter */}
           <div className="p-5 border-b-1 border-gray-300">
-            <PriceSlider priceRange={priceRange} setPriceRange={setPriceRange} />
+            <PriceSlider
+              priceRange={priceRange}
+              setPriceRange={setPriceRange}
+            />
           </div>
 
+          <div className="border-gray-300 border-1 py-3 pl-6">
+            <span className="text-md font-semibold">COLOR</span>
+            <ul className="mt-3 text-md ml-3">{allColorsSelectionEl}</ul>
+          </div>
         </div>
 
         {/* Filter and Sort options for mobile view */}
-        <div className="flex md:hidden w-full bg-white h-[10vh] absolute fixed bottom-0">
+        <div className="flex md:hidden w-full bg-white h-[10vh] absolute fixed z-50 bottom-0">
           <button
             className="w-[50vw] border-1 border-gray-300 text-xl flex items-center justify-center gap-3"
             onClick={(e) => {

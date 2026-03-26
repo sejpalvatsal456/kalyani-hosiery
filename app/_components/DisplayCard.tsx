@@ -22,13 +22,13 @@ export default function DisplayCard({ product }: Props) {
 
   const router = useRouter();
 
-  useEffect(() => {
-    console.log(`Product Id: ${product._id}`);
-    console.log(product);
-  }, []);
+  // useEffect(() => {
+  //   console.log(`Product Id: ${product._id}`);
+  //   console.log(product);
+  // }, []);
 
   return (
-    <div className="w-full md:w-45 cursor-pointer">
+    <div className="md:w-45 cursor-pointer">
       {/* Product Image */}
       <div className="relative rounded-2xl bg-gray-100 h-[230px]">
         <Image
