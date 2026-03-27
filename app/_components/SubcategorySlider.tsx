@@ -2,10 +2,14 @@
 
 import { ISubcategory } from "@/lib/typeDefinitions"
 import Image from "next/image"
+import { useRouter } from "next/navigation";
 
 export default function CategorySlider(
   { subCats }: { subCats: ISubcategory[] }
 ) {
+
+  const router = useRouter();
+
   return (
     <div className="w-full overflow-x-auto mb-4">
       <div className="grid grid-rows-2 grid-flow-col gap-3 w-max px-4 py-3">
@@ -18,7 +22,7 @@ export default function CategorySlider(
               {cat.name} <span></span>
             </p>
 
-            <div className="h-[60px] flex justify-center items-end h-full">
+            <div onClick={e => router.push("/search?subcategory="+cat.slug)} className="h-[60px] flex justify-center items-end h-full cursor-pointer">
               <Image
                 src={cat.logoLink}
                 alt={cat.name}

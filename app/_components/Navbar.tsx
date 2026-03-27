@@ -138,7 +138,7 @@ export default function Navbar({
           <a href="/" className="md:hidden">
             <Image src="/cropped_logo.png" alt="Next.js logo" width={30} height={50} />
           </a>
-          {/* TODO: Fix size of search bar in mobile view */}
+          
           <input
             className="w-25 md:w-auto h-10 focus:outline-none"
             placeholder="Search..."

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import { ICategory, IDisplayProduct, IUser } from "@/lib/typeDefinitions";
 import DisplayCard from "./DisplayCard";
@@ -300,15 +300,19 @@ export function formatLabel(input: string): string {
     .join(" ");
 }
 
+// SearchPageWrapper Component
+
 export default function SearchPageWrapper({
   searchQuery,
   brand,
+  subcategory
 }: {
   searchQuery: string;
   brand: string;
+  subcategory: string,
 }) {
   // const [products, setProducts] = useState<IDisplayProduct[] | null>(null);
-  const [products, setProducts] = useState<IDisplayProduct[] | null>(
+  const [products, setProducts] = useState<IDisplayProduct[]>(
     displayProducts,
   ); // dev only
   const [filteredProducts, setFilteredProducts] = useState<IDisplayProduct[]>(
@@ -344,9 +348,6 @@ export default function SearchPageWrapper({
       brandMap.set(product.brandName, currentCount + 1);
     });
 
-    console.log("All Brand Set: ");
-    console.log(brandMap);
-
     return Array.from(brandMap.entries()).map(([name, stock]) => ({
       name,
       stock,
@@ -379,13 +380,6 @@ export default function SearchPageWrapper({
         colorSet.set(v.colorName, v.colorCode);
       });
     });
-
-    console.log(
-      Array.from(colorSet.entries()).map(([name, code]) => ({
-        colorName: name,
-        colorCode: code,
-      })),
-    );
 
     return Array.from(colorSet.entries()).map(([name, code]) => ({
       colorName: name,
@@ -479,6 +473,45 @@ export default function SearchPageWrapper({
   //     .catch((err) => alert(err));
   // }, [categoryName, subcategoryName]);
 
+  // Fetch the data from the api
+  // DEVONLY: The data is getting fetched from fixed data
+
+  useEffect(() => {
+
+    
+    console.log("New Product Data: ");
+
+    let newProducts:IDisplayProduct[] = products;
+  
+    // search result 
+    if(searchQuery) {
+      console.log("Search Query: " + searchQuery);
+      newProducts = newProducts?.filter(p => {
+        if(p.productName.includes(searchQuery) || p.brandName.includes(searchQuery)) return p
+      });
+    }
+
+    if(brand) {
+      console.log("Brand: " + brand);
+      newProducts = newProducts?.filter(p => {
+        if(p.brandName.toLowerCase().includes(brand.toLowerCase())) return p
+      });
+    }
+
+    if(subcategory) {
+      console.log("Subcategory: " + subcategory);
+      newProducts = newProducts?.filter(p => {
+        console.log(p.subcategory.name + " - " + subcategory.toLowerCase());
+        if(p.subcategory.slug === subcategory) return p
+      });
+    }
+
+    console.log("")
+    console.log(newProducts);
+    setProducts(newProducts || []);
+
+  }, []);
+
   useEffect(() => {
     if (!products) return;
 
@@ -539,6 +572,42 @@ export default function SearchPageWrapper({
     setFilteredProducts(updated);
   }, [brands, size, priceRange, colorCode, sortCategory, search, products]);
 
+  const displaySearchPath = () => {
+    if(searchQuery) {
+      return (
+        <div className="hidden md:flex">
+          Home / Search /{" "}
+          <span className="ml-1 font-semibold">
+            {formatLabel(searchQuery)}
+          </span>
+        </div>
+      )
+    }
+
+    if(brand) {
+      return (
+        <div className="hidden md:flex">
+          Home / Brand /{" "}
+          <span className="ml-1 font-semibold">
+            {formatLabel(brand)}
+          </span>
+        </div>
+      )
+    } 
+
+    if(subcategory) {
+      return (
+        <div className="hidden md:flex">
+          Home / Category /{" "}
+          <span className="ml-1 font-semibold">
+            {formatLabel(subcategory)}
+          </span>
+        </div>
+      )
+    }
+    
+  }
+
   return (
     <>
       <Navbar
@@ -554,12 +623,10 @@ export default function SearchPageWrapper({
 
       <div className="flex flex-col">
         <div className="mt-5 mx-5 flex items-center justify-between">
-          <div className="hidden md:flex">
-            Home / {searchQuery !== "" ? "Search" : "Other"} /{" "}
-            <span className="ml-1 font-semibold">
-              {formatLabel(searchQuery)}
-            </span>
-          </div>
+
+          {/* Display Search Path */}
+          {displaySearchPath()}
+
           <div className="hidden md:block">
             Sort By:
             <select

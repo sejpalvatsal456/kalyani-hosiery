@@ -188,7 +188,7 @@ export default function Home() {
           {
             name: "T Shirts",
             category: "sales",
-            slug: "tshirts",
+            slug: "t-shirts",
             logoLink: "/tshirts.png",
           },
           {
@@ -212,79 +212,79 @@ export default function Home() {
           {
             name: "T Shirts",
             category: "sales",
-            slug: "tshirts",
+            slug: "t-shirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
             category: "sales",
-            slug: "tshirts",
+            slug: "t-shirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
             category: "sales",
-            slug: "tshirts",
+            slug: "t-shirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
             category: "sales",
-            slug: "tshirts",
+            slug: "t-shirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
             category: "sales",
-            slug: "tshirts",
+            slug: "t-shirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
             category: "sales",
-            slug: "tshirts",
+            slug: "t-shirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
             category: "sales",
-            slug: "tshirts",
+            slug: "t-shirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
             category: "sales",
-            slug: "tshirts",
+            slug: "t-shirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
             category: "sales",
-            slug: "tshirts",
+            slug: "t-shirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
             category: "sales",
-            slug: "tshirts",
+            slug: "t-shirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
             category: "sales",
-            slug: "tshirts",
+            slug: "t-shirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
             category: "sales",
-            slug: "tshirts",
+            slug: "t-shirts",
             logoLink: "/tshirts.png",
           },
           {
             name: "T Shirts",
             category: "sales",
-            slug: "tshirts",
+            slug: "t-shirts",
             logoLink: "/tshirts.png",
           },
         ]);
@@ -689,7 +689,8 @@ export default function Home() {
             <img
               src={brand.brandLogo}
               alt={brand.brandName}
-              className="w-20 h-20 md:w-40 md:h-40 object-contain rounded-lg transition shadow-xl"
+              onClick={e => router.push("/search?brand=" + brand.brandName)}
+              className="w-20 h-20 md:w-40 md:h-40 object-contain rounded-lg transition shadow-xl cursor-pointer"
             />
           )}
         />
