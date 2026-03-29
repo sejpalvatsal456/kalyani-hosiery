@@ -12,13 +12,13 @@ const AddressSchema = new Schema({
 }, { _id: false }); 
 
 const OrderItemSchema = new Schema({
-  product: { type: Types.ObjectId, ref:"Product", required: true },
+  productId: { type: Types.ObjectId, ref:"Product", required: true },
   sku: { type: String, required: true },
   quantity: { type: Number, required: true, min: 1 }
 }, { _id: false });
 
 const CartSchema = new Schema({
-  product: { type: Types.ObjectId, ref: "Product", required: true },
+  productId: { type: Types.ObjectId, ref: "Product", required: true },
   sku: { type: String, required: true },
   quantity: { type: Number, required: true, min: 1 }
 }, { _id: false });
@@ -65,14 +65,15 @@ const UserSchema = new Schema({
 // Category Model
 const CategorySchema = new Schema({
   name: { type: String, required: true },
-  slug: { type: String, required: true }
+  slug: { type: String, required: true, unique: true },
+  theme: { type: String, required: true }
 }, { timestamps: true });
 
 // Subcategory Model
 const SubcategorySchema = new Schema({
   name: { type: String, required: true },
-  category: { type: Types.ObjectId, ref: 'Category', required: true },
-  slug: { type: String, required: true },
+  categoryId: { type: Types.ObjectId, ref: 'Category', required: true },
+  slug: { type: String, required: true, slug: true },
   logoLink: { type: String, required: true }
 }, { timestamps: true });
 
@@ -84,22 +85,23 @@ const BrandSchema = new Schema({
 // Product Model
 const ProductSchema = new Schema({
   productName: { type: String, required: true },
-  slug: { type: String, required: true },
-  category: { type: Types.ObjectId, ref: 'Category', required: true },
-  subcategory: { type: Types.ObjectId, ref: 'Subcategory', required: true },
-  brand: { type: Types.ObjectId, ref: "Brand", required: true },
+  slug: { type: String, required: true, unique: true },
+  categoryId: { type: Types.ObjectId, ref: 'Category', required: true },
+  subcategoryId: { type: Types.ObjectId, ref: 'Subcategory', required: true },
+  brandId: { type: Types.ObjectId, ref: "Brand", required: true },
   thumbnail: { type: String, required: true }, 
   tags: { type: [String], default: [] },
   varients: { type: [VarietySchema], default: [] },
   desc: {
     type: [{ key: String, value: String }],
     default: []
-  }
+  },
+  loc: { type: String, required: true }
 }, { timestamps: true });
 
 // Order Model
 const OrderSchema = new Schema({
-  user: { type: Types.ObjectId, ref: 'User', required: true },
+  userId: { type: Types.ObjectId, ref: 'User', required: true },
   items: { 
     type: [OrderItemSchema], 
     validate: [(val: any[]) => val.length >= 1, 'Order must contain at least one item'] 

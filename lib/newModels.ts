@@ -94,7 +94,8 @@ const ProductSchema = new Schema({
   desc: {
     type: [{ key: String, value: String }],
     default: []
-  }
+  },
+  loc: { type: String, required: true }
 }, { timestamps: true });
 
 // Order Model

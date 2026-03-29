@@ -111,11 +111,12 @@ export interface IProduct {
   tags: string[];
   varients: IVariety[];
   desc: IProductDescription[];
+  loc: string;
   createdAt: string;
   updatedAt: string;
 }
 
-export interface IDisplayProduct extends Omit<IProduct, 'category' | 'subcategory' | 'brand'> {
+export interface IDisplayProduct extends Omit<IProduct, 'category' | 'subcategory' | 'brand' | 'loc'> {
   category : {
     _id?: string;
     name: string;

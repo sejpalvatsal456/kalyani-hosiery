@@ -9,6 +9,7 @@ export default function CategorySlider(
 ) {
 
   const router = useRouter();
+  console.log(subCats)
 
   return (
     <div className="w-full overflow-x-auto mb-4">
@@ -33,6 +34,11 @@ export default function CategorySlider(
             </div>
           </div>
         ))}
+        {/* {subCats.map((cat, key) => {
+          return (
+            <span>{cat.name}</span>
+          )
+        })} */}
       </div>
     </div>
   )
