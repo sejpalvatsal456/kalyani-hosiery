@@ -64,7 +64,7 @@ export default function DisplayCard({ product }: Props) {
           router.push(`/product/${product.slug}`);
         }}  
       >
-        <p className="text-sm font-semibold">{product.brandName}</p>
+        <p className="text-sm font-semibold">{product.brandId.brandName}</p>
 
         <p className="text-gray-500 text-xs line-clamp-1">
           {product.productName}
