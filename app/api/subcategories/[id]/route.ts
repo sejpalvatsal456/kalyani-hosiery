@@ -5,11 +5,13 @@ import { NextResponse } from "next/server";
 // GET ONE
 export async function GET(
   _: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   await connectDB();
 
-  const subcategory = await Subcategory.findById(params.id)
+  const {id} = await params;
+
+  const subcategory = await Subcategory.findById(id)
     .populate("categoryId");
 
   if (!subcategory) {
@@ -25,9 +27,11 @@ export async function GET(
 // UPDATE SUBCATEGORY
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   await connectDB();
+
+  const {id} = await params;
 
   const {
     name,
@@ -38,7 +42,7 @@ export async function PUT(
 
   try {
     const updated = await Subcategory.findByIdAndUpdate(
-      params.id,
+      id,
       {
         name,
         categoryId,
@@ -75,11 +79,13 @@ export async function PUT(
 // DELETE SUBCATEGORY
 export async function DELETE(
   _: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   await connectDB();
 
-  const deleted = await Subcategory.findByIdAndDelete(params.id);
+  const {id} = await params;
+
+  const deleted = await Subcategory.findByIdAndDelete(id);
 
   if (!deleted) {
     return NextResponse.json(

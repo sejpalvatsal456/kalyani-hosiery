@@ -5,11 +5,11 @@ import { NextResponse } from "next/server";
 // GET BY SLUG
 export async function GET(
   _: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   await connectDB();
 
-  const { slug } = params;
+  const { slug } = await params;
 
   if (!slug) {
     return NextResponse.json(

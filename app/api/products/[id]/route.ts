@@ -3,10 +3,12 @@ import { connectDB } from "@/lib/connectDB";
 import { Product } from "@/lib/models";
 
 // GET ONE
-export async function GET(_: Request, { params }: { params: { id: string } }) {
+export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
   await connectDB();
 
-  const product = await Product.findById(params.id)
+  const {id} = await params;
+
+  const product = await Product.findById(id)
     .populate("categoryId")
     .populate("subcategoryId")
     .populate("brandId");
@@ -15,8 +17,10 @@ export async function GET(_: Request, { params }: { params: { id: string } }) {
 }
 
 // UPDATE PRODUCT
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   await connectDB();
+
+  const {id} = await params;
 
   const {
     productName,
@@ -32,7 +36,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   } = await req.json();
 
   const updatedProduct = await Product.findByIdAndUpdate(
-    params.id,
+    id,
     {
       productName,
       slug,
@@ -52,9 +56,11 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 }
 
 // DELETE PRODUCT
-export async function DELETE(_: Request, { params }: { params: { id: string } }) {
+export async function DELETE(_: Request, { params }: { params: Promise<{ id: string }> }) {
   await connectDB();
 
-  await Product.findByIdAndDelete(params.id);
+  const {id} = await params;
+
+  await Product.findByIdAndDelete(id);
   return NextResponse.json({ message: "Product deleted" });
 }

@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 // GET BY SLUG
 export async function GET(
   _: Request,
-  { params }: { params: { categoryId: string } }
+  { params }: { params: Promise<{ categoryId: string }> }
 ) {
   await connectDB();
 

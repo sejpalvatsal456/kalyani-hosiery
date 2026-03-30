@@ -3,13 +3,15 @@ import { connectDB } from "@/lib/connectDB";
 import { NextResponse } from "next/server";
 
 // UPDATE
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   await connectDB();
+
+  const {id} = await params;
 
   const { name, slug } = await req.json();
 
   const updated = await Category.findByIdAndUpdate(
-    params.id,
+    id,
     { name, slug },
     { new: true }
   );
@@ -18,9 +20,11 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 }
 
 // DELETE
-export async function DELETE(_: Request, { params }: { params: { id: string } }) {
+export async function DELETE(_: Request, { params }: { params: Promise<{ id: string }> }) {
   await connectDB();
 
-  await Category.findByIdAndDelete(params.id);
+  const {id} = await params;
+
+  await Category.findByIdAndDelete(id);
   return NextResponse.json({ message: "Deleted" });
 }

@@ -5,7 +5,7 @@ import { Category } from "@/lib/models";
 // GET CATEGORY BY SLUG
 export async function GET(
   _: Request,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   await connectDB();
 

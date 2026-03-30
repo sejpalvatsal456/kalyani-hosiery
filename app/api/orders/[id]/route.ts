@@ -3,8 +3,10 @@ import { connectDB } from "@/lib/connectDB";
 import { NextResponse } from "next/server";
 
 // UPDATE ORDER
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   await connectDB();
+
+  const {id} = await params;
 
   const {
     items,
@@ -14,7 +16,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   } = await req.json();
 
   const updated = await Order.findByIdAndUpdate(
-    params.id,
+    id,
     {
       items,
       shippingAddress,
@@ -28,9 +30,11 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 }
 
 // DELETE ORDER
-export async function DELETE(_: Request, { params }: { params: { id: string } }) {
+export async function DELETE(_: Request, { params }: { params: Promise<{ id: string }> }) {
   await connectDB();
 
-  await Order.findByIdAndDelete(params.id);
+  const {id} = await params;
+
+  await Order.findByIdAndDelete(id);
   return NextResponse.json({ message: "Order deleted" });
 }
