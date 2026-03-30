@@ -144,7 +144,10 @@ export default function Home() {
   const displayProducts: IDisplayProduct[] = [
     {
       _id: "1",
-      brandName: "Powerlook",
+      brandId: {
+        brandName: "Powerlook",
+        brandLogo: ""
+      },
       productName: "Men Alphanumeric Printed Pullover",
       slug: "man-alphanumeric-printed-pullover",
       createdAt: "2026-02-25T14:50:24.481Z",
@@ -189,7 +192,10 @@ export default function Home() {
 
     {
       _id: "2",
-      brandName: "Powerlook",
+      brandId: {
+        brandName: "Powerlook",
+        brandLogo: ""
+      },
       productName: "Men Alphanumeric Printed Pullover",
       slug: "man-alphanumeric-printed-pullover",
       createdAt: "2026-02-25T14:50:24.481Z",
@@ -234,7 +240,10 @@ export default function Home() {
 
     {
       _id: "3",
-      brandName: "Powerlook",
+      brandId: {
+        brandName: "Powerlook",
+        brandLogo: ""
+      },
       productName: "Men Alphanumeric Printed Pullover",
       slug: "man-alphanumeric-printed-pullover",
       createdAt: "2026-02-25T14:50:24.481Z",
@@ -279,7 +288,10 @@ export default function Home() {
 
     {
       _id: "4",
-      brandName: "Powerlook",
+      brandId: {
+        brandName: "Powerlook",
+        brandLogo: ""
+      },
       productName: "Men Alphanumeric Printed Pullover",
       slug: "man-alphanumeric-printed-pullover",
       createdAt: "2026-02-25T14:50:24.481Z",
@@ -324,7 +336,10 @@ export default function Home() {
 
     {
       _id: "5",
-      brandName: "Powerlook",
+      brandId: {
+        brandName: "Powerlook",
+        brandLogo: ""
+      },
       productName: "Men Alphanumeric Printed Pullover",
       slug: "man-alphanumeric-printed-pullover",
       createdAt: "2026-02-25T14:50:24.481Z",
@@ -369,7 +384,10 @@ export default function Home() {
 
     {
       _id: "6",
-      brandName: "Powerlook",
+      brandId: {
+        brandName: "Powerlook",
+        brandLogo: ""
+      },
       productName: "Men Alphanumeric Printed Pullover",
       slug: "man-alphanumeric-printed-pullover",
       createdAt: "2026-02-25T14:50:24.481Z",
@@ -414,7 +432,10 @@ export default function Home() {
 
     {
       _id: "7",
-      brandName: "Powerlook",
+      brandId: {
+        brandName: "Powerlook",
+        brandLogo: ""
+      },
       productName: "Men Alphanumeric Printed Pullover",
       slug: "man-alphanumeric-printed-pullover",
       createdAt: "2026-02-25T14:50:24.481Z",
