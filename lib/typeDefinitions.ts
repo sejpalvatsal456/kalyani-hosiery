@@ -106,7 +106,7 @@ export interface IProduct {
   slug: string;
   category: string;
   subcategory: string;
-  brand: string;
+  brandId: string;
   thumbnail: string;
   tags: string[];
   varients: IVariety[];
@@ -116,7 +116,7 @@ export interface IProduct {
   updatedAt: string;
 }
 
-export interface IDisplayProduct extends Omit<IProduct, 'category' | 'subcategory' | 'brand' | 'loc'> {
+export interface IDisplayProduct extends Omit<IProduct, 'category' | 'subcategory' | 'brandId' | 'loc'> {
   category : {
     _id?: string;
     name: string;
@@ -128,7 +128,10 @@ export interface IDisplayProduct extends Omit<IProduct, 'category' | 'subcategor
     categoryId: string;
     slug: string;
   };
-  brandName: string
+  brandId: {
+    brandName: string,
+    brandLogo: string
+  }
 };
 
 export interface IOrder {

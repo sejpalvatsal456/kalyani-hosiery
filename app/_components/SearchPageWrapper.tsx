@@ -14,278 +14,278 @@ const sortOptions = [
   { title: "Price: Low to High", tag: "PLH" },
 ];
 
-const displayProducts: IDisplayProduct[] = [
-  {
-    _id: "1",
-    brandName: "Powerlook",
-    productName: "Men Alphanumeric Printed Pullover",
-    slug: "man-alphanumeric-printed-pullover",
-    createdAt: "2026-02-25T14:50:24.481Z",
-    updatedAt: "2026-02-25T14:50:24.481Z",
-    category: {
-      _id: "123",
-      slug: "men",
-      name: "Men",
-    },
-    subcategory: {
-      _id: "1234",
-      categoryId: "123",
-      slug: "sweaters",
-      name: "Sweaters",
-    },
-    thumbnail:
-      "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-    varients: [
-      {
-        colorID: "color1",
-        colorName: "Orange",
-        imgLinks: [
-          "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-        ],
-        colorCode: "#ff5f1f",
-        sizes: [
-          {
-            sizeID: "size1",
-            sizeName: "S",
-            sku: "sku1",
-            stock: 10,
-            mrp: 2999,
-            sellingPrice: 670,
-            discountPercent: 77,
-          },
-        ],
-      },
-    ],
-    tags: [],
-    desc: [],
-  },
+// const displayProducts: IDisplayProduct[] = [
+//   {
+//     _id: "1",
+//     brandName: "Powerlook",
+//     productName: "Men Alphanumeric Printed Pullover",
+//     slug: "man-alphanumeric-printed-pullover",
+//     createdAt: "2026-02-25T14:50:24.481Z",
+//     updatedAt: "2026-02-25T14:50:24.481Z",
+//     category: {
+//       _id: "123",
+//       slug: "men",
+//       name: "Men",
+//     },
+//     subcategory: {
+//       _id: "1234",
+//       categoryId: "123",
+//       slug: "sweaters",
+//       name: "Sweaters",
+//     },
+//     thumbnail:
+//       "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+//     varients: [
+//       {
+//         colorID: "color1",
+//         colorName: "Orange",
+//         imgLinks: [
+//           "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+//         ],
+//         colorCode: "#ff5f1f",
+//         sizes: [
+//           {
+//             sizeID: "size1",
+//             sizeName: "S",
+//             sku: "sku1",
+//             stock: 10,
+//             mrp: 2999,
+//             sellingPrice: 670,
+//             discountPercent: 77,
+//           },
+//         ],
+//       },
+//     ],
+//     tags: [],
+//     desc: [],
+//   },
 
-  {
-    _id: "2",
-    brandName: "glitchez",
-    productName: "Men Printed Polo Collar T-shirt",
-    slug: "men-printed-polo-collar-t-shirt",
-    createdAt: "2026-02-25T14:50:24.481Z",
-    updatedAt: "2026-02-25T14:50:24.481Z",
-    category: {
-      _id: "123",
-      slug: "men",
-      name: "Men",
-    },
-    subcategory: {
-      _id: "1235",
-      categoryId: "123",
-      slug: "t-shirts",
-      name: "T Shirts",
-    },
-    thumbnail:
-      "https://assets.myntassets.com/w_360,q_50,,dpr_2,fl_progressive,f_webp/assets/images/2026/MARCH/5/iBX250Hm_944daf02f6a5496e878fc3404c8253fd.jpg",
-    varients: [
-      {
-        colorID: "color1",
-        colorName: "White",
-        imgLinks: [
-          "https://assets.myntassets.com/w_360,q_50,,dpr_2,fl_progressive,f_webp/assets/images/2026/MARCH/5/iBX250Hm_944daf02f6a5496e878fc3404c8253fd.jpg",
-        ],
-        colorCode: "#ffffff",
-        sizes: [
-          {
-            sizeID: "size1",
-            sizeName: "M",
-            sku: "sku1",
-            stock: 10,
-            mrp: 1299,
-            sellingPrice: 249,
-            discountPercent: 81,
-          },
-        ],
-      },
-    ],
-    tags: [],
-    desc: [],
-  },
+//   {
+//     _id: "2",
+//     brandName: "glitchez",
+//     productName: "Men Printed Polo Collar T-shirt",
+//     slug: "men-printed-polo-collar-t-shirt",
+//     createdAt: "2026-02-25T14:50:24.481Z",
+//     updatedAt: "2026-02-25T14:50:24.481Z",
+//     category: {
+//       _id: "123",
+//       slug: "men",
+//       name: "Men",
+//     },
+//     subcategory: {
+//       _id: "1235",
+//       categoryId: "123",
+//       slug: "t-shirts",
+//       name: "T Shirts",
+//     },
+//     thumbnail:
+//       "https://assets.myntassets.com/w_360,q_50,,dpr_2,fl_progressive,f_webp/assets/images/2026/MARCH/5/iBX250Hm_944daf02f6a5496e878fc3404c8253fd.jpg",
+//     varients: [
+//       {
+//         colorID: "color1",
+//         colorName: "White",
+//         imgLinks: [
+//           "https://assets.myntassets.com/w_360,q_50,,dpr_2,fl_progressive,f_webp/assets/images/2026/MARCH/5/iBX250Hm_944daf02f6a5496e878fc3404c8253fd.jpg",
+//         ],
+//         colorCode: "#ffffff",
+//         sizes: [
+//           {
+//             sizeID: "size1",
+//             sizeName: "M",
+//             sku: "sku1",
+//             stock: 10,
+//             mrp: 1299,
+//             sellingPrice: 249,
+//             discountPercent: 81,
+//           },
+//         ],
+//       },
+//     ],
+//     tags: [],
+//     desc: [],
+//   },
 
-  {
-    _id: "3",
-    brandName: "Pepe Jeans",
-    productName: "Men Crew Neck Relaxed Fit Lounge Tshirt",
-    slug: "men-crew-neck-relaxed-fit-lounge-tshirt",
-    createdAt: "2026-02-25T14:50:24.481Z",
-    updatedAt: "2026-02-25T14:50:24.481Z",
-    category: {
-      _id: "123",
-      slug: "men",
-      name: "Men",
-    },
-    subcategory: {
-      _id: "1235",
-      categoryId: "123",
-      slug: "t-shirts",
-      name: "T Shirts",
-    },
-    thumbnail:
-      "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2026/MARCH/23/yBgZ806s_095c44aa6f344380b0e75635a0eae06f.jpg",
-    varients: [
-      {
-        colorID: "color1",
-        colorName: "Black",
-        imgLinks: [
-          "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2026/MARCH/23/yBgZ806s_095c44aa6f344380b0e75635a0eae06f.jpg",
-        ],
-        colorCode: "#000000",
-        sizes: [
-          {
-            sizeID: "size1",
-            sizeName: "S",
-            sku: "sku1",
-            stock: 10,
-            mrp: 799,
-            sellingPrice: 487,
-            discountPercent: 39,
-          },
-        ],
-      },
-    ],
-    tags: [],
-    desc: [],
-  },
+//   {
+//     _id: "3",
+//     brandName: "Pepe Jeans",
+//     productName: "Men Crew Neck Relaxed Fit Lounge Tshirt",
+//     slug: "men-crew-neck-relaxed-fit-lounge-tshirt",
+//     createdAt: "2026-02-25T14:50:24.481Z",
+//     updatedAt: "2026-02-25T14:50:24.481Z",
+//     category: {
+//       _id: "123",
+//       slug: "men",
+//       name: "Men",
+//     },
+//     subcategory: {
+//       _id: "1235",
+//       categoryId: "123",
+//       slug: "t-shirts",
+//       name: "T Shirts",
+//     },
+//     thumbnail:
+//       "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2026/MARCH/23/yBgZ806s_095c44aa6f344380b0e75635a0eae06f.jpg",
+//     varients: [
+//       {
+//         colorID: "color1",
+//         colorName: "Black",
+//         imgLinks: [
+//           "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2026/MARCH/23/yBgZ806s_095c44aa6f344380b0e75635a0eae06f.jpg",
+//         ],
+//         colorCode: "#000000",
+//         sizes: [
+//           {
+//             sizeID: "size1",
+//             sizeName: "S",
+//             sku: "sku1",
+//             stock: 10,
+//             mrp: 799,
+//             sellingPrice: 487,
+//             discountPercent: 39,
+//           },
+//         ],
+//       },
+//     ],
+//     tags: [],
+//     desc: [],
+//   },
 
-  {
-    _id: "4",
-    brandName: "Powerlook",
-    productName: "Men Alphanumeric Printed Pullover",
-    slug: "man-alphanumeric-printed-pullover",
-    createdAt: "2026-02-25T14:50:24.481Z",
-    updatedAt: "2026-02-25T14:50:24.481Z",
-    category: {
-      _id: "123",
-      slug: "men",
-      name: "Men",
-    },
-    subcategory: {
-      _id: "1234",
-      categoryId: "123",
-      slug: "sweaters",
-      name: "Sweaters",
-    },
-    thumbnail:
-      "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-    varients: [
-      {
-        colorID: "color1",
-        colorName: "Orange",
-        imgLinks: [
-          "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-        ],
-        colorCode: "#ff5f1f",
-        sizes: [
-          {
-            sizeID: "size1",
-            sizeName: "S",
-            sku: "sku1",
-            stock: 10,
-            mrp: 2999,
-            sellingPrice: 670,
-            discountPercent: 77,
-          },
-        ],
-      },
-    ],
-    tags: [],
-    desc: [],
-  },
+//   {
+//     _id: "4",
+//     brandName: "Powerlook",
+//     productName: "Men Alphanumeric Printed Pullover",
+//     slug: "man-alphanumeric-printed-pullover",
+//     createdAt: "2026-02-25T14:50:24.481Z",
+//     updatedAt: "2026-02-25T14:50:24.481Z",
+//     category: {
+//       _id: "123",
+//       slug: "men",
+//       name: "Men",
+//     },
+//     subcategory: {
+//       _id: "1234",
+//       categoryId: "123",
+//       slug: "sweaters",
+//       name: "Sweaters",
+//     },
+//     thumbnail:
+//       "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+//     varients: [
+//       {
+//         colorID: "color1",
+//         colorName: "Orange",
+//         imgLinks: [
+//           "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+//         ],
+//         colorCode: "#ff5f1f",
+//         sizes: [
+//           {
+//             sizeID: "size1",
+//             sizeName: "S",
+//             sku: "sku1",
+//             stock: 10,
+//             mrp: 2999,
+//             sellingPrice: 670,
+//             discountPercent: 77,
+//           },
+//         ],
+//       },
+//     ],
+//     tags: [],
+//     desc: [],
+//   },
 
-  {
-    _id: "5",
-    brandName: "glitchez",
-    productName: "Men Printed Polo Collar T-shirt",
-    slug: "men-printed-polo-collar-t-shirt",
-    createdAt: "2026-02-25T14:50:24.481Z",
-    updatedAt: "2026-02-25T14:50:24.481Z",
-    category: {
-      _id: "123",
-      slug: "men",
-      name: "Men",
-    },
-    subcategory: {
-      _id: "1235",
-      categoryId: "123",
-      slug: "t-shirts",
-      name: "T Shirts",
-    },
-    thumbnail:
-      "https://assets.myntassets.com/w_360,q_50,,dpr_2,fl_progressive,f_webp/assets/images/2026/MARCH/5/iBX250Hm_944daf02f6a5496e878fc3404c8253fd.jpg",
-    varients: [
-      {
-        colorID: "color1",
-        colorName: "White",
-        imgLinks: [
-          "https://assets.myntassets.com/w_360,q_50,,dpr_2,fl_progressive,f_webp/assets/images/2026/MARCH/5/iBX250Hm_944daf02f6a5496e878fc3404c8253fd.jpg",
-        ],
-        colorCode: "#ffffff",
-        sizes: [
-          {
-            sizeID: "size1",
-            sizeName: "M",
-            sku: "sku1",
-            stock: 10,
-            mrp: 1299,
-            sellingPrice: 249,
-            discountPercent: 81,
-          },
-        ],
-      },
-    ],
-    tags: [],
-    desc: [],
-  },
+//   {
+//     _id: "5",
+//     brandName: "glitchez",
+//     productName: "Men Printed Polo Collar T-shirt",
+//     slug: "men-printed-polo-collar-t-shirt",
+//     createdAt: "2026-02-25T14:50:24.481Z",
+//     updatedAt: "2026-02-25T14:50:24.481Z",
+//     category: {
+//       _id: "123",
+//       slug: "men",
+//       name: "Men",
+//     },
+//     subcategory: {
+//       _id: "1235",
+//       categoryId: "123",
+//       slug: "t-shirts",
+//       name: "T Shirts",
+//     },
+//     thumbnail:
+//       "https://assets.myntassets.com/w_360,q_50,,dpr_2,fl_progressive,f_webp/assets/images/2026/MARCH/5/iBX250Hm_944daf02f6a5496e878fc3404c8253fd.jpg",
+//     varients: [
+//       {
+//         colorID: "color1",
+//         colorName: "White",
+//         imgLinks: [
+//           "https://assets.myntassets.com/w_360,q_50,,dpr_2,fl_progressive,f_webp/assets/images/2026/MARCH/5/iBX250Hm_944daf02f6a5496e878fc3404c8253fd.jpg",
+//         ],
+//         colorCode: "#ffffff",
+//         sizes: [
+//           {
+//             sizeID: "size1",
+//             sizeName: "M",
+//             sku: "sku1",
+//             stock: 10,
+//             mrp: 1299,
+//             sellingPrice: 249,
+//             discountPercent: 81,
+//           },
+//         ],
+//       },
+//     ],
+//     tags: [],
+//     desc: [],
+//   },
 
-  {
-    _id: "6",
-    brandName: "Pepe Jeans",
-    productName: "Men Crew Neck Relaxed Fit Lounge Tshirt",
-    slug: "men-crew-neck-relaxed-fit-lounge-tshirt",
-    createdAt: "2026-02-25T14:50:24.481Z",
-    updatedAt: "2026-02-25T14:50:24.481Z",
-    category: {
-      _id: "123",
-      slug: "men",
-      name: "Men",
-    },
-    subcategory: {
-      _id: "1235",
-      categoryId: "123",
-      slug: "t-shirts",
-      name: "T Shirts",
-    },
-    thumbnail:
-      "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2026/MARCH/23/yBgZ806s_095c44aa6f344380b0e75635a0eae06f.jpg",
-    varients: [
-      {
-        colorID: "color1",
-        colorName: "Black",
-        imgLinks: [
-          "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2026/MARCH/23/yBgZ806s_095c44aa6f344380b0e75635a0eae06f.jpg",
-        ],
-        colorCode: "#000000",
-        sizes: [
-          {
-            sizeID: "size1",
-            sizeName: "S",
-            sku: "sku1",
-            stock: 10,
-            mrp: 799,
-            sellingPrice: 487,
-            discountPercent: 39,
-          },
-        ],
-      },
-    ],
-    tags: [],
-    desc: [],
-  },
+//   {
+//     _id: "6",
+//     brandName: "Pepe Jeans",
+//     productName: "Men Crew Neck Relaxed Fit Lounge Tshirt",
+//     slug: "men-crew-neck-relaxed-fit-lounge-tshirt",
+//     createdAt: "2026-02-25T14:50:24.481Z",
+//     updatedAt: "2026-02-25T14:50:24.481Z",
+//     category: {
+//       _id: "123",
+//       slug: "men",
+//       name: "Men",
+//     },
+//     subcategory: {
+//       _id: "1235",
+//       categoryId: "123",
+//       slug: "t-shirts",
+//       name: "T Shirts",
+//     },
+//     thumbnail:
+//       "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2026/MARCH/23/yBgZ806s_095c44aa6f344380b0e75635a0eae06f.jpg",
+//     varients: [
+//       {
+//         colorID: "color1",
+//         colorName: "Black",
+//         imgLinks: [
+//           "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2026/MARCH/23/yBgZ806s_095c44aa6f344380b0e75635a0eae06f.jpg",
+//         ],
+//         colorCode: "#000000",
+//         sizes: [
+//           {
+//             sizeID: "size1",
+//             sizeName: "S",
+//             sku: "sku1",
+//             stock: 10,
+//             mrp: 799,
+//             sellingPrice: 487,
+//             discountPercent: 39,
+//           },
+//         ],
+//       },
+//     ],
+//     tags: [],
+//     desc: [],
+//   },
 
-];
+// ];
 
 const getLowestPrice = (product: IDisplayProduct) => {
   return Math.min(
@@ -311,10 +311,10 @@ export default function SearchPageWrapper({
   brand: string;
   subcategory: string,
 }) {
-  // const [products, setProducts] = useState<IDisplayProduct[] | null>(null);
-  const [products, setProducts] = useState<IDisplayProduct[]>(
-    displayProducts,
-  ); // dev only
+  const [products, setProducts] = useState<IDisplayProduct[] | null>(null);
+  // const [products, setProducts] = useState<IDisplayProduct[]|null>(
+  //   displayProducts,
+  // ); // dev only
   const [filteredProducts, setFilteredProducts] = useState<IDisplayProduct[]>(
     [],
   );
@@ -336,6 +336,19 @@ export default function SearchPageWrapper({
   const [search, setSearch] = useState<string>(searchQuery);
   const [user, setUser] = useState<IUser | null>(null);
 
+  // Fetching the data product from API
+  useEffect(() => {
+    fetch('/api/products', {
+      method: "GET",
+      headers: { "Content-Type": "application/json" }
+    })
+    .then(res => res.json())
+    .then(data => {
+      setProducts(data);
+    })
+    .catch(err => console.log(err))
+  }, []);
+
   // Fetch all brands, size, colors from the products
 
   const allBrands = React.useMemo(() => {
@@ -344,8 +357,8 @@ export default function SearchPageWrapper({
     const brandMap = new Map<string, number>();
 
     products.forEach((product) => {
-      const currentCount = brandMap.get(product.brandName) || 0;
-      brandMap.set(product.brandName, currentCount + 1);
+      const currentCount = brandMap.get(product.brandId.brandName) || 0;
+      brandMap.set(product.brandId.brandName, currentCount + 1);
     });
 
     return Array.from(brandMap.entries()).map(([name, stock]) => ({
@@ -481,20 +494,20 @@ export default function SearchPageWrapper({
     
     console.log("New Product Data: ");
 
-    let newProducts:IDisplayProduct[] = products;
+    let newProducts:IDisplayProduct[] = products || [];
   
     // search result 
     if(searchQuery) {
       console.log("Search Query: " + searchQuery);
       newProducts = newProducts?.filter(p => {
-        if(p.productName.includes(searchQuery) || p.brandName.includes(searchQuery)) return p
+        if(p.productName.includes(searchQuery) || p.brandId.brandName.includes(searchQuery)) return p
       });
     }
 
     if(brand) {
       console.log("Brand: " + brand);
       newProducts = newProducts?.filter(p => {
-        if(p.brandName.toLowerCase().includes(brand.toLowerCase())) return p
+        if(p.brandId.brandName.toLowerCase().includes(brand.toLowerCase())) return p
       });
     }
 
@@ -519,7 +532,7 @@ export default function SearchPageWrapper({
 
     // Brand filter
     if (brands.length > 0) {
-      updated = updated.filter((p) => brands.includes(p.brandName));
+      updated = updated.filter((p) => brands.includes(p.brandId.brandName));
     }
 
     // Size filter
@@ -548,7 +561,7 @@ export default function SearchPageWrapper({
     // Search filter
     updated = updated.filter((p) => {
       return (
-        p.brandName.toLowerCase().includes(search.toLowerCase()) ||
+        p.brandId.brandName.toLowerCase().includes(search.toLowerCase()) ||
         p.productName.toLowerCase().includes(search.toLowerCase())
       );
     });
