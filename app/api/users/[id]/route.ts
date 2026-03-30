@@ -3,16 +3,20 @@ import { connectDB } from "@/lib/connectDB";
 import { User } from "@/lib/models";
 
 // GET ONE
-export async function GET(_: Request, { params }: { params: { id: string } }) {
+export async function GET(_: Request, { params }: { params: Promise<{ id: string }> }) {
   await connectDB();
 
-  const user = await User.findById(params.id).populate("orders");
+  const {id} = await params;
+
+  const user = await User.findById(id).populate("orders");
   return NextResponse.json(user);
 }
 
 // UPDATE USER
-export async function PUT(req: Request, { params }: { params: { id: string } }) {
+export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
   await connectDB();
+
+  const {id} = await params;
 
   const {
     name,
@@ -23,7 +27,7 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
   } = await req.json();
 
   const updatedUser = await User.findByIdAndUpdate(
-    params.id,
+    id,
     { name, phone, email, address, cart },
     { new: true }
   );
@@ -32,9 +36,11 @@ export async function PUT(req: Request, { params }: { params: { id: string } }) 
 }
 
 // DELETE USER
-export async function DELETE(_: Request, { params }: { params: { id: string } }) {
+export async function DELETE(_: Request, { params }: { params: Promise<{ id: string }> }) {
   await connectDB();
 
-  await User.findByIdAndDelete(params.id);
+  const {id} = await params;
+
+  await User.findByIdAndDelete(id);
   return NextResponse.json({ message: "User deleted" });
 }
