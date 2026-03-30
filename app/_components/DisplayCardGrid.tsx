@@ -19,7 +19,7 @@ export function mapProductToCard(product: IDisplayProduct): IProductCard {
 
   return {
     id: product._id || "",
-    brand: product.brandName,
+    brand: product.brandId.brandName,
     name: product.productName,
     image: variant.imgLinks[0] || product.thumbnail,
     price: size.sellingPrice,
