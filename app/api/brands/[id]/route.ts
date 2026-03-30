@@ -6,11 +6,13 @@ import { NextResponse } from "next/server";
 // 🔹 GET BRAND BY ID
 export async function GET(
   _: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   await connectDB();
 
-  const brand = await Brand.findById(params.id);
+  const { id } = await params;
+
+  const brand = await Brand.findById(id);
 
   if (!brand) {
     return NextResponse.json(
@@ -26,9 +28,11 @@ export async function GET(
 // 🔹 UPDATE BRAND
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   await connectDB();
+
+  const {id} = await params;
 
   const { brandName, brandLogo } = await req.json();
 
@@ -41,7 +45,7 @@ export async function PUT(
   }
 
   const updatedBrand = await Brand.findByIdAndUpdate(
-    params.id,
+    id,
     { brandName, brandLogo },
     { new: true }
   );
@@ -60,11 +64,13 @@ export async function PUT(
 // 🔹 DELETE BRAND
 export async function DELETE(
   _: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   await connectDB();
 
-  const deletedBrand = await Brand.findByIdAndDelete(params.id);
+  const {id} = await params;
+
+  const deletedBrand = await Brand.findByIdAndDelete(id);
 
   if (!deletedBrand) {
     return NextResponse.json(
