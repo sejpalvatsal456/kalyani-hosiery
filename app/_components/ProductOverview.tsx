@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import { usePathname, useRouter } from "next/navigation";
 import { IDisplayProduct, IProduct, IUser } from "@/lib/typeDefinitions";
+import BannerSlider from "./BannerSlider";
+import ProductPreviewSlider from "./ProductPreviewSlider";
 
 const getDiscount = (mrp: number, price: number) => {
   const discount = ((mrp - price) / mrp) * 100;
@@ -143,11 +145,16 @@ export default function ProductOverview({
         <div className="h-[100vh] w-[100vw] mt-10 flex flex-col md:flex-row justify-evenly">
           {/* Photo Privews */}
           <div className="w-[100%] md:ml-0 md:w-[45vw] flex justify-center">
-            <img
+            {/* <img
               src={productData.varients[selectedColor].imgLinks[0]}
               alt="productImg"
               className="rounded-lg w-[95%]"
-            />
+            /> */}
+            <ProductPreviewSlider imageData={
+              productData.varients[selectedColor].imgLinks.map((imgLink, key) => {
+                return { id: key, image: imgLink }
+              })
+            } />
           </div>
 
           {/* Product Overview */}
