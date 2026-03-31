@@ -134,6 +134,8 @@ export interface IDisplayProduct extends Omit<IProduct, 'category' | 'subcategor
   }
 };
 
+// export interface IProductOverview extends Omit<IProduct, 'category'|'subcategory'|'brandId'>
+
 export interface IOrder {
   _id?: string;
   user: string;

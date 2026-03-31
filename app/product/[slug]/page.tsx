@@ -1,3 +1,4 @@
+import ProductOverview from '@/app/_components/ProductOverview';
 import React from 'react'
 
 export default async function ProductPrage(
@@ -8,7 +9,7 @@ export default async function ProductPrage(
 
   return (
     <div>
-      Product Slug: { slug } 
+      <ProductOverview slug={slug}  />
     </div>
   )
 }
