@@ -338,13 +338,14 @@ export default function SearchPageWrapper({
 
   // Fetching the data product from API
   useEffect(() => {
-    fetch('/api/products', {
+    
+    fetch(`/api/products/search?q=${searchQuery}&brand=${brand}&subcategory=${subcategory}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" }
     })
     .then(res => res.json())
     .then(data => {
-      setProducts(data);
+      setProducts(data.products);
     })
     .catch(err => console.log(err))
   }, []);

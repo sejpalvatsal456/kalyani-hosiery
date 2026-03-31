@@ -152,7 +152,7 @@ export default function Navbar({
             size={20} 
             className="hidden md:flex h-10 cursor-pointer" 
             onClick={(e) => {
-            router.push(`/search?serachInput=${search}`)
+            router.push(`/search?searchQuery=${search}`)
           }}
           />
         </form>
