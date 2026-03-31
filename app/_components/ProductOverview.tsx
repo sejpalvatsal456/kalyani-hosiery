@@ -63,21 +63,29 @@ export default function ProductOverview({
   const sizeListEl = productData?.varients[selectedColor].sizes.map(
     ({ sizeID, sizeName, stock }, key) => {
       return (
-        <button
+        <div
           key={key}
-          className={
-            "border-1 rounded-full border-gray-300 font-medium cursor-pointer w-20 h-10 " +
-            (selectedSize == key ? `border-none bg-[#fc2167] text-white` : "")
-          }
+          className="relative flex flex-col items-center"
           onClick={() => {
             setSelectedSize(key);
             setIsOutOfStock(
               productData.varients[selectedColor].sizes[key].stock === 0,
             );
-          }}
+          }}  
         >
-          {sizeName}
-        </button>
+          <button
+            className={
+              "border-1 block rounded-full border-gray-300 font-medium cursor-pointer text-xl w-15 h-15 " +
+              (selectedSize == key ? `border-none bg-[#fc2167] text-white` : "")
+            }
+          >
+            {sizeName}
+          </button>
+          {/* Color - #d17a00 */}
+          {stock < 10 && (
+            <span className="absolute -bottom-2 bg-[#d17a00] text-white px-2">{stock} left</span>
+          )}
+        </div>
       );
     },
   );
@@ -146,45 +154,57 @@ export default function ProductOverview({
           <div className="w-full md:w-[45vw] mt-10 ml-5 md:mt-0 md:ml-0 h-full">
             {/* Title and price display */}
 
-            <h1 className="text-3xl font-bold mb-5">{productData.brandId.brandName}</h1>
-            <span className="line-through text-gray-500">
-              ₹ {productData.varients[selectedColor].sizes[selectedSize].mrp}
-            </span>
-            <div className="flex gap-10 items-center">
-              <h1 className="text-2xl font-medium">
+            {/* <h1 className="hidden md:flex text-3xl font-bold">{productData.brandId.brandName}</h1>
+            <span className="hidden md:flex text-xl text-gray-500">
+              {productData.productName}
+            </span> */}
+
+            <p className="inline-block md:flex md:flex-col gap-2 line-clamp-2 w-[90%]">
+              <span className="md:text-3xl text-xl font-bold">{productData.brandId.brandName}</span> {" "}
+              <span className="md:text-xl text-xl text-gray-500">
+                {productData.productName}
+              </span>
+            </p>
+
+            <div className="flex flex-row items-center md:mt-5">
+              <span className="line-through text-gray-400">
+                ₹ {productData.varients[selectedColor].sizes[selectedSize].mrp}
+              </span>
+              <h1 className="text-2xl font-semibold ml-3 mr-5">
                 ₹{" "}
                 {
                   productData.varients[selectedColor].sizes[selectedSize]
                     .sellingPrice
                 }
               </h1>
-              <span className="text-sm text-white h-5 bg-green-500 px-3 rounded-full font-semibold">
-                {getDiscount(
-                  productData.varients[selectedColor].sizes[selectedSize].mrp,
-                  productData.varients[selectedColor].sizes[selectedSize]
-                    .sellingPrice,
-                )}
-                % off
+              {/* color - #ff416e to #f48a6d */}
+              <span
+                className="
+                  bg-[linear-gradient(90deg_,#ff416e_0%,#f48a6d_90%)] text-white font-bold text-lg pl-2 pr-5 inline-block [clip-path:polygon(0_0,100%_0,85%_100%,0%_100%)] rounded"
+              >
+                39% OFF!
               </span>
             </div>
 
+            <span className="text-green-600 font-bold text-md inline-block mt-3">inclusive of all taxes</span>
+
             {/* Product description */}
 
-            <span className="inline-block mt-5 text-lg">
-              {productData.productName}
-            </span>
 
             {/* Display colors */}
-            {/* FIXME: shades of white are blending to the background */}
             <div className="flex flex-col gap-4">
               <h1 className="text-lg mt-5 font-semibold">Colors</h1>
-              <div className="grid grid-cols-3 md:grid-cols-5 gap-10 px-5">
+              <div className="grid grid-cols-3 md:grid-cols-5 gap-10 px-5 w-[90%]">
                 {productData.varients.map(
                   ({ colorID, colorName, colorCode, imgLinks, sizes }, key) => {
                     return (
                       <div 
                         key={key} 
                         className="flex flex-col rounded-lg p-0"
+                        onClick={e => {
+                          setSelectedColor(key);
+                          setSelectedSize(0);
+                        }}
                       >
                         <img
                           src={imgLinks[0]}
