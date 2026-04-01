@@ -35,7 +35,7 @@ export default function ProductPreviewSlider({
   }, [current, autoSlide, interval]);
 
   return (
-    <div className="relative w-[100%] md:w-[100vw] h-[90vh] overflow-hidden rounded-2xl">
+    <div className="relative w-[100%] md:w-[100vw] h-[80vh] md:h-[90vh] overflow-hidden rounded-2xl">
       {imageData.map((banner, index) => (
         <div
           key={banner.id}

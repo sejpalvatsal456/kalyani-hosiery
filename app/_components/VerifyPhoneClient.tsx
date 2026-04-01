@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import React, { FormEvent, useState } from 'react'
 
 export default function VerifyPhoneClient(
-    { callbackUrl }: { callbackUrl: string; }
+    { callbackUrl }: { callbackUrl?: string; }
 ) {
     const router = useRouter();
 
