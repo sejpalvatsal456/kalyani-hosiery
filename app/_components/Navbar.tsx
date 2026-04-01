@@ -42,39 +42,19 @@ export default function Navbar({
   }
 
   useEffect(() => {
-    // fetch('/api/auth/me', {
-    //   method: "GET",
-    //   credentials: "include"
-    // })
-    // .then(res => res.json())
-    // .then(data => {
-    //   setIsLogin(data.login);
-    //   console.log(data.data);
-    //   setUser(data.data)
-    // })
-    // .catch(err => console.log(err));
+    fetch('/api/auth/me', {
+      method: "GET",
+      credentials: "include"
+    })
+    .then(res => res.json())
+    .then(data => {
+      setIsLogin(data.login);
+      console.log(data.data);
+      setUser(data.data)
+    })
+    .catch(err => console.log(err));
     
   }, []);
-
-  useEffect(() => {
-    // fetch('/api/categories/', { method: "GET" })
-    // .then(res => res.json())
-    // .then(data => {
-    //   let temp:string[]  = [];
-    //   data.cats.map((cat: ISubcategory) => {
-    //     temp.push(cat.name);
-    //   });
-    //   setNavLinks(temp);
-    // })
-    // .catch(err => console.log(err));
-
-  }, []);
-
-  const themeColor: string = "#fcecb6";
-  // Men - #b6d7fc
-  // Women - #fcb6c5
-  /// Kids - #fcb6b6
-  // Sales - #fcecb6
 
 
   return (
@@ -95,20 +75,6 @@ export default function Navbar({
         {/* Nav links desktop */}
         {displayNavLinks ? (
           <ul className="hidden md:flex items-center gap-10">
-            {/* {navLinks.map((name: string, key) => {
-              return (
-                <li
-                  key={key}
-                  className={
-                    "w-full h-10 text-center hover:font-medium border-[#fc2167] cursor-pointer hover:border-b-3 hover:border-[#fc2167] " +
-                    (activePage.toLowerCase() === name ? "border-b-3 text-[#fc2167]" : "")
-                  }
-                  onClick={() => setPage(name)}
-                >
-                  <span className="text-sm font-semibold">{name.toUpperCase()}</span>
-                </li>
-              );
-            })} */}
             {activePage && categories?.map((cat, key) => {
               return (
                 <li
@@ -181,26 +147,9 @@ export default function Navbar({
         </ul>
 
         {/* Profile logos - mobile */}
-        <ul className="flex md:hidden items-center gap-4 md:gap-7">
-          {/* <li 
-            className={"relative cursor-pointer" + (!isLogin ? "hidden" : "")}
-            onClick={e => router.push('/cart/')}
-          >
-            { isLogin && <FiShoppingCart size={25} /> }
-            {(user && user.cart.length > 0 && isLogin) && (
-              <div className="absolute -bottom-2 -right-3 bg-red-500 text-white text-[14px] h-[20px] min-w-[20px] flex items-center justify-center rounded-full px-1">
-                {user.cart.length}
-              </div>
-            )}
-          </li>
-          <li className="flex items-center gap-5">
-            {isLogin 
-            ? <FaRegUser className="cursor-pointer" onClick={handleUserClick} size={25} />
-            : (<button
-              className="border-2 px-3 py-2 rounded border-[#fc2167] text-[#fc2167] font-medium cursor-pointer hover:text-white hover:bg-[linear-gradient(135deg,_#fc2167,_#ef123e)] transistion-all duration-300"
-              onClick={e => router.push('/auth/login')}
-            >Login</button>) }  
-          </li> */}
+        {user 
+        ? (
+          <ul className="flex md:hidden items-center gap-4 md:gap-7">
           <li className="flex items-center md:gap-5">
             <CiBellOn size={30} />
           </li>
@@ -211,14 +160,23 @@ export default function Navbar({
                 {user?.cart.length}
               </div>
             )} */}
-            <div className="absolute -bottom-2 -right-2 bg-red-500 text-white text-[14px] h-[20px] min-w-[20px] flex items-center justify-center rounded-full px-1">
-              2
+            {user && user.cart.length > 0 && (
+              <div className="absolute -bottom-2 -right-2 bg-red-500 text-white text-[14px] h-[20px] min-w-[20px] flex items-center justify-center rounded-full px-1">
+                {user.cart.length}
               </div>
+            )}
           </li>
           <li className="flex items-center gap-5">
             <CiUser size={30} />
           </li>
         </ul>
+        ) : (
+          <button
+            className="border-2 px-5 py-2 rounded border-[#fc2167] text-[#fc2167] font-medium cursor-pointer hover:text-white hover:bg-[linear-gradient(135deg,_#fc2167,_#ef123e)] transistion-all duration-300"
+            onClick={e => router.push('/auth/login')}
+          >Login</button>
+        )
+        }
       </div>
 
       {/* Mobile links */}
