@@ -147,3 +147,10 @@ export interface IOrder {
   createdAt?: Date;
   updatedAt?: Date;
 }
+
+export type SectionType =
+  | "manage_profile"
+  | "cart"
+  | "previous_purchase"
+  | "change_password"
+  | "change_number";
