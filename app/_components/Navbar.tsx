@@ -150,9 +150,9 @@ export default function Navbar({
         {user 
         ? (
           <ul className="flex md:hidden items-center gap-4 md:gap-7">
-          <li className="flex items-center md:gap-5">
+          {/* <li className="flex items-center md:gap-5">
             <CiBellOn size={30} />
-          </li>
+          </li> */}
           <li className="flex relative items-center gap-5">
             <CiShoppingCart size={30} />
             {/* {user && user.cart.length > 0 && (
@@ -172,7 +172,7 @@ export default function Navbar({
         </ul>
         ) : (
           <button
-            className="border-2 px-5 py-2 rounded border-[#fc2167] text-[#fc2167] font-medium cursor-pointer hover:text-white hover:bg-[linear-gradient(135deg,_#fc2167,_#ef123e)] transistion-all duration-300"
+            className="flex md:hidden border-2 px-5 py-2 rounded border-[#fc2167] text-[#fc2167] font-medium cursor-pointer hover:text-white hover:bg-[linear-gradient(135deg,_#fc2167,_#ef123e)] transistion-all duration-300"
             onClick={e => router.push('/auth/login')}
           >Login</button>
         )
