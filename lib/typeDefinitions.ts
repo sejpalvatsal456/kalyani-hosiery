@@ -156,3 +156,12 @@ export type SectionType =
   | "previous_purchase"
   | "change_password"
   | "change_number";
+
+export type ItemsType = {
+  productId: string;
+  name: string;
+  color: string;
+  size: string;
+  price: number;
+  quantity: number;
+};
