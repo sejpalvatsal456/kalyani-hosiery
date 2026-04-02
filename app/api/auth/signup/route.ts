@@ -33,7 +33,7 @@ export const POST = async(req: NextRequest) => {
             email: "",
             phone: phone,
             hashedPassword: hashedPassword,
-            address: null,
+            address: "",
             cart: []
         });
 

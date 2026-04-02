@@ -10,7 +10,7 @@ export interface IAddress {
   area: string;
   city: string;
   state: string;
-  pincode: number;
+  pincode: string;
 }
 
 export interface IOrderItem {
@@ -20,7 +20,9 @@ export interface IOrderItem {
 }
 
 export interface ICart {
-  product: string;
+  productId: string;
+  colorId: string;
+  sizeId: string;
   sku: string;
   quantity: number;
 }
@@ -92,7 +94,7 @@ export interface IUser {
   name: string;
   phone: string;
   email: string;
-  address: IAddress | null;
+  address: string;
   hashedPassword: string;
   cart: ICart[];
   orders: string[];

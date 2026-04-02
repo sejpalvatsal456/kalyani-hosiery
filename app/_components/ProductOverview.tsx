@@ -48,11 +48,14 @@ export default function ProductOverview({
     const prodId = productData._id;
     const colorId = productData.varients[selectedColor].colorID;
     const sizeId = productData.varients[selectedColor].sizes[selectedSize].sizeID;
+    const sku = productData.varients[selectedColor].sizes[selectedSize].sku;
+
+    // console.log({ userId: user._id, prodId: prodId, colorId: colorId, sizeId: sizeId, sku: sku });
     
     fetch(`/api/cart`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId: user._id, prodId: prodId, colorId: colorId, sizeId: sizeId })
+      body: JSON.stringify({ userId: user._id, prodId: prodId, colorId: colorId, sizeId: sizeId, sku: sku })
     })
     .then(res => res.json())
     .then(data => {

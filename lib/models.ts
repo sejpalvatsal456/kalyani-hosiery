@@ -8,7 +8,7 @@ const AddressSchema = new Schema({
   area: { type: String, required: true },
   city: { type: String, required: true },
   state: { type: String, required: true },
-  pincode: { type: Number, required: true }
+  pincode: { type: String, required: true }
 }, { _id: false }); 
 
 const OrderItemSchema = new Schema({
@@ -19,6 +19,8 @@ const OrderItemSchema = new Schema({
 
 const CartSchema = new Schema({
   productId: { type: Types.ObjectId, ref: "Product", required: true },
+  colorId: { type: String, required: true },
+  sizeId: { type: String, required: true },
   sku: { type: String, required: true },
   quantity: { type: Number, required: true, min: 1 }
 }, { _id: false });
@@ -56,7 +58,7 @@ const UserSchema = new Schema({
   name: { type: String, required: true },
   phone: { type: String, required: true, unique: true },
   email: { type: String, unique: true, default: '' },
-  address: { type: AddressSchema, default: null },
+  address: { type: String, default: null },
   hashedPassword: { type: String, required: true },
   cart: { type: [CartSchema], default: [] },
   orders: [{ type: [Types.ObjectId], ref: 'Order' }]
@@ -82,6 +84,11 @@ const BrandSchema = new Schema({
   brandLogo: { type: String, required: true },
 }, { timestamps: true });
 
+const DescriptionSchema = new Schema({
+  key: { type: String , required: true },
+  value: { type: String , required: true }
+}, { _id: false });
+
 // Product Model
 const ProductSchema = new Schema({
   productName: { type: String, required: true },
@@ -93,7 +100,7 @@ const ProductSchema = new Schema({
   tags: { type: [String], default: [] },
   varients: { type: [VarietySchema], default: [] },
   desc: {
-    type: [{ key: String, value: String }],
+    type: [DescriptionSchema],
     default: []
   },
   loc: { type: String, required: true }

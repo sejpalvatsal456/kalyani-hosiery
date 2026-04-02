@@ -1,56 +1,71 @@
-import { IUser } from "@/lib/typeDefinitions";
+import { IAddress, IUser } from "@/lib/typeDefinitions";
 import { routerServerGlobal } from "next/dist/server/lib/router-utils/router-server-context";
 import React, { useEffect, useState } from "react";
 
 export default function ManageProfile() {
-
-  const [user, setUser] = useState<IUser|null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
 
   // FIXME: Decompose the address and split it into parts: house, *street, area, *city, *state, *pinCode
+  // const [address, setAddress] = useState<IAddress>({
+  //   house: "",
+  //   street: "",
+  //   area: "",
+  //   city: "",
+  //   state: "",
+  //   pincode: "",
+  // });
+
   const [address, setAddress] = useState<string>("");
 
-  const [msg, setMsg] = useState<string|null>(null);
-  const [success, setSuccess] = useState<string|null>(null);
+  const [msg, setMsg] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
-  const handleSubmit = async() => {
-
-    if(name === "") {
+  const handleSubmit = async () => {
+    if (name === "") {
       setMsg("Fill the name Field");
       setSuccess(null);
       return;
     }
 
-    const res = await fetch('/api/user/', {
+    const res = await fetch("/api/user/", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: name, email: email, address: address, phone: null, password: null })
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        address: address,
+        phone: null,
+        password: null,
+      }),
     });
     const data = await res.json();
-    if(!res.ok) {
+    if (!res.ok) {
       setMsg(data.msg);
       setSuccess(null);
       return;
     }
     setMsg(null);
     setSuccess("Profile Changed Successfully");
-  }
+  };
 
   useEffect(() => {
-    fetch('/api/auth/me', {
+    fetch("/api/auth/me", {
       method: "GET",
-      credentials: "include"
+      credentials: "include",
     })
-    .then(res => res.json())
-    .then(data => {
-      console.log(data.data);
-      setUser(data.data);
-      setName(data.data.name);
-      setEmail(data.data.email);
-      setAddress(data.data.address || "");
-    })
-    .catch(err => console.log(err));
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.data);
+        setUser(data.data);
+        setName(data.data.name);
+        setEmail(data.data.email);
+        setAddress(
+          data.data.address || ""
+        );
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   return (
@@ -144,12 +159,48 @@ export default function ManageProfile() {
                 Address
               </label>
             </div>
-            { msg && <span className="text-red-500">{msg}</span> }
-            { success && <span className="text-green-500">{success}</span> }
+
+            {/* House Input */}
+            {/* <div className="relative w-full ">
+              <input
+                type="text"
+                placeholder=""
+                value={address.house}
+                id="houseInput"
+                onChange={(e) =>
+                  setAddress({ ...address, house: e.target.value })
+                }
+                className="peer w-full border border-gray-300 rounded-md px-4 pt-5 pb-2 
+							text-gray-800 focus:outline-none focus:border-gray-500"
+              />
+
+              <label
+                htmlFor="houseInput"
+                className={`
+								absolute left-3 top-2 text-sm text-gray-500 transition-all
+								peer-placeholder-shown:top-4 
+								peer-placeholder-shown:text-base
+								peer-focus:top-[-9]
+								peer-focus:text-sm
+								bg-white px-1
+								${address.house ? "top-[-9] text-sm" : "top-4 text-base"}
+							`}
+              >
+                House
+              </label>
+            </div> */}
+
+            {msg && <span className="text-red-500">{msg}</span>}
+            {success && <span className="text-green-500">{success}</span>}
           </div>
 
           {/* Button */}
-          <button onClick={handleSubmit} className="bg-[#ff3f6c] w-full py-3 text-white font-semibold text-lg cursor-pointer">Save</button>
+          <button
+            onClick={handleSubmit}
+            className="bg-[#ff3f6c] w-full py-3 text-white font-semibold text-lg cursor-pointer"
+          >
+            Save
+          </button>
         </div>
       </div>
     </div>
