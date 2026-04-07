@@ -78,21 +78,24 @@ export default function CartItem({
         <div className="flex gap-4 mt-3">
           <span className="border rounded-md px-2 py-1 text-sm">Size: {size}</span>
 
-          <input
+          <div className="w-16 bg-gray-200 font-bold px-2 py-1 text-sm flex flex-row">
+            <span>Qty: </span>
+            <input
             type="number"
-            value={quantity}
-            onChange={(e) => {
-              const value = e.target.value;
-9
-              if (value === "") onQuantityChange(0); // allow temporary empty while typing
+              value={quantity}
+              onChange={(e) => {
+                const value = e.target.value;
+  9
+                if (value === "") onQuantityChange(0); // allow temporary empty while typing
 
-              const numberValue = Number(value);
-              if (numberValue >= 1) {
-                onQuantityChange(numberValue);
-              }
-            }}
-            className="w-16 border rounded-md px-2 py-1 text-sm focus:outline-none focus:border-gray-500"
-          />
+                const numberValue = Number(value);
+                if (numberValue >= 1) {
+                  onQuantityChange(numberValue);
+                }
+              }}
+              className="ml-2 focus:outline-none focus:border-gray-500"
+            />
+          </div>
         </div>
 
         {/* Pricing */}

@@ -33,11 +33,11 @@ export async function GET(req: NextRequest) {
     const cartItems = user.cart.map((item: any) => {
       const product = item.productId;
 
-      const selectedVariety = product.varients.find(
+      const selectedVarient = product.varients.find(
         (v: any) => v.colorID === item.colorId,
       );
 
-      const selectedSize = selectedVariety?.sizes.find(
+      const selectedSize = selectedVarient?.sizes.find(
         (s: any) => s.sizeID === item.sizeId,
       );
 
@@ -46,12 +46,15 @@ export async function GET(req: NextRequest) {
         brand: product.brandId.name,
         title: product.productName,
         thumbnail: product.thumbnail,
-        color: selectedVariety?.colorCode,
+        color: selectedVarient?.colorCode,
+        colorId: selectedVarient?.colorID,
         size: selectedSize?.sizeName,
+        sizeId: selectedSize?.sizeID,
         mrp: selectedSize?.mrp,
         sellingPrice: selectedSize?.sellingPrice,
+        sku: selectedSize?.sku,
         stock: selectedSize?.stock,
-        quantity: 1, // Add quantity in cart schema later
+        quantity: item.quantity, // Add quantity in cart schema later
       };
     });
 
@@ -68,31 +71,86 @@ export async function GET(req: NextRequest) {
 export const PUT = async (req: NextRequest) => {
   try {
     await connectDB();
+
     const { userId, prodId, colorId, sizeId, sku } = await req.json();
 
-    const user = await User.findOne({ _id: userId });
-    if (!user)
-      return NextResponse.json({ msg: "User doesn't found" }, { status: 404 });
+    // 🔍 Validate input
+    if (!userId || !prodId || !colorId || !sizeId || !sku) {
+      return NextResponse.json(
+        { msg: "Missing required fields" },
+        { status: 400 }
+      );
+    }
 
-    const oldCart = user.cart;
-    const newCart = [
-      ...oldCart,
-      { productId: prodId, colorId: colorId, sizeId: sizeId, sku: sku },
-    ];
-    const res = await User.findOneAndUpdate(
-      { _id: userId },
-      { $set: { cart: newCart } },
-      { new: true },
+    // 🔍 Check if user exists
+    const userExists = await User.exists({ _id: userId });
+    if (!userExists) {
+      return NextResponse.json(
+        { msg: "User not found" },
+        { status: 404 }
+      );
+    }
+
+    /**
+     * 🔥 STEP 1: Try to update existing cart item (ATOMIC)
+     *
+     * If item already exists → increment quantity
+     * This avoids duplicates AND prevents race conditions
+     */
+    const updateExisting = await User.updateOne(
+      {
+        _id: userId,
+        "cart.productId": prodId,
+        "cart.colorId": colorId,
+        "cart.sizeId": sizeId,
+      },
+      {
+        $inc: { "cart.$.quantity": 1 }, // ✅ atomic increment
+      }
     );
+
+    /**
+     * 🔍 If no existing item found → add new item
+     */
+    if (updateExisting.modifiedCount === 0) {
+      await User.updateOne(
+        { _id: userId },
+        {
+          $push: {
+            cart: {
+              productId: prodId,
+              colorId,
+              sizeId,
+              sku,
+              quantity: 1, // ✅ default quantity
+            },
+          },
+        }
+      );
+    }
+
+    /**
+     * ✅ Fetch updated cart (clean response)
+     */
+    const updatedUser = await User.findById(userId).select("cart");
 
     return NextResponse.json(
-      { msg: "Successfully updated", newCart: res.cart },
-      { status: 200 },
+      {
+        msg: "Cart updated successfully",
+        newCart: updatedUser?.cart || [],
+      },
+      { status: 200 }
     );
+
   } catch (error) {
+    console.error("Cart Update Error:", error);
+
     return NextResponse.json(
-      { msg: "Internal Server Error", error: error },
-      { status: 500 },
+      {
+        msg: "Internal Server Error",
+        error: error instanceof Error ? error.message : error,
+      },
+      { status: 500 }
     );
   }
 };

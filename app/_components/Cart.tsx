@@ -94,27 +94,17 @@ export default function Cart() {
 
   const handlePlaceOrder = async(e:FormEvent) => {
     e.preventDefault();
-    const res = await fetch('/api/createOrder', {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: selectedTotal*100 })
-    });
-    const data = await res.json();
-    if(!res.ok) {
-      alert(data.msg);
-      return;
-    }
-    console.log(data)
-    const paymentData = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-      order_id: data.order.id,
-      handler: async function (responce: any) {
 
-      }
+    const payloads = {
+      amount: selectedTotal,
+      items: selectedIds
     }
 
-    const payment = new (window as any).Razorpay(paymentData);
-    payment.open();
+    // const res = await fetch('/api/createOrder', {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ amount: selectedTotal, items: selectedIds })
+    // });
   }
 
   

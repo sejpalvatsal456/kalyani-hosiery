@@ -134,7 +134,7 @@ export default function Navbar({
             onClick={(e) => router.push("/cart/")}
           >
             <FiShoppingCart size={25} />
-            {user && user.cart.length > 0 && (
+            {user && user.cart && user.cart.length > 0 && (
               <div className="absolute -bottom-2 -right-3 bg-red-500 text-white text-[14px] h-[20px] min-w-[20px] flex items-center justify-center rounded-full px-1">
                 {user?.cart.length}
               </div>
@@ -169,7 +169,7 @@ export default function Navbar({
               }}
             >
               <CiShoppingCart size={30} />
-              {user && user.cart.length > 0 && (
+              {user && user.cart && user.cart.length > 0 && (
                 <div className="absolute -bottom-2 -right-2 bg-red-500 text-white text-[14px] h-[20px] min-w-[20px] flex items-center justify-center rounded-full px-1">
                   {user.cart.length}
                 </div>

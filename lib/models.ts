@@ -11,11 +11,6 @@ const AddressSchema = new Schema({
   pincode: { type: String, required: true }
 }, { _id: false }); 
 
-const OrderItemSchema = new Schema({
-  productId: { type: Types.ObjectId, ref:"Product", required: true },
-  sku: { type: String, required: true },
-  quantity: { type: Number, required: true, min: 1 }
-}, { _id: false });
 
 const CartSchema = new Schema({
   productId: { type: Types.ObjectId, ref: "Product", required: true },
@@ -106,11 +101,30 @@ const ProductSchema = new Schema({
   loc: { type: String, required: true }
 }, { timestamps: true });
 
+// Transaction Model
+const TransactionSchema = new Schema({
+  userId: { type: Types.ObjectId, ref: 'User', required: true },
+  transactionId: { type: String, required: true, unique: true },
+  merchantId: { type: String, required: true },
+  items: { type: [CartSchema], validate: [(val: any[]) => val.length >= 1, 'Order must contain at least one item'] },
+  amount: { type: Number, required: true, min: 0 },
+  status: {
+    type: String,
+    enum: ["PENDING", "COMPLETED", "FAILED"],
+    default: "PENDING",
+  },
+  initiatedAt: {
+    type: Date,
+    default: Date.now,
+  },
+  completedAt: Date,
+}, { timestamps: true });
+
 // Order Model
 const OrderSchema = new Schema({
   userId: { type: Types.ObjectId, ref: 'User', required: true },
   items: { 
-    type: [OrderItemSchema], 
+    type: [CartSchema], 
     validate: [(val: any[]) => val.length >= 1, 'Order must contain at least one item'] 
   },
   shippingAddress: { type: AddressSchema, required: true },
@@ -136,4 +150,5 @@ export const Category = models.Category || model("Category", CategorySchema);
 export const Subcategory = models.Subcategory || model("Subcategory", SubcategorySchema);
 export const User = models.User || model("User", UserSchema);
 export const Product = models.Product || model("Product", ProductSchema);
+export const Transaction = models.Transaction || model("Transaction", TransactionSchema);
 export const Order = models.Order || model("Order", OrderSchema);
