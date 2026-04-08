@@ -19,7 +19,7 @@ export default function PaymentResultPage() {
     setTimeout(() => {
       router.replace("/cart");
     }, 1000);
-  }, []);
+  }, [searchParams, router]);
 
   return (
     <div className="h-screen flex items-center justify-center">
