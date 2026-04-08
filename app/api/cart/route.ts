@@ -32,6 +32,7 @@ export async function GET(req: NextRequest) {
     // Transform cart data
     const cartItems = user.cart.map((item: any) => {
       const product = item.productId;
+      console.log(product);
 
       const selectedVarient = product.varients.find(
         (v: any) => v.colorID === item.colorId,
@@ -43,7 +44,7 @@ export async function GET(req: NextRequest) {
 
       return {
         productId: product._id,
-        brand: product.brandId.name,
+        brand: product.brandId.brandName,
         title: product.productName,
         thumbnail: product.thumbnail,
         color: selectedVarient?.colorCode,

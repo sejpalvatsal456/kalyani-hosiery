@@ -107,6 +107,8 @@ export default function CartPage() {
       try {
         const res = await fetch("/api/cart");
         const data = await res.json();
+        console.log("Data from API: ");
+        console.log(data.data);
         setCartItems(data.data);
       } catch (err) {
         console.error("Failed to fetch cart:", err);

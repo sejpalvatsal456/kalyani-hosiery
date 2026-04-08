@@ -48,7 +48,7 @@ export default function Navbar({
       .then((res) => res.json())
       .then((data) => {
         setIsLogin(data.login);
-        console.log(data.data);
+        // console.log(data.data);
         setUser(data.data);
       })
       .catch((err) => console.log(err));
