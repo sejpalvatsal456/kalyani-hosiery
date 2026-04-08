@@ -29,15 +29,15 @@ export default function ManageProfile() {
       return;
     }
 
-    const res = await fetch("/api/user/", {
+    // console.log(user?._id);
+
+    const res = await fetch("/api/users/"+user?._id, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name: name,
         email: email,
         address: address,
-        phone: null,
-        password: null,
       }),
     });
     const data = await res.json();
@@ -160,35 +160,6 @@ export default function ManageProfile() {
               </label>
             </div>
 
-            {/* House Input */}
-            {/* <div className="relative w-full ">
-              <input
-                type="text"
-                placeholder=""
-                value={address.house}
-                id="houseInput"
-                onChange={(e) =>
-                  setAddress({ ...address, house: e.target.value })
-                }
-                className="peer w-full border border-gray-300 rounded-md px-4 pt-5 pb-2 
-							text-gray-800 focus:outline-none focus:border-gray-500"
-              />
-
-              <label
-                htmlFor="houseInput"
-                className={`
-								absolute left-3 top-2 text-sm text-gray-500 transition-all
-								peer-placeholder-shown:top-4 
-								peer-placeholder-shown:text-base
-								peer-focus:top-[-9]
-								peer-focus:text-sm
-								bg-white px-1
-								${address.house ? "top-[-9] text-sm" : "top-4 text-base"}
-							`}
-              >
-                House
-              </label>
-            </div> */}
 
             {msg && <span className="text-red-500">{msg}</span>}
             {success && <span className="text-green-500">{success}</span>}
@@ -197,7 +168,7 @@ export default function ManageProfile() {
           {/* Button */}
           <button
             onClick={handleSubmit}
-            className="bg-[#ff3f6c] w-full py-3 text-white font-semibold text-lg cursor-pointer"
+            className="mt-6 bg-[#ff3f6c] w-full py-3 text-white font-semibold text-lg cursor-pointer"
           >
             Save
           </button>
