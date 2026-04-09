@@ -44,8 +44,7 @@ export async function PUT(
 
   const updatedUser = await User.findByIdAndUpdate(
     id,
-    { name, phone, email, address, cart, hashedPassword: hashedPassword || user.hashedPassword
-     },
+    { name, phone, email, address, cart, hashedPassword: hashedPassword || user.hashedPassword },
     { new: true },
   );
 
