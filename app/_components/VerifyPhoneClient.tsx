@@ -9,9 +9,46 @@ export default function VerifyPhoneClient(
     const router = useRouter();
 
     const [number, setNumber] = useState<string>("");
+    const [otp, setOtp] = useState<string>("");
+    const [isPhoneValid, setIsPhoneValid] = useState<boolean>(false);
+    const [msg, setMsg] = useState<string>("");
+    const [isMsgError, setIsMsgError] = useState<boolean>(false);
+    const [isOTPRequested, setIsOTPRequested] = useState<boolean>(false);
+    const [isOTPValid, setIsOTPValid] = useState<boolean>(false);
+
     const [isVerified, setIsVerified] = useState<boolean>(false);
 
+    const handleOTPRequest = async() => {
+        setMsg('');
+        const res = await fetch(`/api/auth/requestOTP?number=${number}`);
+        const data = await res.json();
+        if(!res.ok) {
+            setMsg(data.msg);
+            setIsMsgError(true);
+            setIsOTPRequested(false);
+            return;
+        }
+        setIsOTPRequested(true);
+
+    }
+
+    const handleOTPVerify = async() => {
+        setMsg('');
+        const res = await fetch(`/api/auth/verifyOTP?number=${number}&otp=${otp}`);
+        const data = await res.json();
+        if(!res.ok) {
+            setMsg(data.msg);
+            setIsMsgError(true);
+            setIsVerified(false);
+            return;
+        }
+        setIsVerified(true);
+        setMsg(data.data.Details);
+        setIsMsgError(false);
+    }
+
     const handleSubmit = async(e:FormEvent) => {
+        setMsg('');
         e.preventDefault();
         const res = await fetch('/api/auth/tempPhone', { 
             method: 'POST',
@@ -20,7 +57,8 @@ export default function VerifyPhoneClient(
             });
         const data = await res.json();
         if(!res.ok) {
-            alert(data.error);
+            setMsg(data.msg);
+            setIsMsgError(true);
             return;
         }
         console.log(data.data);
@@ -31,7 +69,7 @@ export default function VerifyPhoneClient(
     <div className='w-[100vw] h-[100vh] bg-[linear-gradient(45deg,_#faeaf1,_#fcf0e2)] flex items-center justify-center'>
         {/* gradient from - #faeaf1 to #fcf0e2 */}
         
-        <div className='bg-white p-10 rounded w-[80vw] md:w-[30vw] h-[50vh]'>
+        <div className='bg-white p-10 rounded w-[80vw] md:w-[30vw] min-h-[50vh]'>
             <h1 className='text-2xl font-semibold mb-10'>Verify Phone</h1>
             <form className='flex flex-col'>
                 <input
@@ -43,29 +81,71 @@ export default function VerifyPhoneClient(
                     onChange={e => {
                         const value = e.target.value;
                         if(value[0] === '0') {
-                            setIsVerified(false);
+                            setIsPhoneValid(false);
                             return;
                         }
                         
                         if(isNaN(parseInt(value))) {
-                            setIsVerified(false);
+                            setIsPhoneValid(false);
                             return;
                         };
                         if(parseInt(value).toString().length == 10)  {
                             console.log(value);
                             setNumber(value);
-                            setIsVerified(true);
+                            setIsPhoneValid(true);
                             return;
                         } else if(parseInt(value).toString().length > 10) {
                             return;
                         } else {
-                            setIsVerified(false);
+                            setIsPhoneValid(false);
                             setNumber(value);
                         }
                         
                     }} 
                     className='border-1 border-gray-300 focus:border-gray-500 focus:outline-none text-gray-500 text-md py-2 pl-5 rounded'
                 />
+
+                <button
+                    type="button" 
+                    onClick={handleOTPRequest}
+                    disabled={!isPhoneValid}
+                    className={'self-start mt-5 font-semibold ' + (!isPhoneValid ? "text-gray-500 cursor-not-allowed disabled" : "text-blue-400 cursor-pointer")}
+                >
+                    GET OTP
+                </button>
+
+                <input
+                    type="number"
+                    name="otp"
+                    id="otpInput"
+                    placeholder='Enter OTP... '
+                    className='border-1 border-gray-300 focus:border-gray-500 focus:outline-none text-gray-500 text-md py-2 pl-5 rounded mt-5'
+                    onChange={e => {
+                        const value = e.target.value;
+                        if(isNaN(parseInt(value))) {
+                            setIsOTPValid(false);
+                            return;
+                        };
+                        if (value.length > 6) {
+                            return;
+                        }
+                        if (value.length === 6) {
+                            setIsOTPValid(true);
+                        } else {
+                            setIsOTPValid(false);
+                        }
+                        setOtp(value);
+                    }}
+                />
+
+                <button
+                    type="button" 
+                    onClick={handleOTPVerify}
+                    disabled={!isPhoneValid || !isOTPRequested || !isOTPValid}
+                    className={'self-start mt-5 font-semibold ' + (!isPhoneValid || !isOTPRequested || !isOTPValid ? "text-gray-500 cursor-not-allowed disabled" : "text-blue-400 cursor-pointer")}
+                >
+                    VERIFY OTP
+                </button>
 
                 <button
                     type="submit"
@@ -79,8 +159,11 @@ export default function VerifyPhoneClient(
                 </button>
 
             </form>
+            <span className={'text-md inline-block mt-2 ' + (isMsgError ? 'text-red-500' : 'text-green-500')}>
+                {msg}
+            </span>
             <p className='mt-5'>
-                <span>Already have an Account?</span>
+                <span>Already have an Account? </span>
                 <span className='font-medium text-blue-500 cursor-pointer' onClick={() => router.push(`/auth/login?callbackUrl=${encodeURIComponent(callbackUrl || "")}`)}>Login</span>
             </p>
         </div>

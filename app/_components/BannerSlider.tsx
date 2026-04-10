@@ -44,7 +44,7 @@ export default function BannerSlider({
   }, [current, autoSlide, interval]);
 
   return (
-    <div className="relative w-[100%] md:w-[100vw] h-[200px] md:h-[400px] overflow-hidden rounded-2xl">
+    <div className="relative w-[100%] md:w-[100vw] h-[200px] md:h-[400px] overflow-hidden rounded-2xl md:rounded-none">
       {banners.map((banner, index) => (
         <div
           key={banner.id}

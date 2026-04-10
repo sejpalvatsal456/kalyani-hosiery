@@ -534,7 +534,7 @@ export default function Home() {
 
       {/* Banner Slider */}
 
-      <div className="md:p-6 px-2 py-3 md:mt-10 flex justify-center">
+      <div className="md:p-6 px-2 py-3 md:mt-5 flex justify-center">
         <BannerSlider banners={banners} />
       </div>
 
