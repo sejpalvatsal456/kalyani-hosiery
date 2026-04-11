@@ -39,7 +39,7 @@ export default function page() {
       !state ||
       !pincode ||
       pincode.length !== 6 ||
-      user
+      !user
     ) {
       setIsVerified(false);
       return;
@@ -66,11 +66,21 @@ export default function page() {
       address: `${house}, ${street}, ${locality}, ${city}, ${state}, ${pincode}`,
     };
 
-    const res = fetch("/api/users/"+user?._id, {
-      method: "POST",
+    const res = await fetch("/api/users/"+user?._id, {
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
+
+    const data = await res.json();
+
+    if(!res.ok) {
+      setMsg(data.msg);
+      return;
+    }
+
+    alert("Success");
+
   };
 
   return (
