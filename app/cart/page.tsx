@@ -120,6 +120,10 @@ export default function CartPage() {
     fetchCart();
   }, []);
 
+  useEffect(() => {
+    console.log(user)
+  }, [user]);
+
   const handlePlaceOrder = async (e: FormEvent) => {
     e.preventDefault();
 
