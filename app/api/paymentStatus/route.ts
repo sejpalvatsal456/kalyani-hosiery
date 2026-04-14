@@ -88,13 +88,17 @@ export const POST = async (req: NextRequest) => {
         await user.save();
       }
 
-      return NextResponse.redirect(
+      const response = NextResponse.redirect(
         "http://localhost:3000/payment-result?status=success",
         { status: 302 }
       );
+
+      response.cookies.delete("orderId");
+
+      return response;
     } else {
       transaction.status = "FAILED";
-    await transaction.save();
+      await transaction.save();
 
       return NextResponse.redirect(
         "http://localhost:3000/payment-result?status=failed",

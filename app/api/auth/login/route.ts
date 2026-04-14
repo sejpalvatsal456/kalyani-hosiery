@@ -26,8 +26,6 @@ export const POST = async (req: NextRequest) => {
       return NextResponse.json({ msg: "Incorrect Password" }, { status: 401 });
     }
 
-    // FIXME: rewrite the code using user_token such that it only contains _id and role.
-
     const user_token = jwt.sign(
       { _id: user._id },
       JWT_SECRET,

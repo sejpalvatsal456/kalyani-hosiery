@@ -7,6 +7,7 @@ import { FormEvent, useEffect, useState } from "react";
 import CartItem from "../_components/CartItem";
 import Script from "next/script";
 import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 type CartItemType = {
   productId: string;
@@ -24,6 +25,8 @@ type CartItemType = {
   quantity: number;
 };
 
+// TODO: When user clicks to place order, if address is not given then send them to /addAddress and then to /checkout, else directly to /checkout
+
 export default function CartPage() {
   const [user, setUser] = useState<IUser | null>(null);
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
@@ -31,6 +34,8 @@ export default function CartPage() {
   const [search, setSearch] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const router = useRouter();
 
   const toggleSelection = (sku: string) => {
     setSelectedIds((prev) => {
@@ -86,8 +91,80 @@ export default function CartPage() {
     setCartItems((prev) => prev.filter((item) => item.sku !== sku)); // ✅
   };
 
+  const handlePlaceOrder = async (e: FormEvent) => {
+    e.preventDefault();
+
+    setIsLoading(true);
+
+    const items = cartItems
+      .filter((item) => selectedIds.has(item.sku)) // ✅
+      .map((item) => ({
+        productId: item.productId,
+        color: item.color,
+        colorId: item.colorId,
+        size: item.size,
+        sizeId: item.sizeId,
+        sku: item.sku,
+        price: item.sellingPrice,
+        quantity: item.quantity,
+      }));
+
+     if(!user){
+      router.push('/auth/login');
+      return;
+    }
+
+    const res = await fetch('/api/orders', {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ items: items })
+    });
+
+    const data = await res.json();
+
+    if(!res.ok) {
+      alert(data.msg);
+      return;
+    }
+
+    if(!user.address){
+      router.push('/addAddress/');
+      return;
+    }
+
+    router.push('/checkout/');
+    
+
+    // const payload = { amount: selectedTotal, items: items };
+    // console.log("Payload: ");
+    // console.log(payload);
+
+    // const res = await fetch("/api/createOrder/", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify(payload),
+    // });
+
+    // const data = await res.json();
+
+    // if (!res.ok) {
+    //   alert("Error in API response");
+    //   setIsLoading(false);
+    //   return;
+    // }
+
+    // const redirectUrl = data?.data?.instrumentResponse?.redirectInfo?.url;
+    // if (redirectUrl) window.location.href = redirectUrl;
+
+    setIsLoading(false);
+    alert(`Payment of ₹${selectedTotal} initiated successfully!`);
+  };
+
+  
+
   useEffect(() => {
     const status = sessionStorage.getItem("paymentStatus");
+    if(!status) return;
     console.log(status);
 
     if (status === "success") {
@@ -107,8 +184,9 @@ export default function CartPage() {
       try {
         const res = await fetch("/api/cart");
         const data = await res.json();
-        console.log("Data from API: ");
-        console.log(data.data);
+        // debugging shit
+        // console.log("Data from API: ");
+        // console.log(data.data);
         setCartItems(data.data);
       } catch (err) {
         console.error("Failed to fetch cart:", err);
@@ -120,52 +198,7 @@ export default function CartPage() {
     fetchCart();
   }, []);
 
-  useEffect(() => {
-    console.log(user)
-  }, [user]);
-
-  const handlePlaceOrder = async (e: FormEvent) => {
-    e.preventDefault();
-
-    setIsLoading(true);
-
-    const items = cartItems
-      .filter((item) => selectedIds.has(item.sku)) // ✅
-      .map((item) => ({
-        productId: item.productId,
-        color: item.color,
-        colorId: item.colorId,
-        size: item.size,
-        sizeId: item.sizeId,
-        sku: item.sku,
-        price: item.sellingPrice,
-        quantity: item.quantity,
-      }));
-
-    const payload = { amount: selectedTotal, items: items };
-    // console.log("Payload: ");
-    // console.log(payload);
-
-    const res = await fetch("/api/createOrder/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok) {
-      alert("Error in API response");
-      setIsLoading(false);
-      return;
-    }
-
-    const redirectUrl = data?.data?.instrumentResponse?.redirectInfo?.url;
-    if (redirectUrl) window.location.href = redirectUrl;
-
-    setIsLoading(false);
-    alert(`Payment of ₹${selectedTotal} initiated successfully!`);
-  };
+  
 
   if (loading) return <p className="text-center mt-10">Loading...</p>;
 
