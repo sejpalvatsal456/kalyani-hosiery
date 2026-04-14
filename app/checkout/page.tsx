@@ -46,6 +46,8 @@ export default function page() {
 
     const redirectUrl = data?.data?.instrumentResponse?.redirectInfo?.url;
     if (redirectUrl) window.location.href = redirectUrl;
+
+    setIsLoading(false);
   };
 
   useEffect(() => {

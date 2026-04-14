@@ -25,8 +25,6 @@ type CartItemType = {
   quantity: number;
 };
 
-// TODO: When user clicks to place order, if address is not given then send them to /addAddress and then to /checkout, else directly to /checkout
-
 export default function CartPage() {
   const [user, setUser] = useState<IUser | null>(null);
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
@@ -133,6 +131,8 @@ export default function CartPage() {
     }
 
     router.push('/checkout/');
+
+    setIsLoading(false);
     
 
     // const payload = { amount: selectedTotal, items: items };
@@ -216,7 +216,7 @@ export default function CartPage() {
       />
       <div className="flex h-full items-center justify-center">
         <Toaster />
-        <div className="w-full md:w-[90%] h-[90%] py-5 px-3 md:px-10 border-1 border-gray-300 shadow-lg overflow-y-scroll">
+        <div className="w-full md:w-[50%] h-[90%] py-5 px-3 md:px-10 border-1 border-gray-300 shadow-lg overflow-y-scroll">
           <h1 className="ml-2 md:ml-0 text-xl font-semibold">Cart</h1>
           {cartItems.length > 0 && (
             <div className="mt-10 ml-2 md:ml-0 flex flex-row gap-5">
@@ -260,7 +260,14 @@ export default function CartPage() {
           </div>
           <button
             onClick={handlePlaceOrder}
-            className="bg-[#ff3f6c] w-full py-3 text-white font-semibold text-lg cursor-pointer mt-5"
+            disabled={selectedIds.size === 0 || isLoading}
+            className={
+              "w-full py-3 text-white font-semibold text-lg mt-5"
+              + (selectedIds.size === 0 || isLoading
+                ? " cursor-not-allowed bg-[#A12743]"
+                : " cursor-pointer bg-[#ff3f6c]"
+              )
+            }
           >
             Place Order
           </button>

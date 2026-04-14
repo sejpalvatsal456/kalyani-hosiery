@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { IDisplayProduct, IProduct, IUser } from "@/lib/typeDefinitions";
 import BannerSlider from "./BannerSlider";
 import ProductPreviewSlider from "./ProductPreviewSlider";
+import toast, { Toaster } from "react-hot-toast";
 
 const getDiscount = (mrp: number, price: number) => {
   const discount = ((mrp - price) / mrp) * 100;
@@ -61,8 +62,12 @@ export default function ProductOverview({
     .then(data => {
       setUser({...user, cart: data.newCart});
     })
-    .catch(err => alert(err));
+    .catch(err => {
+      console.log(err);
+      toast.error("Failed to add in cart.")
+    });
     setIsLoading(false);
+    toast.success("Added In Cart Successful");
   };
 
   const sizeListEl = productData?.varients[selectedColor].sizes.map(
@@ -144,6 +149,7 @@ export default function ProductOverview({
         user={user}
         setUser={setUser}
       />
+      <Toaster />
       {productData ? (
         <div className="h-[100vh] w-[100vw] mt-10 flex flex-col md:flex-row justify-evenly">
           {/* Photo Privews */}

@@ -97,6 +97,7 @@ export default function Navbar({
           method="GET"
           className="flex items-center bg-[#f5f5f5] pl-3 md:pl-5 pr-5 gap-5 rounded-lg border-1 border-gray-400"
           onSubmit={(e) => {
+            if(!search) return;
             router.push(`/search?searchQuery=${search}`);
           }}
         >
@@ -122,6 +123,7 @@ export default function Navbar({
             size={20}
             className="hidden md:flex h-10 cursor-pointer"
             onClick={(e) => {
+              if(!search) return;
               router.push(`/search?searchQuery=${search}`);
             }}
           />

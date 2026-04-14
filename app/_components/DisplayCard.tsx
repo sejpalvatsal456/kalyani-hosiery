@@ -51,7 +51,12 @@ export default function DisplayCard({ product }: Props) {
           <span className="text-gray-500">19</span>
         </div> */}
 
-        <button className="absolute -bottom-2 right-3 bg-white border border-pink-400 text-pink-500 hover:bg-pink-500 hover:text-white cursor-pointer transition-all duration-300 rounded-lg px-4 py-1 flex items-center gap-1 text-sm font-medium">
+        <button 
+          className="absolute -bottom-2 right-3 bg-white border border-pink-400 text-pink-500 hover:bg-pink-500 hover:text-white cursor-pointer transition-all duration-300 rounded-lg px-4 py-1 flex items-center gap-1 text-sm font-medium"
+          onClick={(e) => {
+            router.push(`/product/${product.slug}`);
+          }}
+        >
           <ShoppingBag size={14} />
           Add
         </button>

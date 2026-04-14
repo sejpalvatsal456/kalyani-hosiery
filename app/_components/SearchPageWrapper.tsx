@@ -14,278 +14,6 @@ const sortOptions = [
   { title: "Price: Low to High", tag: "PLH" },
 ];
 
-// const displayProducts: IDisplayProduct[] = [
-//   {
-//     _id: "1",
-//     brandName: "Powerlook",
-//     productName: "Men Alphanumeric Printed Pullover",
-//     slug: "man-alphanumeric-printed-pullover",
-//     createdAt: "2026-02-25T14:50:24.481Z",
-//     updatedAt: "2026-02-25T14:50:24.481Z",
-//     category: {
-//       _id: "123",
-//       slug: "men",
-//       name: "Men",
-//     },
-//     subcategory: {
-//       _id: "1234",
-//       categoryId: "123",
-//       slug: "sweaters",
-//       name: "Sweaters",
-//     },
-//     thumbnail:
-//       "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-//     varients: [
-//       {
-//         colorID: "color1",
-//         colorName: "Orange",
-//         imgLinks: [
-//           "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-//         ],
-//         colorCode: "#ff5f1f",
-//         sizes: [
-//           {
-//             sizeID: "size1",
-//             sizeName: "S",
-//             sku: "sku1",
-//             stock: 10,
-//             mrp: 2999,
-//             sellingPrice: 670,
-//             discountPercent: 77,
-//           },
-//         ],
-//       },
-//     ],
-//     tags: [],
-//     desc: [],
-//   },
-
-//   {
-//     _id: "2",
-//     brandName: "glitchez",
-//     productName: "Men Printed Polo Collar T-shirt",
-//     slug: "men-printed-polo-collar-t-shirt",
-//     createdAt: "2026-02-25T14:50:24.481Z",
-//     updatedAt: "2026-02-25T14:50:24.481Z",
-//     category: {
-//       _id: "123",
-//       slug: "men",
-//       name: "Men",
-//     },
-//     subcategory: {
-//       _id: "1235",
-//       categoryId: "123",
-//       slug: "t-shirts",
-//       name: "T Shirts",
-//     },
-//     thumbnail:
-//       "https://assets.myntassets.com/w_360,q_50,,dpr_2,fl_progressive,f_webp/assets/images/2026/MARCH/5/iBX250Hm_944daf02f6a5496e878fc3404c8253fd.jpg",
-//     varients: [
-//       {
-//         colorID: "color1",
-//         colorName: "White",
-//         imgLinks: [
-//           "https://assets.myntassets.com/w_360,q_50,,dpr_2,fl_progressive,f_webp/assets/images/2026/MARCH/5/iBX250Hm_944daf02f6a5496e878fc3404c8253fd.jpg",
-//         ],
-//         colorCode: "#ffffff",
-//         sizes: [
-//           {
-//             sizeID: "size1",
-//             sizeName: "M",
-//             sku: "sku1",
-//             stock: 10,
-//             mrp: 1299,
-//             sellingPrice: 249,
-//             discountPercent: 81,
-//           },
-//         ],
-//       },
-//     ],
-//     tags: [],
-//     desc: [],
-//   },
-
-//   {
-//     _id: "3",
-//     brandName: "Pepe Jeans",
-//     productName: "Men Crew Neck Relaxed Fit Lounge Tshirt",
-//     slug: "men-crew-neck-relaxed-fit-lounge-tshirt",
-//     createdAt: "2026-02-25T14:50:24.481Z",
-//     updatedAt: "2026-02-25T14:50:24.481Z",
-//     category: {
-//       _id: "123",
-//       slug: "men",
-//       name: "Men",
-//     },
-//     subcategory: {
-//       _id: "1235",
-//       categoryId: "123",
-//       slug: "t-shirts",
-//       name: "T Shirts",
-//     },
-//     thumbnail:
-//       "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2026/MARCH/23/yBgZ806s_095c44aa6f344380b0e75635a0eae06f.jpg",
-//     varients: [
-//       {
-//         colorID: "color1",
-//         colorName: "Black",
-//         imgLinks: [
-//           "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2026/MARCH/23/yBgZ806s_095c44aa6f344380b0e75635a0eae06f.jpg",
-//         ],
-//         colorCode: "#000000",
-//         sizes: [
-//           {
-//             sizeID: "size1",
-//             sizeName: "S",
-//             sku: "sku1",
-//             stock: 10,
-//             mrp: 799,
-//             sellingPrice: 487,
-//             discountPercent: 39,
-//           },
-//         ],
-//       },
-//     ],
-//     tags: [],
-//     desc: [],
-//   },
-
-//   {
-//     _id: "4",
-//     brandName: "Powerlook",
-//     productName: "Men Alphanumeric Printed Pullover",
-//     slug: "man-alphanumeric-printed-pullover",
-//     createdAt: "2026-02-25T14:50:24.481Z",
-//     updatedAt: "2026-02-25T14:50:24.481Z",
-//     category: {
-//       _id: "123",
-//       slug: "men",
-//       name: "Men",
-//     },
-//     subcategory: {
-//       _id: "1234",
-//       categoryId: "123",
-//       slug: "sweaters",
-//       name: "Sweaters",
-//     },
-//     thumbnail:
-//       "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-//     varients: [
-//       {
-//         colorID: "color1",
-//         colorName: "Orange",
-//         imgLinks: [
-//           "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-//         ],
-//         colorCode: "#ff5f1f",
-//         sizes: [
-//           {
-//             sizeID: "size1",
-//             sizeName: "S",
-//             sku: "sku1",
-//             stock: 10,
-//             mrp: 2999,
-//             sellingPrice: 670,
-//             discountPercent: 77,
-//           },
-//         ],
-//       },
-//     ],
-//     tags: [],
-//     desc: [],
-//   },
-
-//   {
-//     _id: "5",
-//     brandName: "glitchez",
-//     productName: "Men Printed Polo Collar T-shirt",
-//     slug: "men-printed-polo-collar-t-shirt",
-//     createdAt: "2026-02-25T14:50:24.481Z",
-//     updatedAt: "2026-02-25T14:50:24.481Z",
-//     category: {
-//       _id: "123",
-//       slug: "men",
-//       name: "Men",
-//     },
-//     subcategory: {
-//       _id: "1235",
-//       categoryId: "123",
-//       slug: "t-shirts",
-//       name: "T Shirts",
-//     },
-//     thumbnail:
-//       "https://assets.myntassets.com/w_360,q_50,,dpr_2,fl_progressive,f_webp/assets/images/2026/MARCH/5/iBX250Hm_944daf02f6a5496e878fc3404c8253fd.jpg",
-//     varients: [
-//       {
-//         colorID: "color1",
-//         colorName: "White",
-//         imgLinks: [
-//           "https://assets.myntassets.com/w_360,q_50,,dpr_2,fl_progressive,f_webp/assets/images/2026/MARCH/5/iBX250Hm_944daf02f6a5496e878fc3404c8253fd.jpg",
-//         ],
-//         colorCode: "#ffffff",
-//         sizes: [
-//           {
-//             sizeID: "size1",
-//             sizeName: "M",
-//             sku: "sku1",
-//             stock: 10,
-//             mrp: 1299,
-//             sellingPrice: 249,
-//             discountPercent: 81,
-//           },
-//         ],
-//       },
-//     ],
-//     tags: [],
-//     desc: [],
-//   },
-
-//   {
-//     _id: "6",
-//     brandName: "Pepe Jeans",
-//     productName: "Men Crew Neck Relaxed Fit Lounge Tshirt",
-//     slug: "men-crew-neck-relaxed-fit-lounge-tshirt",
-//     createdAt: "2026-02-25T14:50:24.481Z",
-//     updatedAt: "2026-02-25T14:50:24.481Z",
-//     category: {
-//       _id: "123",
-//       slug: "men",
-//       name: "Men",
-//     },
-//     subcategory: {
-//       _id: "1235",
-//       categoryId: "123",
-//       slug: "t-shirts",
-//       name: "T Shirts",
-//     },
-//     thumbnail:
-//       "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2026/MARCH/23/yBgZ806s_095c44aa6f344380b0e75635a0eae06f.jpg",
-//     varients: [
-//       {
-//         colorID: "color1",
-//         colorName: "Black",
-//         imgLinks: [
-//           "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2026/MARCH/23/yBgZ806s_095c44aa6f344380b0e75635a0eae06f.jpg",
-//         ],
-//         colorCode: "#000000",
-//         sizes: [
-//           {
-//             sizeID: "size1",
-//             sizeName: "S",
-//             sku: "sku1",
-//             stock: 10,
-//             mrp: 799,
-//             sellingPrice: 487,
-//             discountPercent: 39,
-//           },
-//         ],
-//       },
-//     ],
-//     tags: [],
-//     desc: [],
-//   },
-
-// ];
 
 const getLowestPrice = (product: IDisplayProduct) => {
   return Math.min(
@@ -329,6 +57,7 @@ export default function SearchPageWrapper({
     title: string;
     tag: string;
   }>(sortOptions[0]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const [isSortCategoryClicked, setIsSortCategoryClicked] =
     useState<boolean>(false);
@@ -338,7 +67,7 @@ export default function SearchPageWrapper({
 
   // Fetching the data product from API
   useEffect(() => {
-    
+    setIsLoading(true);
     fetch(`/api/products/search?q=${searchQuery}&brand=${brand}&subcategory=${subcategory}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" }
@@ -347,7 +76,8 @@ export default function SearchPageWrapper({
     .then(data => {
       setProducts(data.products);
     })
-    .catch(err => console.log(err))
+    .catch(err => console.log(err));
+    setIsLoading(false);
   }, []);
 
   // Fetch all brands, size, colors from the products
@@ -452,43 +182,6 @@ export default function SearchPageWrapper({
       </li>
     );
   });
-
-  // useEffect(() => {
-  //   fetch(`/api/subcategories/${categoryName}/${subcategoryName}`, {
-  //     method: "GET",
-  //   })
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       const products:ProductApiType[] = data.products;
-  //       const displayProducts = products.map(product => {
-  //         return {
-  //           _id: product._id,
-  //           brandName: product.brandId.name,
-  //           productName: product.productName,
-  //           categoryId: {
-  //             _id: product.categoryId._id,
-  //             name: product.categoryId.name
-  //           },
-  //           subcategoryId: {
-  //             _id: product.subcategoryId._id,
-  //             categoryId: product.subcategoryId.categoryId,
-  //             name: product.subcategoryId.name
-  //           },
-  //           thumbnail: product.thumbnail,
-  //           variety: product.variety,
-  //           desc: product.desc,
-  //           createdAt: product.createdAt,
-  //           updatedAt: product.updatedAt
-  //         }
-  //       });
-  //       setProducts(displayProducts);
-  //       setFilteredProducts(data.products);
-  //     })
-  //     .catch((err) => alert(err));
-  // }, [categoryName, subcategoryName]);
-
-  // Fetch the data from the api
-  // DEVONLY: The data is getting fetched from fixed data
 
   useEffect(() => {
 
@@ -704,7 +397,16 @@ export default function SearchPageWrapper({
             style={{ marginBottom: "5rem" }}
             className="w-full md:px-3 md:py-3 md:border-t-1 border-gray-300"
           >
-            <DisplayCardGrid products={filteredProducts} />
+            {
+              !isLoading
+              ? (
+                filteredProducts.length > 0 
+                ? <DisplayCardGrid products={filteredProducts} />
+                : <p>No Products Found.</p>
+              ) : (
+                <p>Loading...</p>
+              )
+            }
           </div>
         </div>
 
