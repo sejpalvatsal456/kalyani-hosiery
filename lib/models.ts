@@ -20,7 +20,6 @@ const CartSchema = new Schema(
     colorId: { type: String, required: true },
     sizeId: { type: String, required: true },
     sku: { type: String, required: true },
-    mrp: { type: Number, required: true },
     quantity: { type: Number, required: true, min: 1 },
   },
   { _id: false },
@@ -183,7 +182,7 @@ const OrderSchema = new Schema({
     enum: ["pending", "placed", "processing", "delivered", "cancelled"],
     default: "pending",
   },
-});
+}, { timestamps: true });
 
 const checkoutSessionSchema = new Schema(
   {

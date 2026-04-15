@@ -21,7 +21,8 @@ const getTotalMRP = (products: IProduct[], items: IItems[]) => {
     const selectedSize = selectVarient?.sizes.find(
       (s) => s.sizeID === items[key].sizeId
     );
-    sum += selectedSize?.mrp || 0;
+    
+    sum += (selectedSize?.mrp || 0)*items[key].quantity;
   });
 
   return sum;
@@ -36,7 +37,13 @@ const getTotalSellingPrice = (products: IProduct[], items: IItems[]) => {
     const selectedSize = selectVarient?.sizes.find(
       (s) => s.sizeID === items[key].sizeId
     );
-    sum += selectedSize?.sellingPrice || 0;
+    const item = items.find(
+      (i) => i.productId === product._id?.toString()
+    );
+    console.log(product._id === items[0].productId)
+    console.log(item)
+    console.log({selectedSize, quantity: item?.quantity});
+    sum += (selectedSize?.sellingPrice || 0)*(item?.quantity || 0);
   });
 
   return sum;

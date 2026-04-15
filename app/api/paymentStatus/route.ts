@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import { connectDB } from "@/lib/connectDB";
-import { Transaction, User } from "@/lib/models";
+import { Order, Transaction, User } from "@/lib/models";
 
 const PHONEPE_MERCHANT_ID = process.env.PHONEPE_MERCHANT_ID as string;
 const PHONEPE_SALTKEY = process.env.PHONEPE_SALTKEY as string;
@@ -95,10 +95,28 @@ export const POST = async (req: NextRequest) => {
 
       response.cookies.delete("orderId");
 
+      const order = Order.create({
+        userId: user._id,
+        items: transaction.items,
+        shippingAddress: user.address,
+        paymentStatus: "paid",
+        orderStatus: "placed"
+      });
+
       return response;
     } else {
       transaction.status = "FAILED";
       await transaction.save();
+
+      const user = await User.findById(transaction.userId);
+
+      const order = Order.create({
+        userId: user._id,
+        items: transaction.items,
+        shippingAddress: user.address,
+        paymentStatus: "failed",
+        orderStatus: "pending"
+      });
 
       return NextResponse.redirect(
         "http://localhost:3000/payment-result?status=failed",
