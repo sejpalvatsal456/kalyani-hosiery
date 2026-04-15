@@ -1,4 +1,4 @@
-import ProfilePageWrapper from '../_components/ProfilePageWrapper';
+import ProfilePageWrapper from "../_components/ProfilePageWrapper";
 
 export default async function page(
   { searchParams } : { searchParams: Promise<{ callbackUrl: string }> }

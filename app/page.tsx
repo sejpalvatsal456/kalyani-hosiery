@@ -1,13 +1,4 @@
 "use client";
-
-import {
-  Category,
-  DisplayProductType,
-  navLinksDataType,
-  ProductDataType,
-  SubCategory,
-  User,
-} from "@/lib/typeDefinitions";
 import Header from "./_components/Header";
 import Navbar from "./_components/Navbar";
 import { useEffect, useState } from "react";
@@ -21,12 +12,29 @@ import FiveItemSlider from "./_components/FiveItemSlider";
 import { Product } from "@/lib/models";
 import { FaInstagram, FaWhatsapp, FaYoutube } from "react-icons/fa";
 import { Josefin_Sans } from "next/font/google";
+import {
+  ICategory,
+  IDisplayProduct,
+  ISubcategory,
+  IUser,
+  IBrand,
+} from "@/lib/typeDefinitions";
+import SubcategorySlider from "./_components/SubcategorySlider";
+import DisplayCardGrid from "./_components/DisplayCardGrid";
+import ItemSlider from "./_components/ItemSlider";
+import ReelsSlider from "./_components/ReelsSlider";
 
 const josefin = Josefin_Sans({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-josefin"
+  variable: "--font-josefin",
 });
+
+export interface ReelItem {
+  id: string;
+  videoUrl: string;
+  thumbnail?: string;
+}
 
 const banners = [
   {
@@ -55,338 +63,461 @@ const banners = [
   },
 ];
 
+const reels: ReelItem[] = [
+  { id: "1", videoUrl: "/reels1.mp4" },
+  { id: "2", videoUrl: "/reels2.mp4" },
+  { id: "3", videoUrl: "/reels1.mp4" },
+  { id: "4", videoUrl: "/reels2.mp4" },
+  { id: "5", videoUrl: "/reels1.mp4" },
+  { id: "6", videoUrl: "/reels2.mp4" },
+];
+
 export default function Home() {
   const router = useRouter();
 
-  const [page, setPage] = useState<string>("men");
-  const [subcategories, setSubcategories] = useState<SubCategory[] | null>(
+  const [page, setPage] = useState<ICategory | null>(null);
+  const [subcategories, setSubcategories] = useState<ISubcategory[] | null>(
     null,
   );
-  const [brands, setBrands] = useState<{ name: string; logo: string }[]>([]);
+  const [brands, setBrands] = useState<IBrand[]>([]);
+  const [categories, setCategories] = useState<ICategory[]>([]);
   const [search, setSearch] = useState<string>("");
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
 
   // Fetch the brand data
 
   useEffect(() => {
-    fetch("/api/brand/", {
+    fetch("/api/brands/", {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log("Brand data from API: ")
         console.log(data);
-        setBrands(data.data);
+        setBrands(data);
       })
       .catch((err) => console.log(err));
+
+    // Men - #b6d7fc
+    // Women - #fcb6c5
+    /// Kids - #fcb6b6
+    // Sales - #fcecb6
+
+    fetch('/api/categories/', {
+      method: "GET",
+      headers: { "Content-Type": "application/json" }
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log("Category Data from API: ");
+      console.log(data);
+      setCategories(data);
+      setPage(data[0]);
+    })
+    .catch(err => console.log(err));
+
   }, []);
 
-  // Fetch the categories data as per page state
+  // Dev only - Fetch the categories data as per page state
 
   useEffect(() => {
-    fetch("/api/subcategories/" + page.toLowerCase(), { method: "GET" })
+    if (!page) return;
+    fetch("/api/subcategories/categoryId/" + page._id, { method: "GET" })
       .then((res) => res.json())
       .then((data) => {
-        setSubcategories(data.subCats);
+        console.log("Subcategory Data from API:");
+        console.log(data)
+        setSubcategories(data);
       })
       .catch((err) => console.log(err));
+
   }, [page]);
 
+  useEffect(() => {
+    console.log(subcategories);
+  }, [subcategories])
+
+  // Dev only category data as per page state
+
   // Dev only part - replace it when backend is completed
-  const salesProducts:DisplayProductType[] = [
+  const displayProducts: IDisplayProduct[] = [
     {
       _id: "1",
-      brandName: "Powerlook",
-      productName: "Men Alphanumeric Printed Pullover",
-      categoryId: {
-        _id: "123",
-        name: "Men"
+      brandId: {
+        brandName: "Powerlook",
+        brandLogo: ""
       },
-      subcategoryId: {
+      productName: "Men Alphanumeric Printed Pullover",
+      slug: "man-alphanumeric-printed-pullover",
+      createdAt: "2026-02-25T14:50:24.481Z",
+      updatedAt: "2026-02-25T14:50:24.481Z",
+      category: {
+        _id: "123",
+        slug: "men",
+        name: "Men",
+      },
+      subcategory: {
         _id: "1234",
         categoryId: "123",
-        name: "Sweaters"
+        slug: "sweaters",
+        name: "Sweaters",
       },
-      thumbnail: "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-      variety: [
+      thumbnail:
+        "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+      varients: [
         {
-          id: "color1",
+          colorID: "color1",
           colorName: "Orange",
-          imgLinks: ["https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg"],
-          color: "#ff5f1f",
+          imgLinks: [
+            "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+          ],
+          colorCode: "#ff5f1f",
           sizes: [
             {
-              id: "size1",
-              size: "S",
+              sizeID: "size1",
+              sizeName: "S",
+              sku: "sku1",
               stock: 10,
               mrp: 2999,
               sellingPrice: 670,
-            }
-          ]
-        }
+              discountPercent: 77,
+            },
+          ],
+        },
       ],
+      tags: [],
       desc: [],
-      createdAt: "",
-      updatedAt: ""
     },
 
     {
       _id: "2",
-      brandName: "Powerlook",
-      productName: "Men Alphanumeric Printed Pullover",
-      categoryId: {
-        _id: "123",
-        name: "Men"
+      brandId: {
+        brandName: "Powerlook",
+        brandLogo: ""
       },
-      subcategoryId: {
+      productName: "Men Alphanumeric Printed Pullover",
+      slug: "man-alphanumeric-printed-pullover",
+      createdAt: "2026-02-25T14:50:24.481Z",
+      updatedAt: "2026-02-25T14:50:24.481Z",
+      category: {
+        _id: "123",
+        slug: "men",
+        name: "Men",
+      },
+      subcategory: {
         _id: "1234",
         categoryId: "123",
-        name: "Sweaters"
+        slug: "sweaters",
+        name: "Sweaters",
       },
-      thumbnail: "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-      variety: [
+      thumbnail:
+        "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+      varients: [
         {
-          id: "color1",
+          colorID: "color1",
           colorName: "Orange",
-          imgLinks: ["https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg"],
-          color: "#ff5f1f",
+          imgLinks: [
+            "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+          ],
+          colorCode: "#ff5f1f",
           sizes: [
             {
-              id: "size1",
-              size: "S",
+              sizeID: "size1",
+              sizeName: "S",
+              sku: "sku1",
               stock: 10,
               mrp: 2999,
               sellingPrice: 670,
-            }
-          ]
-        }
+              discountPercent: 77,
+            },
+          ],
+        },
       ],
+      tags: [],
       desc: [],
-      createdAt: "",
-      updatedAt: ""
     },
 
     {
       _id: "3",
-      brandName: "Powerlook",
-      productName: "Men Alphanumeric Printed Pullover",
-      categoryId: {
-        _id: "123",
-        name: "Men"
+      brandId: {
+        brandName: "Powerlook",
+        brandLogo: ""
       },
-      subcategoryId: {
+      productName: "Men Alphanumeric Printed Pullover",
+      slug: "man-alphanumeric-printed-pullover",
+      createdAt: "2026-02-25T14:50:24.481Z",
+      updatedAt: "2026-02-25T14:50:24.481Z",
+      category: {
+        _id: "123",
+        slug: "men",
+        name: "Men",
+      },
+      subcategory: {
         _id: "1234",
         categoryId: "123",
-        name: "Sweaters"
+        slug: "sweaters",
+        name: "Sweaters",
       },
-      thumbnail: "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-      variety: [
+      thumbnail:
+        "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+      varients: [
         {
-          id: "color1",
+          colorID: "color1",
           colorName: "Orange",
-          imgLinks: ["https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg"],
-          color: "#ff5f1f",
+          imgLinks: [
+            "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+          ],
+          colorCode: "#ff5f1f",
           sizes: [
             {
-              id: "size1",
-              size: "S",
+              sizeID: "size1",
+              sizeName: "S",
+              sku: "sku1",
               stock: 10,
               mrp: 2999,
               sellingPrice: 670,
-            }
-          ]
-        }
+              discountPercent: 77,
+            },
+          ],
+        },
       ],
+      tags: [],
       desc: [],
-      createdAt: "",
-      updatedAt: ""
     },
 
     {
       _id: "4",
-      brandName: "Powerlook",
-      productName: "Men Alphanumeric Printed Pullover",
-      categoryId: {
-        _id: "123",
-        name: "Men"
+      brandId: {
+        brandName: "Powerlook",
+        brandLogo: ""
       },
-      subcategoryId: {
+      productName: "Men Alphanumeric Printed Pullover",
+      slug: "man-alphanumeric-printed-pullover",
+      createdAt: "2026-02-25T14:50:24.481Z",
+      updatedAt: "2026-02-25T14:50:24.481Z",
+      category: {
+        _id: "123",
+        slug: "men",
+        name: "Men",
+      },
+      subcategory: {
         _id: "1234",
         categoryId: "123",
-        name: "Sweaters"
+        slug: "sweaters",
+        name: "Sweaters",
       },
-      thumbnail: "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-      variety: [
+      thumbnail:
+        "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+      varients: [
         {
-          id: "color1",
+          colorID: "color1",
           colorName: "Orange",
-          imgLinks: ["https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg"],
-          color: "#ff5f1f",
+          imgLinks: [
+            "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+          ],
+          colorCode: "#ff5f1f",
           sizes: [
             {
-              id: "size1",
-              size: "S",
+              sizeID: "size1",
+              sizeName: "S",
+              sku: "sku1",
               stock: 10,
               mrp: 2999,
               sellingPrice: 670,
-            }
-          ]
-        }
+              discountPercent: 77,
+            },
+          ],
+        },
       ],
+      tags: [],
       desc: [],
-      createdAt: "",
-      updatedAt: ""
-    },
-    {
-      _id: "1",
-      brandName: "Powerlook",
-      productName: "Men Alphanumeric Printed Pullover",
-      categoryId: {
-        _id: "123",
-        name: "Men"
-      },
-      subcategoryId: {
-        _id: "1234",
-        categoryId: "123",
-        name: "Sweaters"
-      },
-      thumbnail: "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-      variety: [
-        {
-          id: "color1",
-          colorName: "Orange",
-          imgLinks: ["https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg"],
-          color: "#ff5f1f",
-          sizes: [
-            {
-              id: "size1",
-              size: "S",
-              stock: 10,
-              mrp: 2999,
-              sellingPrice: 670,
-            }
-          ]
-        }
-      ],
-      desc: [],
-      createdAt: "",
-      updatedAt: ""
     },
 
     {
-      _id: "2",
-      brandName: "Powerlook",
-      productName: "Men Alphanumeric Printed Pullover",
-      categoryId: {
-        _id: "123",
-        name: "Men"
+      _id: "5",
+      brandId: {
+        brandName: "Powerlook",
+        brandLogo: ""
       },
-      subcategoryId: {
+      productName: "Men Alphanumeric Printed Pullover",
+      slug: "man-alphanumeric-printed-pullover",
+      createdAt: "2026-02-25T14:50:24.481Z",
+      updatedAt: "2026-02-25T14:50:24.481Z",
+      category: {
+        _id: "123",
+        slug: "men",
+        name: "Men",
+      },
+      subcategory: {
         _id: "1234",
         categoryId: "123",
-        name: "Sweaters"
+        slug: "sweaters",
+        name: "Sweaters",
       },
-      thumbnail: "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-      variety: [
+      thumbnail:
+        "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+      varients: [
         {
-          id: "color1",
+          colorID: "color1",
           colorName: "Orange",
-          imgLinks: ["https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg"],
-          color: "#ff5f1f",
+          imgLinks: [
+            "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+          ],
+          colorCode: "#ff5f1f",
           sizes: [
             {
-              id: "size1",
-              size: "S",
+              sizeID: "size1",
+              sizeName: "S",
+              sku: "sku1",
               stock: 10,
               mrp: 2999,
               sellingPrice: 670,
-            }
-          ]
-        }
+              discountPercent: 77,
+            },
+          ],
+        },
       ],
+      tags: [],
       desc: [],
-      createdAt: "",
-      updatedAt: ""
     },
 
     {
-      _id: "3",
-      brandName: "Powerlook",
-      productName: "Men Alphanumeric Printed Pullover",
-      categoryId: {
-        _id: "123",
-        name: "Men"
+      _id: "6",
+      brandId: {
+        brandName: "Powerlook",
+        brandLogo: ""
       },
-      subcategoryId: {
+      productName: "Men Alphanumeric Printed Pullover",
+      slug: "man-alphanumeric-printed-pullover",
+      createdAt: "2026-02-25T14:50:24.481Z",
+      updatedAt: "2026-02-25T14:50:24.481Z",
+      category: {
+        _id: "123",
+        slug: "men",
+        name: "Men",
+      },
+      subcategory: {
         _id: "1234",
         categoryId: "123",
-        name: "Sweaters"
+        slug: "sweaters",
+        name: "Sweaters",
       },
-      thumbnail: "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-      variety: [
+      thumbnail:
+        "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+      varients: [
         {
-          id: "color1",
+          colorID: "color1",
           colorName: "Orange",
-          imgLinks: ["https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg"],
-          color: "#ff5f1f",
+          imgLinks: [
+            "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+          ],
+          colorCode: "#ff5f1f",
           sizes: [
             {
-              id: "size1",
-              size: "S",
+              sizeID: "size1",
+              sizeName: "S",
+              sku: "sku1",
               stock: 10,
               mrp: 2999,
               sellingPrice: 670,
-            }
-          ]
-        }
+              discountPercent: 77,
+            },
+          ],
+        },
       ],
+      tags: [],
       desc: [],
-      createdAt: "",
-      updatedAt: ""
     },
 
     {
-      _id: "4",
-      brandName: "Powerlook",
-      productName: "Men Alphanumeric Printed Pullover",
-      categoryId: {
-        _id: "123",
-        name: "Men"
+      _id: "7",
+      brandId: {
+        brandName: "Powerlook",
+        brandLogo: ""
       },
-      subcategoryId: {
+      productName: "Men Alphanumeric Printed Pullover",
+      slug: "man-alphanumeric-printed-pullover",
+      createdAt: "2026-02-25T14:50:24.481Z",
+      updatedAt: "2026-02-25T14:50:24.481Z",
+      category: {
+        _id: "123",
+        slug: "men",
+        name: "Men",
+      },
+      subcategory: {
         _id: "1234",
         categoryId: "123",
-        name: "Sweaters"
+        slug: "sweaters",
+        name: "Sweaters",
       },
-      thumbnail: "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
-      variety: [
+      thumbnail:
+        "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+      varients: [
         {
-          id: "color1",
+          colorID: "color1",
           colorName: "Orange",
-          imgLinks: ["https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg"],
-          color: "#ff5f1f",
+          imgLinks: [
+            "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+          ],
+          colorCode: "#ff5f1f",
           sizes: [
             {
-              id: "size1",
-              size: "S",
+              sizeID: "size1",
+              sizeName: "S",
+              sku: "sku1",
               stock: 10,
               mrp: 2999,
               sellingPrice: 670,
-            }
-          ]
-        }
+              discountPercent: 77,
+            },
+          ],
+        },
       ],
+      tags: [],
       desc: [],
-      createdAt: "",
-      updatedAt: ""
-    }
-  ]
+    },
+  ];
+
+  const salesProduct = [
+    {
+      thumbnail:
+        "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+      slug: "man-alphanumeric-printed-pullover",
+      discountPercent: 70,
+    },
+    {
+      thumbnail:
+        "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+      slug: "man-alphanumeric-printed-pullover",
+      discountPercent: 70,
+    },
+    {
+      thumbnail:
+        "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+      slug: "man-alphanumeric-printed-pullover",
+      discountPercent: 70,
+    },
+    {
+      thumbnail:
+        "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+      slug: "man-alphanumeric-printed-pullover",
+      discountPercent: 70,
+    },
+    {
+      thumbnail:
+        "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+      slug: "man-alphanumeric-printed-pullover",
+      discountPercent: 70,
+    },
+  ];
 
   return (
     <>
       <Header visibility={true} />
       <Navbar
         displayNavLinks={true}
+        categories={categories}
         activePage={page}
         setPage={setPage}
         search={search}
@@ -397,110 +528,96 @@ export default function Home() {
 
       {/* Banner 1 */}
 
-      <div className="p-6 mt-10 flex justify-center">
+      {/* <div className="md:p-6 px-2 py-3 md:mt-10 flex justify-center">
         <SingleBanner banner="https://assets.myntassets.com/w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2026/FEBRUARY/27/obphjJzo_1ad3360b53864bd2beda235cf8a373c0.jpg" />
+      </div> */}
+
+      {/* Banner Slider */}
+
+      <div className="md:p-6 px-2 py-3 md:mt-5 flex justify-center">
+        <BannerSlider banners={banners} />
       </div>
 
       {/* Banner 2 */}
-      <div className="p-6 mt-10 flex justify-center">
+      <div className="md:p-6 px-6 md:mt-10 flex justify-center">
         <SingleBanner banner="https://assets.myntassets.com/w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2026/FEBRUARY/26/VUKUZgUj_b4dda5139af545218f9aea110ab7b12e.jpg" />
       </div>
 
-      {/* Brands Slider */}
-      {/* <div className="mt-10 mx-5 md:mx-10">
-        <h1 className="text-2xl font-semibold">Brands</h1>
-        <div className="md:ml-3 my-5 w-full grid grid-cols-2 md:grid-cols-7 gap-10">
-          {brands.map((brand, key) => {
-            return (
-              <div
-                key={key}
-                className="bg-gray-200 h-35 w-35 p-3 rounded-lg flex items-center justify-center cursor-pointer"
-                onClick={(e) => {
-                  router.push(`/brand/${brand.name}`);
-                }}
-              >
-                <Image
-                  src={brand.logo}
-                  alt="logo"
-                  width={100}
-                  height={100}
-                  className="object-cover"
-                />
-              </div>
-            );
-          })}
-        </div>
-      </div> */}
-
-      <div className="max-w-7xl mx-auto mt-10">
-        <FiveItemSlider
-          items={brands.map((brand, key) => {
-            return (
-              <div
-                key={key}
-                className="shadow-lg py-5 h-30 w-30 rounded-lg flex items-center justify-center cursor-pointer"
-                onClick={(e) => {
-                  router.push(`/brand/${brand.name}`);
-                }}
-              >
-                <Image
-                  src={brand.logo}
-                  alt="logo"
-                  width={100}
-                  height={100}
-                  className="object-cover"
-                />
-              </div>
-            );
-          })}
-          interval={5000}
+      <div className="max-w-7xl mt-3 mx-auto md:mt-10">
+        {/* <FiveItemSlider brands={brands} /> */}
+        <ItemSlider
+          items={brands}
+          itemCountDesktop={5}
+          itemCountMobile={3}
+          renderItem={(brand) => (
+            <img
+              src={brand.brandLogo}
+              alt={brand.brandName}
+              onClick={e => router.push("/search?brand=" + brand.brandName)}
+              className="w-20 h-20 md:w-40 md:h-40 object-contain rounded-lg transition shadow-xl cursor-pointer"
+            />
+          )}
         />
       </div>
 
       {/* Banner 3 */}
-      <div className="p-6 mt-10 flex justify-center">
+      <div className="md:p-6 px-6 md:mt-10 flex justify-center">
         <SingleBanner banner="https://assets.myntassets.com/w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2026/FEBRUARY/26/lrGEWYY7_6e08d485e91a4fd8b3a0751379af9720.jpg" />
       </div>
 
       {/* Cateogries */}
 
-      <div className="mt-10">
-        <div className="flex flex-row gap-10 mt-5 mx-5 md:mx-10">
-          {subcategories?.map((subCat, key) => {
-            return (
-              <SubcategoryButton
-                key={key}
-                name={subCat.name}
-                categoryName={page}
-              />
-            );
-          })}
-        </div>
+      <div className="md:mt-10">
+        <SubcategorySlider subCats={subcategories || []} />
       </div>
 
       {/* Banner 4 */}
-      <div className="p-6 mt-10 flex justify-center">
+      <div className="md:p-6 px-6 md:mt-10 flex justify-center">
         <SingleBanner banner="https://assets.myntassets.com/w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2026/FEBRUARY/26/VUKUZgUj_b4dda5139af545218f9aea110ab7b12e.jpg" />
       </div>
 
-      {/* Product on sales */}
-
-      <div className="mt-10 mx-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 place-items-center gap-5">
-        {salesProducts.map((product, key) => {
-          return (
-            <DisplayCard
-              key={key}
-              productData={product}
-            />
-          )
-        })}
+      <div className="max-w-7xl mt-3 mx-auto md:mt-10">
+        {/* <FiveItemSlider brands={brands} /> */}
+        <ItemSlider
+          items={salesProduct}
+          itemCountDesktop={5}
+          itemCountMobile={2}
+          renderItem={(product) => (
+            <div className="relative">
+              <img
+                src={product.thumbnail}
+                alt={product.slug}
+                className="w-40 rounded-xl object-contain transition"
+              />
+            </div>
+          )}
+        />
       </div>
+
+      {/* Banner 5 */}
+      <div className="md:p-6 px-6 md:mt-10 flex justify-center">
+        <SingleBanner banner="https://assets.myntassets.com/w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2026/FEBRUARY/26/VUKUZgUj_b4dda5139af545218f9aea110ab7b12e.jpg" />
+      </div>
+
+      <DisplayCardGrid products={displayProducts} />
+
+      <h1 className="text-center mt-8 text-3xl font-semibold">
+        Trending Products
+      </h1>
+
+      {/* Reels Section */}
+      <ReelsSlider reels={reels} />
 
       {/* Address Section */}
 
-      <div className={"my-10 h-[70vh] bg-gray-300 flex flex-row items-center justify-center md:justify-between " + josefin.className}>
-        <div className=" w-[80vw] sm:w-90 md:w-110 bg-white mx-5 md:mx-10 px-10 py-7 flex flex-col gap-5">
-          <h1 className="text-xl md:text-2xl font-meduim">"Rajaveer Imitation "</h1>
+      <div
+        className={
+          "mt-10 h-[70vh] bg-gray-300 flex flex-row items-center justify-center md:justify-between " +
+          josefin.className
+        }
+      >
+        <div className=" w-[80vw] sm:w-90 md:w-110 mx-5 md:mx-10 px-10 py-7 flex flex-col gap-5">
+          <h1 className="text-xl md:text-2xl font-meduim">"Kalyani Hosiery"</h1>
           <p className="text-sm md:text-lg">
             Kalyani Hosiery <br />
             Sir Lakhajiraj Main Road <br />
@@ -512,11 +629,16 @@ export default function Home() {
             Mon - Sat, 10:00 AM TO 9:00 PM <br />
             Sunday, 11:00 AM TO 5:00 PM
           </p>
-          <a href="/" className="text-white bg-black inline-block w-[50%] text-center py-2 px-2 mb-3">GET DIRECTION</a>
+          <a
+            href="/"
+            className="text-white bg-black inline-block w-[50%] text-center py-2 px-2 mb-3"
+          >
+            GET DIRECTION
+          </a>
         </div>
-        <img 
-          src="/brand-img.PNG" 
-          alt="" 
+        <img
+          src="/brand-img.PNG"
+          alt=""
           className="hidden md:flex md:w-[30vw] mr-10"
         />
       </div>
@@ -524,15 +646,14 @@ export default function Home() {
       {/* Footer */}
 
       <div className="w-full bg-black flex flex-col md:flex-row py-10 md:px-30 gap-20">
-
         <div className="flex flex-col gap-5 items-center md:items-start">
           <span className="text-white">About "Kalyani hosiery"</span>
           <span className="text-white flex gap-5">
-            Mo.:- 
+            Mo.:-
             <b>+91 9XXXX 8XXXX</b>
           </span>
           <span className="text-white flex gap-5">
-            Email:- 
+            Email:-
             <b>email@business.com</b>
           </span>
         </div>
@@ -540,19 +661,33 @@ export default function Home() {
         <div className="flex flex-col gap-5 items-center md:items-start">
           <span className="text-white text-xl">CUSTMOR SERVICE</span>
           <ul className="text-white flex flex-col gap-2">
-            <li className="hover:underline"><a href="/aboutus">About Us</a></li>
-            <li className="hover:underline"><a href="/search">Search</a></li>
-            <li className="hover:underline"><a href="/contactus">Contact Us</a></li>
+            <li className="hover:underline">
+              <a href="/aboutus">About Us</a>
+            </li>
+            <li className="hover:underline">
+              <a href="/search">Search</a>
+            </li>
+            <li className="hover:underline">
+              <a href="/contactus">Contact Us</a>
+            </li>
           </ul>
         </div>
 
         <div className="flex flex-col gap-5 items-center md:items-start">
           <span className="text-white text-xl">POLICIES</span>
           <ul className="text-white flex flex-col gap-2">
-            <li className="hover:underline"><a href="/policy/privacy">Privacy Policys</a></li>
-            <li className="hover:underline"><a href="/policy/return">Return & Exchange</a></li>
-            <li className="hover:underline"><a href="/policy/shipping">Shipping Policy</a></li>
-            <li className="hover:underline"><a href="/policy/service">Terms Of Service</a></li>
+            <li className="hover:underline">
+              <a href="/policy/privacy">Privacy Policys</a>
+            </li>
+            <li className="hover:underline">
+              <a href="/policy/return">Return & Exchange</a>
+            </li>
+            <li className="hover:underline">
+              <a href="/policy/shipping">Shipping Policy</a>
+            </li>
+            <li className="hover:underline">
+              <a href="/policy/service">Terms Of Service</a>
+            </li>
           </ul>
         </div>
 
@@ -562,7 +697,9 @@ export default function Home() {
             <FaYoutube size={35} />
             <FaWhatsapp size={35} />
           </div>
-          <span className="text-white text-right">&copy; 2026 Kalyani Hosiery, RAJKOT</span>
+          <span className="text-white text-right">
+            &copy; 2026 Kalyani Hosiery, RAJKOT
+          </span>
         </div>
       </div>
     </>

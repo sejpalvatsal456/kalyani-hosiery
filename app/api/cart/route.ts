@@ -3,7 +3,7 @@ import { Product, User } from "@/lib/models";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { setCookie } from "@/lib/cookies";
-import { User as UserType } from "@/lib/typeDefinitions";
+import { IUser } from "@/lib/typeDefinitions";
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     if (!user_token) {
       return NextResponse.json({ msg: "Invalid Credentials" }, { status: 500 });
     }
-    const userFromCookie = jwt.decode(user_token.value) as UserType; // temporary fix, change the type when the cookie system changes
+    const userFromCookie = jwt.decode(user_token.value) as IUser; // temporary fix, change the type when the cookie system changes
     const userId = userFromCookie._id;
 
     const user = await User.findById(userId).populate("cart.productId");
@@ -34,30 +34,34 @@ export async function GET(req: NextRequest) {
       const product = item.productId;
       console.log(product);
 
-      const selectedVariety = product.variety.find(
-        (v: any) => v.id === item.colorId,
+      const selectedVarient = product.varients.find(
+        (v: any) => v.colorID === item.colorId,
       );
 
-      const selectedSize = selectedVariety?.sizes.find(
-        (s: any) => s.id === item.sizeId,
+      const selectedSize = selectedVarient?.sizes.find(
+        (s: any) => s.sizeID === item.sizeId,
       );
 
       return {
         productId: product._id,
-        brand: product.brandId.name,
+        brand: product.brandId.brandName,
         title: product.productName,
         thumbnail: product.thumbnail,
-        color: selectedVariety?.color,
-        size: selectedSize?.size,
+        color: selectedVarient?.colorCode,
+        colorId: selectedVarient?.colorID,
+        size: selectedSize?.sizeName,
+        sizeId: selectedSize?.sizeID,
         mrp: selectedSize?.mrp,
         sellingPrice: selectedSize?.sellingPrice,
+        sku: selectedSize?.sku,
         stock: selectedSize?.stock,
-        quantity: 1, // Add quantity in cart schema later
+        quantity: item.quantity, // Add quantity in cart schema later
       };
     });
 
     return NextResponse.json({ data: cartItems }, { status: 200 });
   } catch (error) {
+    console.log(error);
     return NextResponse.json(
       { msg: "Internal Server Error", error: error },
       { status: 500 },
@@ -68,45 +72,86 @@ export async function GET(req: NextRequest) {
 export const PUT = async (req: NextRequest) => {
   try {
     await connectDB();
-    const { userId, prodId, colorId, sizeId } = await req.json();
 
-    const user = await User.findOne({ _id: userId });
-    if (!user)
-      return NextResponse.json({ msg: "User doesn't found" }, { status: 404 });
+    const { userId, prodId, colorId, sizeId, sku } = await req.json();
 
-    const oldCart = user.cart;
-    const newCart = [
-      ...oldCart,
-      { productId: prodId, colorId: colorId, sizeId: sizeId },
-    ];
-    const res = await User.findOneAndUpdate(
-      { _id: userId },
-      { $set: { cart: newCart } },
-      { new: true },
-    );
+    // 🔍 Validate input
+    if (!userId || !prodId || !colorId || !sizeId || !sku) {
+      return NextResponse.json(
+        { msg: "Missing required fields" },
+        { status: 400 }
+      );
+    }
 
-    const user_token = jwt.sign(
+    // 🔍 Check if user exists
+    const userExists = await User.exists({ _id: userId });
+    if (!userExists) {
+      return NextResponse.json(
+        { msg: "User not found" },
+        { status: 404 }
+      );
+    }
+
+    /**
+     * 🔥 STEP 1: Try to update existing cart item (ATOMIC)
+     *
+     * If item already exists → increment quantity
+     * This avoids duplicates AND prevents race conditions
+     */
+    const updateExisting = await User.updateOne(
       {
-        _id: user._id,
-        name: user.name,
-        role: user.role,
-        phone: user.phone,
-        address: user.address,
-        cart: newCart,
+        _id: userId,
+        "cart.productId": prodId,
+        "cart.colorId": colorId,
+        "cart.sizeId": sizeId,
       },
-      JWT_SECRET,
+      {
+        $inc: { "cart.$.quantity": 1 }, // ✅ atomic increment
+      }
     );
 
-    await setCookie("user_token", user_token);
+    /**
+     * 🔍 If no existing item found → add new item
+     */
+    if (updateExisting.modifiedCount === 0) {
+      await User.updateOne(
+        { _id: userId },
+        {
+          $push: {
+            cart: {
+              productId: prodId,
+              colorId,
+              sizeId,
+              sku,
+              quantity: 1, // ✅ default quantity
+            },
+          },
+        }
+      );
+    }
+
+    /**
+     * ✅ Fetch updated cart (clean response)
+     */
+    const updatedUser = await User.findById(userId).select("cart");
 
     return NextResponse.json(
-      { msg: "Successfully updated", newCart: res.cart },
-      { status: 200 },
+      {
+        msg: "Cart updated successfully",
+        newCart: updatedUser?.cart || [],
+      },
+      { status: 200 }
     );
+
   } catch (error) {
+    console.error("Cart Update Error:", error);
+
     return NextResponse.json(
-      { msg: "Internal Server Error", error: error },
-      { status: 500 },
+      {
+        msg: "Internal Server Error",
+        error: error instanceof Error ? error.message : error,
+      },
+      { status: 500 }
     );
   }
 };
@@ -129,7 +174,7 @@ export const DELETE = async (req: NextRequest) => {
     if (!user_token) {
       return NextResponse.json({ msg: "Invalid Credentials" }, { status: 500 });
     }
-    const userFromCookie = jwt.decode(user_token.value) as UserType; // temporary fix, change the type when the cookie system changes
+    const userFromCookie = jwt.decode(user_token.value) as IUser; // temporary fix, change the type when the cookie system changes
     const userId = userFromCookie._id;
 
     // Remove from cart using $pull

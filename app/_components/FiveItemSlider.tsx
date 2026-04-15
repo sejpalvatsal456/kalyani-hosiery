@@ -1,84 +1,62 @@
-"use client";
+import { IBrand } from '@/lib/typeDefinitions'
+import React, { useEffect, useState } from 'react'
 
-import { useEffect, useState } from "react";
-
-interface ResponsiveSliderProps {
-  items: React.ReactNode[];
-  interval?: number;
-}
-
-export default function ResponsiveSlider({
-  items,
-  interval = 3000,
-}: ResponsiveSliderProps) {
+export default function FiveItemSlider(
+  { brands }: { brands: IBrand[] }
+) {
+  const [index, setIndex] = useState(0);
   const [visibleItems, setVisibleItems] = useState(5);
-  const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Detect screen size
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 640) {
-        setVisibleItems(3); // Mobile
-      } else {
-        setVisibleItems(5); // Desktop
-      }
+      if (window.innerWidth < 768) setVisibleItems(3);
+      else setVisibleItems(5);
     };
 
-    handleResize(); // Run on mount
+    handleResize();
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const totalSlides = Math.ceil(items.length / visibleItems);
-
-  // Auto Slide
   useEffect(() => {
-    const slider = setInterval(() => {
-      setCurrentSlide((prev) =>
-        prev + 1 >= totalSlides ? 0 : prev + 1
-      );
-    }, interval);
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % (brands.length - visibleItems + 1));
+    }, 3000);
 
-    return () => clearInterval(slider);
-  }, [totalSlides, interval]);
-
-  const translatePercentage = currentSlide * 100;
+    return () => clearInterval(interval);
+  }, [brands.length, visibleItems]);
 
   return (
-    <div className="w-full">
-      {/* Slider */}
-      <div className="overflow-hidden">
-        <div
-          className="flex transition-transform duration-700 ease-in-out"
-          style={{
-            transform: `translateX(-${translatePercentage}%)`,
-            width: `${(items.length / visibleItems) * 90}%`,
-          }}
-        >
-          {items.map((item, index) => (
-            <div
-              key={index}
-              className={`flex-shrink-0 p-2 ${
-                visibleItems === 5 ? "w-1/5" : "w-1/3"
-              }`}
-            >
-              {item}
-            </div>
-          ))}
-        </div>
+    <div className="w-full overflow-hidden md:py-10">
+      <div
+        className="flex transition-transform duration-500 ease-in-out"
+        style={{
+          transform: `translateX(-${index * (100 / visibleItems)}%)`,
+        }}
+      >
+        {brands.map((brand, i) => (
+          <div
+            key={i}
+            className="flex justify-center items-center min-w-[33.33%] md:min-w-[20%] px-6"
+          >
+            <img
+              src={brand.brandLogo}
+              alt={brand.brandName}
+              className="w-20 h-20 object-contain transition shadow-xl"
+            />
+          </div>
+        ))}
       </div>
 
-      {/* Dots */}
-      <div className="flex justify-center mt-4 space-x-2">
-        {Array.from({ length: totalSlides }).map((_, index) => (
+      {/* dots */}
+      <div className="flex justify-center mt-6 gap-2">
+        {Array.from({ length: brands.length - visibleItems + 1 }).map((_, i) => (
           <button
-            key={index}
-            onClick={() => setCurrentSlide(index)}
-            className={`h-3 w-3 rounded-full transition-all duration-300 ${
-              currentSlide === index
-                ? "bg-black scale-110"
-                : "bg-gray-300"
+            key={i}
+            onClick={() => setIndex(i)}
+            className={`h-2 w-2 rounded-full ${
+              index === i ? "bg-black" : "bg-gray-300"
             }`}
           />
         ))}

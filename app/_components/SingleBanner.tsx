@@ -9,7 +9,7 @@ export default function SingleBanner(
       <img
         src={banner}
         alt="imgAlt"
-        className='w-[100vw]'
+        className='w-[100vw] rounded-lg'
       />
     </div>
   )

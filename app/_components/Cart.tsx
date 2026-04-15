@@ -8,9 +8,12 @@ type CartItemType = {
   title: string;
   thumbnail: string;
   color: string;
+  colorId: string;
   size: string;
+  sizeId: string;
   mrp: number;
   sellingPrice: number;
+  sku: string;
   stock?: number;
   quantity: number;
 };
@@ -18,16 +21,16 @@ type CartItemType = {
 export default function Cart() {
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-  const [loading, setLoading] = useState(true);
+  const [IsLoading, setIsLoading] = useState(true);
 
-  const toggleSelection = (productId: string) => {
-    setSelectedIds(prev => {
+  const toggleSelection = (sku: string) => {
+    setSelectedIds((prev) => {
       const next = new Set(prev);
 
-      if (next.has(productId)) {
-        next.delete(productId);
+      if (next.has(sku)) {
+        next.delete(sku);
       } else {
-        next.add(productId);
+        next.add(sku);
       }
 
       return next;
@@ -35,46 +38,44 @@ export default function Cart() {
   };
 
   const selectedTotal = cartItems
-  .filter(item => selectedIds.has(item.productId))
-  .reduce(
-    (sum, item) =>
-      sum + (item.sellingPrice ?? 0) * item.quantity,
-    0
-  );
+    .filter((item) => selectedIds.has(item.sku)) // ✅ use sku
+    .reduce((sum, item) => sum + item.sellingPrice * item.quantity, 0);
 
-  const allSelected = selectedIds.size === cartItems.length;
+  const allSelected =
+    selectedIds.size === cartItems.length && cartItems.length !== 0;
 
   const toggleSelectAll = () => {
     if (allSelected) {
       setSelectedIds(new Set());
     } else {
-      setSelectedIds(new Set(cartItems.map(i => i.productId)));
+      setSelectedIds(new Set(cartItems.map((i) => i.sku))); // ✅ sku
     }
   };
 
-  const updateQuantity = (productId: string, newQty: number) => {
-    setCartItems(prev =>
-      prev.map(item =>
-        item.productId === productId
-          ? { ...item, quantity: newQty }
-          : item
-      )
+  const updateQuantity = (sku: string, newQty: number) => {
+    setCartItems((prev) =>
+      prev.map((item) =>
+        item.sku === sku ? { ...item, quantity: newQty } : item,
+      ),
     );
   };
 
-  const onDeleteItem = async(id: string) => {
-    const res = await fetch('/api/cart', {
+  const onDeleteItem = async (sku: string) => {
+    const res = await fetch("/api/cart", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ productId: id })
+      body: JSON.stringify({ sku }), // ✅ send sku instead
     });
+
     const data = await res.json();
-    if(!res.ok) {
+
+    if (!res.ok) {
       alert(data.msg);
       return;
     }
-    setCartItems(cartItems.filter(item => item.productId !== id));
-  }
+
+    setCartItems((prev) => prev.filter((item) => item.sku !== sku)); // ✅
+  };
 
   useEffect(() => {
     const fetchCart = async () => {
@@ -85,7 +86,7 @@ export default function Cart() {
       } catch (err) {
         console.error("Failed to fetch cart:", err);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -94,32 +95,50 @@ export default function Cart() {
 
   const handlePlaceOrder = async(e:FormEvent) => {
     e.preventDefault();
-    const res = await fetch('/api/createOrder', {
+
+    setIsLoading(true);
+
+    const items = cartItems
+      .filter((item) => selectedIds.has(item.sku)) // ✅
+      .map((item) => ({
+        productId: item.productId,
+        color: item.color,
+        colorId: item.colorId,
+        size: item.size,
+        sizeId: item.sizeId,
+        sku: item.sku,
+        price: item.sellingPrice,
+        quantity: item.quantity,
+      }));
+
+    const payload = { amount: selectedTotal, items: items };
+    console.log("Payload: ");
+    console.log(payload);
+
+    const res = await fetch("/api/createOrder/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount: selectedTotal*100 })
+      body: JSON.stringify(payload),
     });
+
     const data = await res.json();
-    if(!res.ok) {
-      alert(data.msg);
+
+    if (!res.ok) {
+      alert("Error in API response");
+      setIsLoading(false);
       return;
     }
-    console.log(data)
-    const paymentData = {
-      key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-      order_id: data.order.id,
-      handler: async function (responce: any) {
 
-      }
-    }
+    const redirectUrl = data?.data?.instrumentResponse?.redirectInfo?.url;
+    if (redirectUrl) window.location.href = redirectUrl;
 
-    const payment = new (window as any).Razorpay(paymentData);
-    payment.open();
+    setIsLoading(false);
+    alert(`Payment of ₹${selectedTotal} initiated successfully!`);
   }
 
   
 
-  if (loading) return <p className="text-center mt-10">Loading...</p>;
+  if (IsLoading) return <p className="text-center mt-10">Loading...</p>;
 
   return (
     <div className='flex h-full items-center justify-center'>

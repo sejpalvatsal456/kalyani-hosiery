@@ -1,36 +1,67 @@
+import { Subcategory } from "@/lib/models";
 import { connectDB } from "@/lib/connectDB";
-import { Category, Subcategory } from "@/lib/models";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
-export const POST = async (req: NextRequest) => {
-  try {
-    connectDB();
-    const { name, categoryId } = await req.json();
+// CREATE SUBCATEGORY
+export async function POST(req: Request) {
+  await connectDB();
 
-    const cat = await Category.findOne({ _id: categoryId });
-    if (!cat)
-      return NextResponse.json(
-        { msg: "Category doesn't exist" },
-        { status: 404 },
-      );
+  const {
+    name,
+    categoryId,
+    slug,
+    logoLink
+  } = await req.json();
 
-    const oldSubCat = await Subcategory.findOne({
-      name: name,
-      cateogoryId: categoryId,
-    });
-    if (oldSubCat)
-      return NextResponse.json(
-        { msg: "Sub Cateogry already exist" },
-        { status: 409 },
-      );
-
-    const newSubCat = await Subcategory.create({
-      name: name,
-      categoryId: categoryId,
-    });
-
-    return NextResponse.json({ data: newSubCat }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json({ msg: "Internal Server Error", error: error }, { status: 500 });
+  // ✅ Validate required fields
+  if (!name || !categoryId || !slug || !logoLink) {
+    return NextResponse.json(
+      { error: "Missing required fields" },
+      { status: 400 }
+    );
   }
-};
+
+  // ✅ Early duplicate check
+  const existing = await Subcategory.findOne({ slug });
+
+  if (existing) {
+    return NextResponse.json(
+      { error: "Subcategory with this slug already exists" },
+      { status: 409 }
+    );
+  }
+
+  try {
+    const subcategory = await Subcategory.create({
+      name,
+      categoryId,
+      slug,
+      logoLink
+    });
+
+    return NextResponse.json(subcategory, { status: 201 });
+
+  } catch (error: any) {
+    if (error.code === 11000) {
+      return NextResponse.json(
+        { error: "Slug already exists" },
+        { status: 409 }
+      );
+    }
+
+    return NextResponse.json(
+      { error: "Failed to create subcategory" },
+      { status: 500 }
+    );
+  }
+}
+
+// GET ALL SUBCATEGORIES
+export async function GET() {
+  await connectDB();
+
+  const subcategories = await Subcategory.find()
+    .populate("categoryId");
+
+  return NextResponse.json(subcategories);
+}

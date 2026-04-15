@@ -5,7 +5,7 @@ import React, { FormEvent, useEffect, useState } from 'react'
 import { FaRegEyeSlash, FaRegEye } from 'react-icons/fa';
 
 export default function SignupClient(
-    { callbackUrl }: { callbackUrl: string }
+    { callbackUrl }: { callbackUrl?: string }
 ) {
   const router = useRouter();
 

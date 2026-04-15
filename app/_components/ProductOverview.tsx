@@ -2,14 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
-import {
-  navLinksDataType,
-  ProductApiType,
-  ProductDataType,
-  ProductOverviewType,
-  User,
-} from "@/lib/typeDefinitions";
 import { usePathname, useRouter } from "next/navigation";
+import { IDisplayProduct, IProduct, IUser } from "@/lib/typeDefinitions";
+import BannerSlider from "./BannerSlider";
+import ProductPreviewSlider from "./ProductPreviewSlider";
+import toast, { Toaster } from "react-hot-toast";
 
 const getDiscount = (mrp: number, price: number) => {
   const discount = ((mrp - price) / mrp) * 100;
@@ -17,22 +14,22 @@ const getDiscount = (mrp: number, price: number) => {
 };
 
 export default function ProductOverview({
-  prodId,
+  slug,
 }: {
-  prodId: string;
+  slug: string;
 }) {
   const router = useRouter();
   const pathname = usePathname();
 
-  const [productData, setProductData] = useState<ProductDataType | null>(null);
+  const [productData, setProductData] = useState<IDisplayProduct | null>(null);
   const [search, setSearch] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<number>(0);
   const [selectedSize, setSelectedSize] = useState<number>(0);
-  const [user, setUser] = useState<User|null>(null);
+  const [user, setUser] = useState<IUser|null>(null);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOutOfStock, setIsOutOfStock] = useState<boolean>(
-    productData?.variety[0].sizes[0].stock === 0,
+    productData?.varients[0].sizes[0].stock === 0,
   );
 
   const handleClick = () => {
@@ -50,163 +47,188 @@ export default function ProductOverview({
     }
 
     const prodId = productData._id;
-    const colorId = productData.variety[selectedColor].id;
-    const sizeId = productData.variety[selectedColor].sizes[selectedSize].id;
+    const colorId = productData.varients[selectedColor].colorID;
+    const sizeId = productData.varients[selectedColor].sizes[selectedSize].sizeID;
+    const sku = productData.varients[selectedColor].sizes[selectedSize].sku;
+
+    // console.log({ userId: user._id, prodId: prodId, colorId: colorId, sizeId: sizeId, sku: sku });
     
     fetch(`/api/cart`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId: user._id, prodId: prodId, colorId: colorId, sizeId: sizeId })
+      body: JSON.stringify({ userId: user._id, prodId: prodId, colorId: colorId, sizeId: sizeId, sku: sku })
     })
     .then(res => res.json())
     .then(data => {
       setUser({...user, cart: data.newCart});
     })
-    .catch(err => alert(err));
+    .catch(err => {
+      console.log(err);
+      toast.error("Failed to add in cart.")
+    });
     setIsLoading(false);
+    toast.success("Added In Cart Successful");
   };
 
-  const sizeListEl = productData?.variety[selectedColor].sizes.map(
-    ({ id, size, stock }, key) => {
+  const sizeListEl = productData?.varients[selectedColor].sizes.map(
+    ({ sizeID, sizeName, stock }, key) => {
       return (
-        <button
+        <div
           key={key}
-          className={
-            "border-1 rounded-full border-gray-300 font-medium cursor-pointer w-20 h-10 " +
-            (selectedSize == key ? `border-none bg-[#fc2167] text-white` : "")
-          }
+          className="relative flex flex-col items-center"
           onClick={() => {
             setSelectedSize(key);
             setIsOutOfStock(
-              productData.variety[selectedColor].sizes[key].stock === 0,
+              productData.varients[selectedColor].sizes[key].stock === 0,
             );
-          }}
+          }}  
         >
-          {size}
-        </button>
+          <button
+            className={
+              "border-1 block rounded-full border-gray-300 font-medium cursor-pointer text-xl w-15 h-15 " +
+              (selectedSize == key ? `border-none bg-[#fc2167] text-white` : "")
+            }
+          >
+            {sizeName}
+          </button>
+          {/* Color - #d17a00 */}
+          {stock < 10 && (
+            <span className="absolute -bottom-2 bg-[#d17a00] text-white px-2">{stock} left</span>
+          )}
+        </div>
       );
     },
   );
 
   useEffect(() => {
-    fetch(`/api/products/${prodId}`, {
+    fetch(`/api/products/slug/${slug}`, {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     })
       .then((res) => res.json())
       .then((data) => {
-        if(data.data) {
-          const product:ProductApiType = data.data;
+        if(data) {
+          const product = data;
           console.log(product);
           setProductData({
             _id: product._id,
-            brandName: product.brandId.name,
+            brandId: product.brandId,
             productName: product.productName,
-            categoryId: product.categoryId._id,
-            subcategoryId: product.subcategoryId._id,
+            slug: product.slug,
+            category: product.category,
+            subcategory: product.subcategoryId._id,
             thumbnail: product.thumbnail,
-            variety: product.variety,
+            varients: product.varients,
             desc: product.desc,
+            tags: product.tags,
             createdAt: product.createdAt,
             updatedAt: product.updatedAt
           });
           setIsOutOfStock(
-            data.data.variety[selectedColor].sizes[selectedSize].stock === 0,
+            data.varients[selectedColor].sizes[selectedSize].stock === 0,
           );
         } else {
           alert("Data not found")
         }
       })
-      .catch((err) => alert(err));
+      .catch((err) => {
+        alert(err);
+        console.log(err);
+      });
   }, []);
 
   return (
     <>
       <Navbar
-        activePage="Product"
+        displayNavLinks={false}
+        categories={null}
+        activePage={null}
+        setPage={() => {}}
         search={search}
         setSearch={setSearch}
-        setPage={() => {}}
-        displayNavLinks={false}
         user={user}
         setUser={setUser}
       />
+      <Toaster />
       {productData ? (
         <div className="h-[100vh] w-[100vw] mt-10 flex flex-col md:flex-row justify-evenly">
           {/* Photo Privews */}
           <div className="w-[100%] md:ml-0 md:w-[45vw] flex justify-center">
-            <img
-              src={productData.variety[selectedColor].imgLinks[0]}
+            {/* <img
+              src={productData.varients[selectedColor].imgLinks[0]}
               alt="productImg"
               className="rounded-lg w-[95%]"
-            />
+            /> */}
+            <ProductPreviewSlider imageData={
+              productData.varients[selectedColor].imgLinks.map((imgLink, key) => {
+                return { id: key, image: imgLink }
+              })
+            } />
           </div>
 
           {/* Product Overview */}
           <div className="w-full md:w-[45vw] mt-10 ml-5 md:mt-0 md:ml-0 h-full">
             {/* Title and price display */}
 
-            <h1 className="text-3xl font-bold mb-5">{productData.brandName}</h1>
-            <span className="line-through text-gray-500">
-              ₹ {productData.variety[selectedColor].sizes[selectedSize].mrp}
-            </span>
-            <div className="flex gap-10 items-center">
-              <h1 className="text-2xl font-medium">
+            {/* <h1 className="hidden md:flex text-3xl font-bold">{productData.brandId.brandName}</h1>
+            <span className="hidden md:flex text-xl text-gray-500">
+              {productData.productName}
+            </span> */}
+
+            <p className="inline-block md:flex md:flex-col gap-2 line-clamp-2 w-[90%]">
+              <span className="md:text-3xl text-xl font-bold">{productData.brandId.brandName}</span> {" "}
+              <span className="md:text-xl text-xl text-gray-500">
+                {productData.productName}
+              </span>
+            </p>
+
+            <div className="flex flex-row items-center md:mt-5">
+              <span className="line-through text-gray-400">
+                ₹ {productData.varients[selectedColor].sizes[selectedSize].mrp}
+              </span>
+              <h1 className="text-2xl font-semibold ml-3 mr-5">
                 ₹{" "}
                 {
-                  productData.variety[selectedColor].sizes[selectedSize]
+                  productData.varients[selectedColor].sizes[selectedSize]
                     .sellingPrice
                 }
               </h1>
-              <span className="text-sm text-white h-5 bg-green-500 px-3 rounded-full font-semibold">
-                {getDiscount(
-                  productData.variety[selectedColor].sizes[selectedSize].mrp,
-                  productData.variety[selectedColor].sizes[selectedSize]
-                    .sellingPrice,
-                )}
-                % off
+              {/* color - #ff416e to #f48a6d */}
+              <span
+                className="
+                  bg-[linear-gradient(90deg_,#ff416e_0%,#f48a6d_90%)] text-white font-bold text-lg pl-2 pr-5 inline-block [clip-path:polygon(0_0,100%_0,85%_100%,0%_100%)] rounded"
+              >
+                39% OFF!
               </span>
             </div>
 
+            <span className="text-green-600 font-bold text-md inline-block mt-3">inclusive of all taxes</span>
+
             {/* Product description */}
 
-            <span className="inline-block mt-5 text-lg">
-              {productData.productName}
-            </span>
 
             {/* Display colors */}
-            {/* FIXME: shades of white are blending to the background */}
             <div className="flex flex-col gap-4">
               <h1 className="text-lg mt-5 font-semibold">Colors</h1>
-              <div className="grid grid-cols-3 md:grid-cols-5 gap-10 px-5">
-                {productData.variety.map(
-                  ({ id, color, imgLinks, sizes }, key) => {
+              <div className="grid grid-cols-3 md:grid-cols-5 gap-10 px-5 w-[90%]">
+                {productData.varients.map(
+                  ({ colorID, colorName, colorCode, imgLinks, sizes }, key) => {
                     return (
-                      <button
-                        key={key}
-                        onClick={() => {
+                      <div 
+                        key={key} 
+                        className="flex flex-col rounded-lg p-0"
+                        onClick={e => {
                           setSelectedColor(key);
                           setSelectedSize(0);
-                          setIsOutOfStock(
-                            productData.variety[selectedColor].sizes[0]
-                              .stock === 0,
-                          );
                         }}
-                        style={{
-                          boxShadow:
-                            selectedColor == key
-                              ? `0 0 0 2px #${color !== "ffffff" ? color : "000000"}`
-                              : "none",
-                        }}
-                        className={
-                          "flex items-center justify-center w-11 h-11 rounded-full shadow-lg "
-                        }
                       >
-                        <span
-                          className="w-10 h-10 rounded-full"
-                          style={{ backgroundColor: `#${color}` }}
-                        ></span>
-                      </button>
+                        <img
+                          src={imgLinks[0]}
+                          width={70}
+                          className="rounded-2xl"
+                          style={ key === selectedColor ? { borderColor: '#ff4c85', borderWidth: 2, borderBottomWidth: 10 } : {}}
+                        />
+                      </div>
                     );
                   },
                 )}

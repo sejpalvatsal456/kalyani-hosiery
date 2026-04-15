@@ -3,6 +3,7 @@ import { FaEyeSlash, FaEye } from "react-icons/fa";
 
 export default function ChangeNumberPage() {
   
+  const [userId, setUserId] = useState<string>("");
   const [phone, setPhone] = useState<string>("");
   const [oldPhone, setOldPhone] = useState<string>("");
 
@@ -13,7 +14,7 @@ export default function ChangeNumberPage() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const res = await fetch('/api/user', {
+    const res = await fetch('/api/users/'+userId, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ phone: parseInt(phone) })
@@ -38,6 +39,7 @@ export default function ChangeNumberPage() {
     .then(data => {
       console.log(data.data);
       if(data.data.phone) {
+        setUserId(data.data._id)
         setPhone(data.data.phone.toString());
         setOldPhone(data.data.phone.toString());
       }
@@ -49,7 +51,7 @@ export default function ChangeNumberPage() {
   return (
     <div className="flex h-full items-center justify-center">
       <div className="w-[90%] h-[90%] py-5 px-10 border-1 border-gray-300 shadow-lg">
-        <h1 className="text-xl font-semibold">Change Password</h1>
+        <h1 className="text-xl font-semibold">Change Phone Number</h1>
 
         {/* Form */}
         <div className="flex flex-col w-full md:w-[80%] h-[80%] justify-between">

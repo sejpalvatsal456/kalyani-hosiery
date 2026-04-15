@@ -6,6 +6,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function ChangePasswordPage() {
   
+  const [userId, setUserId] = useState<string>("");
   const [oldPassword, setOldPassword] = useState<string>("");
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
@@ -25,7 +26,7 @@ export default function ChangePasswordPage() {
       setMsg("Fill all the fields.");
       return;
     }
-    const res = await fetch('/api/user/', {
+    const res = await fetch('/api/users/'+userId, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ oldPassword: oldPassword, newPassword: newPassword })
@@ -39,6 +40,21 @@ export default function ChangePasswordPage() {
     setMsg(null);
     setSuccess("Password Changed Successfully");
   };
+
+  useEffect(() => {
+    fetch('/api/auth/me', {
+      method: "GET",
+      credentials: "include"
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data.data);
+      if(data.data.phone) {
+        setUserId(data.data._id);
+      }
+    })
+    .catch(err => console.log(err));
+  }, [])
 
   useEffect(() => {
     if (newPassword === "" || confirmPassword === "") {

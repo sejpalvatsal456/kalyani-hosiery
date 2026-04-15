@@ -1,36 +1,34 @@
-import { connectDB } from "@/lib/connectDB";
 import { Category } from "@/lib/models";
-import { NextRequest, NextResponse } from "next/server";
+import { connectDB } from "@/lib/connectDB";
+import { NextResponse } from "next/server";
 
-export const POST = async (req: NextRequest) => {
-  try {
-    await connectDB();
-    const { name } = await req.json();
+// CREATE
+export async function POST(req: Request) {
+  await connectDB();
 
-    const oldCat = await Category.findOne({ name: name });
-    if (oldCat)
-      return NextResponse.json(
-        { msg: "Category already existed", data: oldCat },
-        { status: 409 },
-      );
+  const { name, slug } = await req.json();
 
-    const newCat = await Category.create({ name: name });
-
-    return NextResponse.json({ data: newCat }, { status: 200 });
-  } catch (error) {
-    return NextResponse.json({ msg: "Internal Sever Error" }, { status: 500 });
+  if (!name || !slug) {
+    return NextResponse.json({ error: "Missing fields" }, { status: 400 });
   }
-};
 
-export const GET = async(req:NextRequest) => {
-  try {
-    await connectDB();
-    const cats = await Category.find();
+  const existingCategory = await Category.findOne({ slug });
+
+  if (existingCategory) {
     return NextResponse.json(
-      { cats: cats },
-      { status: 200 }
-    )
-  } catch (error) {
-    return NextResponse.json({ msg: "Internal Sever Error" }, { status: 500 });
+      { error: "Category with this slug already exists" },
+      { status: 409 }
+    );
   }
+
+  const category = await Category.create({ name, slug });
+  return NextResponse.json(category);
+}
+
+// GET ALL
+export async function GET() {
+  await connectDB();
+
+  const categories = await Category.find();
+  return NextResponse.json(categories);
 }

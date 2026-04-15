@@ -1,114 +1,154 @@
-export type navLinksDataType = {
-  name: string;
-  tag: string;
-};
+import { Types } from 'mongoose';
 
-export type Brand = {
-  name: string;
-  logo: string;
-};
+/**
+ * --- Sub-Schema Interfaces ---
+ */
 
-export type Category = {
-  _id: string;
-  name: string; // Like Men, Women, Kids
-};
+export interface IAddress {
+  house: string;
+  street: string;
+  area: string;
+  city: string;
+  state: string;
+  pincode: string;
+}
 
-export type SubCategory = {
-  _id: string;
-  categoryId: string;
-  name: string; // Like Shirt, Tshirt, etc
-};
+export interface IOrderItem {
+  product: string;
+  sku: string;
+  quantity: number;
+}
 
-export type ProductApiType = {
-  _id: string;
+export interface ICart {
+  productId: string;
+  colorId: string;
+  sizeId: string;
+  sku: string;
+  quantity: number;
+}
 
-  brandId: {
-    _id: string;
-    name: string;
-    logo: string;
-  };
+export interface ISize {
+  sizeID: string;
+  sku: string;
+  sizeName: string;
+  mrp: number;
+  sellingPrice: number;
+  discountPercent: number;
+  stock: number;
+}
 
-  categoryId: {
-    _id: string;
-    name: string;
-  };
+export interface IVariety {
+  colorID: string;
+  colorName: string;
+  colorCode: string; // Starts with #, max 7 chars
+  imgLinks: string[];
+  sizes: ISize[]; // Minimum 1 element
+}
 
-  subcategoryId: {
-    _id: string;
-    categoryId: string;
-    name: string;
-  };
+export interface IProductDescription {
+  key: string;
+  value: string;
+}
 
-  productName: string;
-  thumbnail: string;
+/**
+ * --- Enums and Literal Types ---
+ */
 
-  variety: {
-    id: string;
-    colorName: string;
-    color: string;
-    imgLinks: string[];
-    sizes: {
-      id: string;
-      size: string;
-      mrp: number;
-      sellingPrice: number;
-      stock: number;
-    }[];
-  }[];
+export type PaymentMethod = 'cod' | 'online';
+export type PaymentStatus = 'pending' | 'paid' | 'failed' | 'refunded';
+export type OrderStatus = 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
 
-  desc: {
-    key: string;
-    value: string;
-  }[];
+/**
+ * --- Main Model Interfaces ---
+ */
 
-  createdAt: string;
-  updatedAt: string;
-};
-
-export type ProductDataType = {
-  _id: string;
+export interface IBrand {
+  _id?: string;
   brandName: string;
+  brandLogo: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface ICategory {
+  _id?: string;
+  name: string;
+  slug: string;
+  theme: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface ISubcategory {
+  _id?: string;
+  name: string;
+  category: string;
+  slug: string;
+  logoLink: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface IUser {
+  _id?: string;
+  name: string;
+  phone: string;
+  email: string;
+  address: string;
+  hashedPassword: string;
+  cart: ICart[];
+  orders: string[];
+  createdAt?: Date;
+  updatedAt?: Date;
+}
+
+export interface IProduct {
+  _id?: string;
   productName: string;
-  categoryId: string;
-  subcategoryId: string;
+  slug: string;
+  category: string;
+  subcategory: string;
+  brandId: string;
   thumbnail: string;
-  variety: {
-    id: string;
-    colorName: string;
-    color: string;
-    imgLinks: string[];
-    sizes: {
-      id: string;
-      size: string;
-      stock: number;
-      mrp: number;
-      sellingPrice: number;
-    }[];
-  }[];
-  desc: { key: string; value: string }[];
+  tags: string[];
+  varients: IVariety[];
+  desc: IProductDescription[];
+  loc: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface IDisplayProduct extends Omit<IProduct, 'category' | 'subcategory' | 'brandId' | 'loc'> {
+  category : {
+    _id?: string;
+    name: string;
+    slug: string;
+  };
+  subcategory: {
+    _id?: string;
+    name: string;
+    categoryId: string;
+    slug: string;
+  };
+  brandId: {
+    brandName: string,
+    brandLogo: string
+  }
 };
 
-export type DisplayProductType = Omit<
-  ProductDataType,
-  "categoryId" | "subcategoryId"
-> & { categoryId: Category; subcategoryId: SubCategory };
-export type ProductOverviewType = Omit<
-  ProductDataType,
-  "categoryId" | "subcategoryId" | "thumbnail" | "createdAt" | "updatedAt"
-> & { category: Category; subcategory: SubCategory };
+// export interface IProductOverview extends Omit<IProduct, 'category'|'subcategory'|'brandId'>
 
-export type User = {
-  _id: string;
-  name: string;
-  email: string;
-  role: "user" | "admin";
-  phone: number;
-  hashedPassword: string;
-  address?: string;
-  cart: { productId: string; colorId: string; sizeId: string }[];
-};
+export interface IOrder {
+  _id?: string;
+  user: string;
+  items: IOrderItem[];
+  shippingAddress: IAddress;
+  paymentMethod: PaymentMethod;
+  paymentStatus: PaymentStatus;
+  orderStatus: OrderStatus;
+  createdAt?: string;
+  updatedAt?: string;
+}
 
 export type SectionType =
   | "manage_profile"
@@ -124,15 +164,4 @@ export type ItemsType = {
   size: string;
   price: number;
   quantity: number;
-};
-
-export type OrderType = {
-  userId: string;
-  items: ItemsType[];
-  totalAmount: number;
-  razorpayOrderId?: string;
-  razorpayPaymentId?: string;
-  razorpaySignature?: string;
-  status: "created" | "paid" | "failed";
-  createdAt: Date;
 };

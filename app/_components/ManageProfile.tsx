@@ -1,54 +1,71 @@
-import { User } from "@/lib/typeDefinitions";
+import { IAddress, IUser } from "@/lib/typeDefinitions";
 import { routerServerGlobal } from "next/dist/server/lib/router-utils/router-server-context";
 import React, { useEffect, useState } from "react";
 
 export default function ManageProfile() {
-
-  const [user, setUser] = useState<User|null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+
+  // FIXME: Decompose the address and split it into parts: house, *street, area, *city, *state, *pinCode
+  // const [address, setAddress] = useState<IAddress>({
+  //   house: "",
+  //   street: "",
+  //   area: "",
+  //   city: "",
+  //   state: "",
+  //   pincode: "",
+  // });
+
   const [address, setAddress] = useState<string>("");
 
-  const [msg, setMsg] = useState<string|null>(null);
-  const [success, setSuccess] = useState<string|null>(null);
+  const [msg, setMsg] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
 
-  const handleSubmit = async() => {
-
-    if(name === "") {
+  const handleSubmit = async () => {
+    if (name === "") {
       setMsg("Fill the name Field");
       setSuccess(null);
       return;
     }
 
-    const res = await fetch('/api/user/', {
+    // console.log(user?._id);
+
+    const res = await fetch("/api/users/"+user?._id, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: name, email: email, address: address, phone: null, password: null })
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        address: address,
+      }),
     });
     const data = await res.json();
-    if(!res.ok) {
+    if (!res.ok) {
       setMsg(data.msg);
       setSuccess(null);
       return;
     }
     setMsg(null);
     setSuccess("Profile Changed Successfully");
-  }
+  };
 
   useEffect(() => {
-    fetch('/api/auth/me', {
+    fetch("/api/auth/me", {
       method: "GET",
-      credentials: "include"
+      credentials: "include",
     })
-    .then(res => res.json())
-    .then(data => {
-      console.log(data.data);
-      setUser(data.data);
-      setName(data.data.name);
-      setEmail(data.data.email);
-      setAddress(data.data.address);
-    })
-    .catch(err => console.log(err));
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.data);
+        setUser(data.data);
+        setName(data.data.name);
+        setEmail(data.data.email);
+        setAddress(
+          data.data.address || ""
+        );
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   return (
@@ -115,11 +132,11 @@ export default function ManageProfile() {
               </label>
             </div>
 
-            {/* Adress */}
+            {/* Address */}
             <div className="relative w-full ">
               <input
                 type="text"
-                placeholder=" "
+                placeholder=""
                 value={address}
                 id="addressInput"
                 onChange={(e) => setAddress(e.target.value)}
@@ -142,12 +159,19 @@ export default function ManageProfile() {
                 Address
               </label>
             </div>
-            { msg && <span className="text-red-500">{msg}</span> }
-            { success && <span className="text-green-500">{success}</span> }
+
+
+            {msg && <span className="text-red-500">{msg}</span>}
+            {success && <span className="text-green-500">{success}</span>}
           </div>
 
           {/* Button */}
-          <button onClick={handleSubmit} className="bg-[#ff3f6c] w-full py-3 text-white font-semibold text-lg cursor-pointer">Save</button>
+          <button
+            onClick={handleSubmit}
+            className="mt-6 bg-[#ff3f6c] w-full py-3 text-white font-semibold text-lg cursor-pointer"
+          >
+            Save
+          </button>
         </div>
       </div>
     </div>
