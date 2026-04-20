@@ -84,7 +84,7 @@ export default function DisplayCard({ product }: Props) {
 
           {discount && (
             <span className="text-orange-500 text-xs font-medium">
-              {discount}% OFF
+              {discount.toFixed(0)}% OFF
             </span>
           )}
         </div>
