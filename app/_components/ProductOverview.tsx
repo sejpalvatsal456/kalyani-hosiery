@@ -198,7 +198,7 @@ export default function ProductOverview({
                 className="
                   bg-[linear-gradient(90deg_,#ff416e_0%,#f48a6d_90%)] text-white font-bold text-lg pl-2 pr-5 inline-block [clip-path:polygon(0_0,100%_0,85%_100%,0%_100%)] rounded"
               >
-                39% OFF!
+                {productData.varients[selectedColor].sizes[selectedSize].discountPercent.toFixed(0}% OFF!
               </span>
             </div>
 
