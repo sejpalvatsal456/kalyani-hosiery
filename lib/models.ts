@@ -25,22 +25,9 @@ const CartSchema = new Schema(
   { _id: false },
 );
 
-const SizeSchema = new Schema(
-  {
-    sizeID: { type: String, required: true },
-    sku: { type: String, required: true },
-    sizeName: { type: String, required: true },
-    mrp: { type: Number, required: true },
-    sellingPrice: { type: Number, required: true },
-    discountPercent: { type: Number, required: true },
-    stock: { type: Number, default: 0 },
-  },
-  { _id: false },
-);
-
 const VarietySchema = new Schema(
   {
-    colorID: { type: String, required: true },
+    sku: { type: String, required: true, unique: true },
     colorName: { type: String, required: true },
     colorCode: {
       type: String,
@@ -48,16 +35,14 @@ const VarietySchema = new Schema(
       maxlength: 7,
       match: /^#/,
     },
+    sizeName: { type: String, required: true },
+    mrp: { type: Number, required: true },
+    sellingPrice: { type: Number, required: true },
+    discountPercent: { type: Number, required: true },
     imgLinks: { type: [String], default: [] },
-    sizes: {
-      type: [SizeSchema],
-      validate: [
-        (val: any[]) => val.length >= 1,
-        "Must have at least one size",
-      ],
-    },
+    stock: { type: Number, default: 0 },
   },
-  { _id: false },
+  { _id: false }
 );
 
 // --- Main Models ---
@@ -182,6 +167,7 @@ const OrderSchema = new Schema({
     enum: ["pending", "placed", "processing", "delivered", "cancelled"],
     default: "pending",
   },
+  totalAmount: { type: Number, required: true, min: 0 }
 }, { timestamps: true });
 
 const checkoutSessionSchema = new Schema(

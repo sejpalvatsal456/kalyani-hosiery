@@ -1,5 +1,4 @@
 import { IDisplayProduct } from "@/lib/typeDefinitions"
-import ProductCard from "./DisplayCard"
 import DisplayCard from "./DisplayCard"
 
 export interface IProductCard {
@@ -13,18 +12,16 @@ export interface IProductCard {
 }
 
 export function mapProductToCard(product: IDisplayProduct): IProductCard {
-  
   const variant = product.varients[0]
-  const size = variant.sizes[0]
 
   return {
     id: product._id || "",
     brand: product.brandId.brandName,
     name: product.productName,
     image: variant.imgLinks[0] || product.thumbnail,
-    price: size.sellingPrice,
-    originalPrice: size.mrp,
-    discount: size.discountPercent
+    price: variant.sellingPrice,
+    originalPrice: variant.mrp,
+    discount: variant.discountPercent,
   }
 }
 

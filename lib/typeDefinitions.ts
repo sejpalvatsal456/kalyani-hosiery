@@ -27,22 +27,16 @@ export interface ICart {
   quantity: number;
 }
 
-export interface ISize {
-  sizeID: string;
+export interface IVariety {
   sku: string;
+  colorName: string;
+  colorCode: string; // Starts with #, max 7 chars
   sizeName: string;
   mrp: number;
   sellingPrice: number;
   discountPercent: number;
-  stock: number;
-}
-
-export interface IVariety {
-  colorID: string;
-  colorName: string;
-  colorCode: string; // Starts with #, max 7 chars
   imgLinks: string[];
-  sizes: ISize[]; // Minimum 1 element
+  stock: number;
 }
 
 export interface IProductDescription {

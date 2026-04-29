@@ -16,9 +16,9 @@ const sortOptions = [
 
 
 const getLowestPrice = (product: IDisplayProduct) => {
-  return Math.min(
-    ...product.varients.flatMap((v) => v.sizes.map((s) => s.sellingPrice)),
-  );
+  return product.varients.length
+    ? Math.min(...product.varients.map((v) => v.sellingPrice))
+    : 0;
 };
 
 export function formatLabel(input: string): string {
@@ -105,9 +105,7 @@ export default function SearchPageWrapper({
 
     products.forEach((product) => {
       product.varients.forEach((v) => {
-        v.sizes.forEach((s) => {
-          sizeSet.add(s.sizeName);
-        });
+        sizeSet.add(v.sizeName);
       });
     });
 
@@ -232,15 +230,15 @@ export default function SearchPageWrapper({
     // Size filter
     if (size) {
       updated = updated.filter((p) =>
-        p.varients.some((v) => v.sizes.some((s) => s.sizeName === size)),
+        p.varients.some((v) => v.sizeName === size),
       );
     }
 
     // Price filter
     updated = updated.filter((p) => {
-      const lowest = Math.min(
-        ...p.varients.flatMap((v) => v.sizes.map((s) => s.sellingPrice)),
-      );
+      const lowest = p.varients.length
+        ? Math.min(...p.varients.map((v) => v.sellingPrice))
+        : Infinity;
 
       return lowest >= priceRange.low && lowest <= priceRange.high;
     });

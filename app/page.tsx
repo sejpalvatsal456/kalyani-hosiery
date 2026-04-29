@@ -146,7 +146,7 @@ export default function Home() {
       _id: "1",
       brandId: {
         brandName: "Powerlook",
-        brandLogo: ""
+        brandLogo: "",
       },
       productName: "Men Alphanumeric Printed Pullover",
       slug: "man-alphanumeric-printed-pullover",
@@ -167,34 +167,27 @@ export default function Home() {
         "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
       varients: [
         {
-          colorID: "color1",
+          sku: "sku1",
           colorName: "Orange",
+          colorCode: "#ff5f1f",
+          sizeName: "S",
           imgLinks: [
             "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
           ],
-          colorCode: "#ff5f1f",
-          sizes: [
-            {
-              sizeID: "size1",
-              sizeName: "S",
-              sku: "sku1",
-              stock: 10,
-              mrp: 2999,
-              sellingPrice: 670,
-              discountPercent: 77,
-            },
-          ],
+          stock: 10,
+          mrp: 2999,
+          sellingPrice: 670,
+          discountPercent: 77,
         },
       ],
       tags: [],
       desc: [],
     },
-
     {
       _id: "2",
       brandId: {
         brandName: "Powerlook",
-        brandLogo: ""
+        brandLogo: "",
       },
       productName: "Men Alphanumeric Printed Pullover",
       slug: "man-alphanumeric-printed-pullover",
@@ -215,34 +208,27 @@ export default function Home() {
         "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
       varients: [
         {
-          colorID: "color1",
+          sku: "sku1",
           colorName: "Orange",
+          colorCode: "#ff5f1f",
+          sizeName: "S",
           imgLinks: [
             "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
           ],
-          colorCode: "#ff5f1f",
-          sizes: [
-            {
-              sizeID: "size1",
-              sizeName: "S",
-              sku: "sku1",
-              stock: 10,
-              mrp: 2999,
-              sellingPrice: 670,
-              discountPercent: 77,
-            },
-          ],
+          stock: 10,
+          mrp: 2999,
+          sellingPrice: 670,
+          discountPercent: 77,
         },
       ],
       tags: [],
       desc: [],
     },
-
     {
       _id: "3",
       brandId: {
         brandName: "Powerlook",
-        brandLogo: ""
+        brandLogo: "",
       },
       productName: "Men Alphanumeric Printed Pullover",
       slug: "man-alphanumeric-printed-pullover",
@@ -263,34 +249,27 @@ export default function Home() {
         "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
       varients: [
         {
-          colorID: "color1",
+          sku: "sku1",
           colorName: "Orange",
+          colorCode: "#ff5f1f",
+          sizeName: "S",
           imgLinks: [
             "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
           ],
-          colorCode: "#ff5f1f",
-          sizes: [
-            {
-              sizeID: "size1",
-              sizeName: "S",
-              sku: "sku1",
-              stock: 10,
-              mrp: 2999,
-              sellingPrice: 670,
-              discountPercent: 77,
-            },
-          ],
+          stock: 10,
+          mrp: 2999,
+          sellingPrice: 670,
+          discountPercent: 77,
         },
       ],
       tags: [],
       desc: [],
     },
-
     {
       _id: "4",
       brandId: {
         brandName: "Powerlook",
-        brandLogo: ""
+        brandLogo: "",
       },
       productName: "Men Alphanumeric Printed Pullover",
       slug: "man-alphanumeric-printed-pullover",
@@ -311,34 +290,27 @@ export default function Home() {
         "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
       varients: [
         {
-          colorID: "color1",
+          sku: "sku1",
           colorName: "Orange",
+          colorCode: "#ff5f1f",
+          sizeName: "S",
           imgLinks: [
             "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
           ],
-          colorCode: "#ff5f1f",
-          sizes: [
-            {
-              sizeID: "size1",
-              sizeName: "S",
-              sku: "sku1",
-              stock: 10,
-              mrp: 2999,
-              sellingPrice: 670,
-              discountPercent: 77,
-            },
-          ],
+          stock: 10,
+          mrp: 2999,
+          sellingPrice: 670,
+          discountPercent: 77,
         },
       ],
       tags: [],
       desc: [],
     },
-
     {
       _id: "5",
       brandId: {
         brandName: "Powerlook",
-        brandLogo: ""
+        brandLogo: "",
       },
       productName: "Men Alphanumeric Printed Pullover",
       slug: "man-alphanumeric-printed-pullover",
@@ -359,34 +331,27 @@ export default function Home() {
         "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
       varients: [
         {
-          colorID: "color1",
+          sku: "sku1",
           colorName: "Orange",
+          colorCode: "#ff5f1f",
+          sizeName: "S",
           imgLinks: [
             "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
           ],
-          colorCode: "#ff5f1f",
-          sizes: [
-            {
-              sizeID: "size1",
-              sizeName: "S",
-              sku: "sku1",
-              stock: 10,
-              mrp: 2999,
-              sellingPrice: 670,
-              discountPercent: 77,
-            },
-          ],
+          stock: 10,
+          mrp: 2999,
+          sellingPrice: 670,
+          discountPercent: 77,
         },
       ],
       tags: [],
       desc: [],
     },
-
     {
       _id: "6",
       brandId: {
         brandName: "Powerlook",
-        brandLogo: ""
+        brandLogo: "",
       },
       productName: "Men Alphanumeric Printed Pullover",
       slug: "man-alphanumeric-printed-pullover",
@@ -407,34 +372,27 @@ export default function Home() {
         "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
       varients: [
         {
-          colorID: "color1",
+          sku: "sku1",
           colorName: "Orange",
+          colorCode: "#ff5f1f",
+          sizeName: "S",
           imgLinks: [
             "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
           ],
-          colorCode: "#ff5f1f",
-          sizes: [
-            {
-              sizeID: "size1",
-              sizeName: "S",
-              sku: "sku1",
-              stock: 10,
-              mrp: 2999,
-              sellingPrice: 670,
-              discountPercent: 77,
-            },
-          ],
+          stock: 10,
+          mrp: 2999,
+          sellingPrice: 670,
+          discountPercent: 77,
         },
       ],
       tags: [],
       desc: [],
     },
-
     {
       _id: "7",
       brandId: {
         brandName: "Powerlook",
-        brandLogo: ""
+        brandLogo: "",
       },
       productName: "Men Alphanumeric Printed Pullover",
       slug: "man-alphanumeric-printed-pullover",
@@ -455,23 +413,99 @@ export default function Home() {
         "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
       varients: [
         {
-          colorID: "color1",
+          sku: "sku1",
           colorName: "Orange",
+          colorCode: "#ff5f1f",
+          sizeName: "S",
           imgLinks: [
             "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
           ],
+          stock: 10,
+          mrp: 2999,
+          sellingPrice: 670,
+          discountPercent: 77,
+        },
+      ],
+      tags: [],
+      desc: [],
+    },
+    {
+      _id: "8",
+      brandId: {
+        brandName: "Powerlook",
+        brandLogo: "",
+      },
+      productName: "Men Alphanumeric Printed Pullover",
+      slug: "man-alphanumeric-printed-pullover",
+      createdAt: "2026-02-25T14:50:24.481Z",
+      updatedAt: "2026-02-25T14:50:24.481Z",
+      category: {
+        _id: "123",
+        slug: "men",
+        name: "Men",
+      },
+      subcategory: {
+        _id: "1234",
+        categoryId: "123",
+        slug: "sweaters",
+        name: "Sweaters",
+      },
+      thumbnail:
+        "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+      varients: [
+        {
+          sku: "sku1",
+          colorName: "Orange",
           colorCode: "#ff5f1f",
-          sizes: [
-            {
-              sizeID: "size1",
-              sizeName: "S",
-              sku: "sku1",
-              stock: 10,
-              mrp: 2999,
-              sellingPrice: 670,
-              discountPercent: 77,
-            },
+          sizeName: "S",
+          imgLinks: [
+            "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
           ],
+          stock: 10,
+          mrp: 2999,
+          sellingPrice: 670,
+          discountPercent: 77,
+        },
+      ],
+      tags: [],
+      desc: [],
+    },
+    {
+      _id: "9",
+      brandId: {
+        brandName: "Powerlook",
+        brandLogo: "",
+      },
+      productName: "Men Alphanumeric Printed Pullover",
+      slug: "man-alphanumeric-printed-pullover",
+      createdAt: "2026-02-25T14:50:24.481Z",
+      updatedAt: "2026-02-25T14:50:24.481Z",
+      category: {
+        _id: "123",
+        slug: "men",
+        name: "Men",
+      },
+      subcategory: {
+        _id: "1234",
+        categoryId: "123",
+        slug: "sweaters",
+        name: "Sweaters",
+      },
+      thumbnail:
+        "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+      varients: [
+        {
+          sku: "sku1",
+          colorName: "Orange",
+          colorCode: "#ff5f1f",
+          sizeName: "S",
+          imgLinks: [
+            "https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/2025/DECEMBER/6/rCd2DDql_441bc079c21e4cc4900606c7858016ea.jpg",
+          ],
+          stock: 10,
+          mrp: 2999,
+          sellingPrice: 670,
+          discountPercent: 77,
         },
       ],
       tags: [],

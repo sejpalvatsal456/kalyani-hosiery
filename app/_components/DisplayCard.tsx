@@ -12,13 +12,12 @@ interface Props {
 
 export default function DisplayCard({ product }: Props) {
   const variant = product.varients[0];
-  const size = variant?.sizes[0];
 
   const image = variant?.imgLinks?.[0] || product.thumbnail;
 
-  const price = size?.sellingPrice;
-  const mrp = size?.mrp;
-  const discount = size?.discountPercent;
+  const price = variant?.sellingPrice;
+  const mrp = variant?.mrp;
+  const discount = variant?.discountPercent;
 
   const router = useRouter();
 
@@ -84,7 +83,7 @@ export default function DisplayCard({ product }: Props) {
 
           {discount && (
             <span className="text-orange-500 text-xs font-medium">
-              {discount}% OFF
+              {discount.toFixed(0)}% OFF
             </span>
           )}
         </div>

@@ -13,7 +13,7 @@ type ProductQuery = {
   categoryId?: Types.ObjectId;
   subcategoryId?: Types.ObjectId;
   brandId?: Types.ObjectId;
-  "varients.sizes.sellingPrice"?: {
+  "varients.sellingPrice"?: {
     $gte?: number;
     $lte?: number;
   };
@@ -93,7 +93,7 @@ export async function GET(req: Request) {
     if (minPrice) priceFilter.$gte = Number(minPrice);
     if (maxPrice) priceFilter.$lte = Number(maxPrice);
 
-    query["varients.sizes.sellingPrice"] = priceFilter;
+    query["varients.sellingPrice"] = priceFilter;
   }
 
   try {

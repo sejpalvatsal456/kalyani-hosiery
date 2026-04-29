@@ -28,35 +28,57 @@ export default function ProductOverview({
   const [user, setUser] = useState<IUser|null>(null);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isOutOfStock, setIsOutOfStock] = useState<boolean>(
-    productData?.varients[0].sizes[0].stock === 0,
-  );
+  const [isOutOfStock, setIsOutOfStock] = useState<boolean>(false);
+
+  const colorGroups = productData
+    ? Array.from(
+        productData.varients.reduce((map, variant) => {
+          const key = variant.colorCode || variant.colorName;
+          const group = map.get(key) || {
+            colorCode: variant.colorCode,
+            colorName: variant.colorName,
+            imgLinks: variant.imgLinks,
+            variants: [] as IDisplayProduct["varients"],
+          };
+
+          group.variants.push(variant);
+          map.set(key, group);
+          return map;
+        }, new Map<string, any>()),
+      ).map(([, group]) => group)
+    : [];
+
+  const selectedColorGroup = colorGroups[selectedColor] || {
+    colorCode: "",
+    colorName: "",
+    imgLinks: [] as string[],
+    variants: [] as IDisplayProduct["varients"],
+  };
+
+  const selectedVariant =
+    selectedColorGroup.variants[selectedSize] ||
+    selectedColorGroup.variants[0] ||
+    null;
 
   const handleClick = () => {
     setIsLoading(true);
     if(!user) {
-      setIsLoading(false); 
-      console.log(pathname);
-      console.log(encodeURIComponent(pathname));
+      setIsLoading(false);
       router.push(`/auth/login?callbackUrl=${encodeURIComponent(pathname)}`);
       return;
     }
-    if(!productData) {
+    if(!productData || !selectedVariant) {
       setIsLoading(false);
       return;
     }
 
     const prodId = productData._id;
-    const colorId = productData.varients[selectedColor].colorID;
-    const sizeId = productData.varients[selectedColor].sizes[selectedSize].sizeID;
-    const sku = productData.varients[selectedColor].sizes[selectedSize].sku;
+    const sku = selectedVariant.sku;
 
-    // console.log({ userId: user._id, prodId: prodId, colorId: colorId, sizeId: sizeId, sku: sku });
-    
     fetch(`/api/cart`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ userId: user._id, prodId: prodId, colorId: colorId, sizeId: sizeId, sku: sku })
+      body: JSON.stringify({ userId: user._id, prodId: prodId, sku }),
     })
     .then(res => res.json())
     .then(data => {
@@ -70,8 +92,8 @@ export default function ProductOverview({
     toast.success("Added In Cart Successful");
   };
 
-  const sizeListEl = productData?.varients[selectedColor].sizes.map(
-    ({ sizeID, sizeName, stock }, key) => {
+  const sizeListEl = selectedColorGroup.variants.map(
+    (variant: IDisplayProduct["varients"][number], key: number) => {
       return (
         <div
           key={key}
@@ -79,9 +101,9 @@ export default function ProductOverview({
           onClick={() => {
             setSelectedSize(key);
             setIsOutOfStock(
-              productData.varients[selectedColor].sizes[key].stock === 0,
+              selectedColorGroup.variants[key]?.stock === 0,
             );
-          }}  
+          }}
         >
           <button
             className={
@@ -89,16 +111,22 @@ export default function ProductOverview({
               (selectedSize == key ? `border-none bg-[#fc2167] text-white` : "")
             }
           >
-            {sizeName}
+            {variant.sizeName}
           </button>
           {/* Color - #d17a00 */}
-          {stock < 10 && (
-            <span className="absolute -bottom-2 bg-[#d17a00] text-white px-2">{stock} left</span>
+          {variant.stock < 10 && (
+            <span className="absolute -bottom-2 bg-[#d17a00] text-white px-2">{variant.stock} left</span>
           )}
         </div>
       );
     },
   );
+
+  useEffect(() => {
+    if (selectedVariant) {
+      setIsOutOfStock(selectedVariant.stock === 0);
+    }
+  }, [selectedVariant]);
 
   useEffect(() => {
     fetch(`/api/products/slug/${slug}`, {
@@ -122,11 +150,10 @@ export default function ProductOverview({
             desc: product.desc,
             tags: product.tags,
             createdAt: product.createdAt,
-            updatedAt: product.updatedAt
+            updatedAt: product.updatedAt,
           });
-          setIsOutOfStock(
-            data.varients[selectedColor].sizes[selectedSize].stock === 0,
-          );
+          setSelectedColor(0);
+          setSelectedSize(0);
         } else {
           alert("Data not found")
         }
@@ -154,15 +181,10 @@ export default function ProductOverview({
         <div className="h-[100vh] w-[100vw] mt-10 flex flex-col md:flex-row justify-evenly">
           {/* Photo Privews */}
           <div className="w-[100%] md:ml-0 md:w-[45vw] flex justify-center">
-            {/* <img
-              src={productData.varients[selectedColor].imgLinks[0]}
-              alt="productImg"
-              className="rounded-lg w-[95%]"
-            /> */}
-            <ProductPreviewSlider imageData={
-              productData.varients[selectedColor].imgLinks.map((imgLink, key) => {
-                return { id: key, image: imgLink }
-              })
+              <ProductPreviewSlider imageData={
+              selectedVariant?.imgLinks?.map((imgLink: string, key: number) => {
+                return { id: key, image: imgLink };
+              }) || []
             } />
           </div>
 
@@ -184,21 +206,18 @@ export default function ProductOverview({
 
             <div className="flex flex-row items-center md:mt-5">
               <span className="line-through text-gray-400">
-                ₹ {productData.varients[selectedColor].sizes[selectedSize].mrp}
+                ₹ {selectedVariant?.mrp}
               </span>
               <h1 className="text-2xl font-semibold ml-3 mr-5">
                 ₹{" "}
-                {
-                  productData.varients[selectedColor].sizes[selectedSize]
-                    .sellingPrice
-                }
+                {selectedVariant?.sellingPrice}
               </h1>
               {/* color - #ff416e to #f48a6d */}
               <span
                 className="
                   bg-[linear-gradient(90deg_,#ff416e_0%,#f48a6d_90%)] text-white font-bold text-lg pl-2 pr-5 inline-block [clip-path:polygon(0_0,100%_0,85%_100%,0%_100%)] rounded"
               >
-                39% OFF!
+                {selectedVariant?.discountPercent?.toFixed(0)}% OFF!
               </span>
             </div>
 
@@ -211,8 +230,7 @@ export default function ProductOverview({
             <div className="flex flex-col gap-4">
               <h1 className="text-lg mt-5 font-semibold">Colors</h1>
               <div className="grid grid-cols-3 md:grid-cols-5 gap-10 px-5 w-[90%]">
-                {productData.varients.map(
-                  ({ colorID, colorName, colorCode, imgLinks, sizes }, key) => {
+                {colorGroups.map(({ imgLinks }, key) => {
                     return (
                       <div 
                         key={key} 
@@ -240,7 +258,7 @@ export default function ProductOverview({
             <div className="flex flex-col gap-4">
               <h1 className="text-lg mt-5 font-semibold">Sizes</h1>
               <div className="mx-5 w-[80vw] md:w-[40vw] grid grid-cols-3 md:grid-cols-5 gap-4">
-                {sizeListEl}
+                {selectedColorGroup.variants.length ? sizeListEl : null}
               </div>
             </div>
 

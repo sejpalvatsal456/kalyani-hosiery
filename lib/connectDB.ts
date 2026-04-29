@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+let cached = (global as any).mongoose || { conn: null, promise: null };
+
 export const connectDB = async() => {
     const MONGODB_URI = process.env.MONGODB_URI as string;
     const MONGODB_NAME = process.env.MONGODB_NAME as string;
@@ -7,13 +9,22 @@ export const connectDB = async() => {
     if (!MONGODB_NAME || !MONGODB_URI) {
         throw Error("Failed to fetch DB configs.")
     }
+    if (cached.conn) {
+        return cached.conn; // ✅ already connected
+    }
 
-    await mongoose.connect(MONGODB_URI, { dbName: MONGODB_NAME, bufferCommands: false })
-        .then(() => {
-            console.log("DB is connected successfully");
-        })
-        .catch(err => {
-            throw Error("Error in DB connection: " + err);
-        })
+    if (!cached.promise) {
+        cached.promise = mongoose.connect(MONGODB_URI, { dbName: MONGODB_NAME, bufferCommands: false })
+        
+    }
+
+    cached.conn = await cached.promise
+    .then(() => {
+        console.log("DB is connected successfully");
+    })
+    .catch((err:any) => {
+        throw Error("Error in DB connection: " + err);
+    });
+    return cached.conn;
 
 }

@@ -73,9 +73,8 @@ export const POST = async (req: NextRequest) => {
           const existsInTransaction = transaction.items.some((tItem: any) => {
             return (
               tItem.productId.toString() === cartItem.productId.toString() &&
-              tItem.colorId === cartItem.colorId &&
-              tItem.sizeId === cartItem.sizeId &&
-              tItem.sku === cartItem.sku
+              (tItem.sku === cartItem.sku ||
+                (tItem.colorId === cartItem.colorId && tItem.sizeId === cartItem.sizeId))
             );
           });
 
@@ -94,12 +93,23 @@ export const POST = async (req: NextRequest) => {
       );
 
       response.cookies.delete("orderId");
-
-      const order = Order.create({
+      console.log(transaction);
+      console.log("Order Details: ");
+      console.log({
         userId: user._id,
         items: transaction.items,
         shippingAddress: user.address,
         paymentStatus: "paid",
+        totalAmount: transaction.amount,
+        orderStatus: "placed"
+      })
+
+      const order = await Order.create({
+        userId: user._id,
+        items: transaction.items,
+        shippingAddress: user.address,
+        paymentStatus: "paid",
+        totalAmount: transaction.amount,
         orderStatus: "placed"
       });
 

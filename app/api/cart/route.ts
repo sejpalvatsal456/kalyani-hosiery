@@ -35,26 +35,28 @@ export async function GET(req: NextRequest) {
       console.log(product);
 
       const selectedVarient = product.varients.find(
-        (v: any) => v.colorID === item.colorId,
+        (v: any) => v.sku === item.sku
+      ) || product.varients.find(
+        (v: any) => v.colorID === item.colorId && v.sizes?.some((s: any) => s.sizeID === item.sizeId)
       );
 
-      const selectedSize = selectedVarient?.sizes.find(
-        (s: any) => s.sizeID === item.sizeId,
-      );
+      const selectedSize = selectedVarient?.sizes
+        ? selectedVarient.sizes.find((s: any) => s.sizeID === item.sizeId)
+        : undefined;
 
       return {
         productId: product._id,
         brand: product.brandId.brandName,
         title: product.productName,
         thumbnail: product.thumbnail,
-        color: selectedVarient?.colorCode,
-        colorId: selectedVarient?.colorID,
-        size: selectedSize?.sizeName,
-        sizeId: selectedSize?.sizeID,
-        mrp: selectedSize?.mrp,
-        sellingPrice: selectedSize?.sellingPrice,
-        sku: selectedSize?.sku,
-        stock: selectedSize?.stock,
+        color: selectedVarient?.colorCode ?? item.colorId,
+        colorId: item.colorId,
+        size: selectedVarient?.sizeName ?? selectedSize?.sizeName,
+        sizeId: item.sizeId,
+        mrp: selectedVarient?.mrp ?? selectedSize?.mrp,
+        sellingPrice: selectedVarient?.sellingPrice ?? selectedSize?.sellingPrice,
+        sku: selectedVarient?.sku ?? item.sku,
+        stock: selectedVarient?.stock ?? selectedSize?.stock,
         quantity: item.quantity, // Add quantity in cart schema later
       };
     });
@@ -76,7 +78,7 @@ export const PUT = async (req: NextRequest) => {
     const { userId, prodId, colorId, sizeId, sku } = await req.json();
 
     // 🔍 Validate input
-    if (!userId || !prodId || !colorId || !sizeId || !sku) {
+    if (!userId || !prodId || !sku) {
       return NextResponse.json(
         { msg: "Missing required fields" },
         { status: 400 }
@@ -92,6 +94,12 @@ export const PUT = async (req: NextRequest) => {
       );
     }
 
+    // 🔍 Attempt to resolve the variant by SKU for any missing legacy fields
+    const product = await Product.findById(prodId);
+    const selectedVarient = product?.varients.find((v: any) => v.sku === sku);
+    const resolvedColorId = colorId || selectedVarient?.colorID || selectedVarient?.colorCode || "";
+    const resolvedSizeId = sizeId || selectedVarient?.sizeID || selectedVarient?.sizeName || "";
+
     /**
      * 🔥 STEP 1: Try to update existing cart item (ATOMIC)
      *
@@ -102,8 +110,7 @@ export const PUT = async (req: NextRequest) => {
       {
         _id: userId,
         "cart.productId": prodId,
-        "cart.colorId": colorId,
-        "cart.sizeId": sizeId,
+        "cart.sku": sku,
       },
       {
         $inc: { "cart.$.quantity": 1 }, // ✅ atomic increment
@@ -120,8 +127,8 @@ export const PUT = async (req: NextRequest) => {
           $push: {
             cart: {
               productId: prodId,
-              colorId,
-              sizeId,
+              colorId: resolvedColorId,
+              sizeId: resolvedSizeId,
               sku,
               quantity: 1, // ✅ default quantity
             },
@@ -160,7 +167,7 @@ export const DELETE = async (req: NextRequest) => {
   try {
     await connectDB();
 
-    const { productId } = await req.json();
+    const { productId, sku } = await req.json();
 
     if (!productId) {
       return NextResponse.json(
@@ -182,9 +189,9 @@ export const DELETE = async (req: NextRequest) => {
       userId,
       {
         $pull: {
-          cart: {
-            productId
-          },
+          cart: sku
+            ? { productId, sku }
+            : { productId },
         },
       },
       { new: true },
