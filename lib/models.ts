@@ -201,6 +201,45 @@ checkoutSessionSchema.index(
   { expireAfterSeconds: 0 }
 );
 
+const MediaSchema = new Schema(
+  {
+    name: String,
+    url: String,
+    key: String,
+    size: Number,
+    type: String,
+
+    // ✅ NEW FIELDS
+    category: {
+      type: String,
+      enum: ["media", "reel", "banner"],
+      default: "media",
+    },
+
+    slot: {
+      type: String,
+      default: null,
+    },
+
+    variant: {
+      type: String,
+      enum: ["carousel", "single"],
+      default: null,
+    },
+
+    order: {
+      type: Number,
+      default: 0,
+    },
+
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  { timestamps: true }
+);
+
 export const Brand = models.Brand || model("Brand", BrandSchema);
 export const Category = models.Category || model("Category", CategorySchema);
 export const Subcategory =
@@ -211,3 +250,4 @@ export const Transaction =
   models.Transaction || model("Transaction", TransactionSchema);
 export const Order = models.Order || model("Order", OrderSchema);
 export const CheckoutSession = models.CheckoutSession || model("CheckoutSession", checkoutSessionSchema);
+export const Media = models.Media || model("Media", MediaSchema) ;

@@ -36,41 +36,20 @@ export interface ReelItem {
   thumbnail?: string;
 }
 
-const banners = [
-  {
-    id: 1,
-    image:
-      "https://infashionbusiness.com/admin_assets/images/products/infashion-1724920175.jpeg",
-    title: "Highlander",
-    subtitle: "",
-    cta: "",
-  },
-  {
-    id: 2,
-    image:
-      "https://img.freepik.com/free-vector/fashion-template-design_23-2150368863.jpg?semt=ais_user_personalization&w=740&q=80",
-    title: "Adidas Originals",
-    subtitle: "",
-    cta: "",
-  },
-  {
-    id: 3,
-    image:
-      "https://d3jmn01ri1fzgl.cloudfront.net/photoadking/webp_thumbnail/shark-new-collection-sale-clothing-banner-template-p3ztild89dffd0.webp",
-    title: "Puma Sports Collection",
-    subtitle: "Buy 1 Get 1 Free",
-    cta: "Grab Deal",
-  },
-];
+interface BannerItem {
+  _id: string;
+  url: string;
+  slot: string;
+  order: number;
+  variant: "carousel" | "single";
+}
 
-const reels: ReelItem[] = [
-  { id: "1", videoUrl: "/reels1.mp4" },
-  { id: "2", videoUrl: "/reels2.mp4" },
-  { id: "3", videoUrl: "/reels1.mp4" },
-  { id: "4", videoUrl: "/reels2.mp4" },
-  { id: "5", videoUrl: "/reels1.mp4" },
-  { id: "6", videoUrl: "/reels2.mp4" },
-];
+interface BannerResponse {
+  [key: string]: {
+    variant: "carousel" | "single";
+    items: BannerItem[];
+  };
+}
 
 export default function Home() {
   const router = useRouter();
@@ -83,6 +62,9 @@ export default function Home() {
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [search, setSearch] = useState<string>("");
   const [user, setUser] = useState<IUser | null>(null);
+  const [banners, setBanners] = useState<BannerResponse | null>(null);
+
+  const [reels, setReels] = useState<ReelItem[]>([]);
 
   // Fetch the brand data
 
@@ -93,7 +75,7 @@ export default function Home() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("Brand data from API: ")
+        console.log("Brand data from API: ");
         console.log(data);
         setBrands(data);
       })
@@ -104,19 +86,42 @@ export default function Home() {
     /// Kids - #fcb6b6
     // Sales - #fcecb6
 
-    fetch('/api/categories/', {
+    fetch("/api/categories/", {
       method: "GET",
-      headers: { "Content-Type": "application/json" }
+      headers: { "Content-Type": "application/json" },
     })
-    .then(res => res.json())
-    .then(data => {
-      console.log("Category Data from API: ");
-      console.log(data);
-      setCategories(data);
-      setPage(data[0]);
-    })
-    .catch(err => console.log(err));
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Category Data from API: ");
+        console.log(data);
+        setCategories(data);
+        setPage(data[0]);
+      })
+      .catch((err) => console.log(err));
 
+    fetch("/api/media?type=banner")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Banner Data:");
+        console.log(data);
+
+        setBanners(data);
+      })
+      .catch((err) => console.log(err));
+
+    fetch("/api/media?type=reel")
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Reels Data:");
+        console.log(data);
+
+        const formatted = data.map((item: any) => ({
+          id: item._id,
+          videoUrl: item.url,
+        }));
+        setReels(formatted);
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   // Dev only - Fetch the categories data as per page state
@@ -127,16 +132,15 @@ export default function Home() {
       .then((res) => res.json())
       .then((data) => {
         console.log("Subcategory Data from API:");
-        console.log(data)
+        console.log(data);
         setSubcategories(data);
       })
       .catch((err) => console.log(err));
-
   }, [page]);
 
   useEffect(() => {
     console.log(subcategories);
-  }, [subcategories])
+  }, [subcategories]);
 
   // Dev only category data as per page state
 
@@ -569,12 +573,24 @@ export default function Home() {
       {/* Banner Slider */}
 
       <div className="md:p-6 px-2 py-3 md:mt-5 flex justify-center">
-        <BannerSlider banners={banners} />
+        {banners?.hero?.items?.length ? (
+          <BannerSlider
+            banners={banners.hero.items.map((item, index) => ({
+              id: index + 1,
+              image: item.url,
+              title: "",
+              subtitle: "",
+              cta: "",
+            }))}
+          />
+        ) : null}
       </div>
 
       {/* Banner 2 */}
       <div className="md:p-6 px-6 md:mt-10 flex justify-center">
-        <SingleBanner banner="https://assets.myntassets.com/w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2026/FEBRUARY/26/VUKUZgUj_b4dda5139af545218f9aea110ab7b12e.jpg" />
+        {banners?.mid1?.items?.[0]?.url && (
+          <SingleBanner banner={banners.mid1.items[0].url} />
+        )}
       </div>
 
       <div className="max-w-7xl mt-3 mx-auto md:mt-10">
@@ -587,7 +603,7 @@ export default function Home() {
             <img
               src={brand.brandLogo}
               alt={brand.brandName}
-              onClick={e => router.push("/search?brand=" + brand.brandName)}
+              onClick={(e) => router.push("/search?brand=" + brand.brandName)}
               className="w-20 h-20 md:w-40 md:h-40 object-contain rounded-lg transition shadow-xl cursor-pointer"
             />
           )}
@@ -596,7 +612,9 @@ export default function Home() {
 
       {/* Banner 3 */}
       <div className="md:p-6 px-6 md:mt-10 flex justify-center">
-        <SingleBanner banner="https://assets.myntassets.com/w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2026/FEBRUARY/26/lrGEWYY7_6e08d485e91a4fd8b3a0751379af9720.jpg" />
+        {banners?.mid2?.items?.[0]?.url && (
+          <SingleBanner banner={banners.mid2.items[0].url} />
+        )}
       </div>
 
       {/* Cateogries */}
@@ -607,7 +625,9 @@ export default function Home() {
 
       {/* Banner 4 */}
       <div className="md:p-6 px-6 md:mt-10 flex justify-center">
-        <SingleBanner banner="https://assets.myntassets.com/w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2026/FEBRUARY/26/VUKUZgUj_b4dda5139af545218f9aea110ab7b12e.jpg" />
+        {banners?.mid3?.items?.[0]?.url && (
+          <SingleBanner banner={banners.mid3.items[0].url} />
+        )}
       </div>
 
       <div className="max-w-7xl mt-3 mx-auto md:mt-10">
@@ -640,7 +660,16 @@ export default function Home() {
       </h1>
 
       {/* Reels Section */}
-      <ReelsSlider reels={reels} />
+      <ReelsSlider
+        reels={[
+          { id: "1", videoUrl: "https://d1ho0zjs4a519l.cloudfront.net/reels/general/217af872-8a61-4980-8933-9e7ab76053c3-reels1.mp4" },
+          { id: "2", videoUrl: "/reels2.mp4" },
+          { id: "3", videoUrl: "https://d1ho0zjs4a519l.cloudfront.net/reels/general/217af872-8a61-4980-8933-9e7ab76053c3-reels1.mp4" },
+          { id: "4", videoUrl: "/reels2.mp4" },
+          { id: "5", videoUrl: "https://d1ho0zjs4a519l.cloudfront.net/reels/general/217af872-8a61-4980-8933-9e7ab76053c3-reels1.mp4" },
+          { id: "6", videoUrl: "/reels2.mp4" },
+        ]}
+      />
 
       {/* Address Section */}
 
