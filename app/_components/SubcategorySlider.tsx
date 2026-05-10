@@ -17,19 +17,17 @@ export default function CategorySlider(
         {subCats.map((cat, index) => (
           <div
             key={index}
-            className="w-20 h-[90px] rounded-xl p-2 bg-gradient-to-b from-[#f7ecd8] to-[#edd5e5] flex flex-col justify-between"
+            className="w-20 md:w-30 h-[90px] md:h-[130px] rounded-xl p-2 bg-gradient-to-b from-[#f7ecd8] to-[#edd5e5] flex flex-col justify-between"
           >
             <p className="text-xs font-medium text-gray-700">
               {cat.name} <span></span>
             </p>
 
-            <div onClick={e => router.push("/search?subcategory="+cat.slug)} className="h-[60px] flex justify-center items-end h-full cursor-pointer">
-              <Image
+            <div onClick={e => router.push("/search?subcategory="+cat.slug)} className="h-[60px] md:h-[90px] flex justify-center items-end h-full cursor-pointer">
+              <img
                 src={cat.logoLink}
                 alt={cat.name}
-                width={55}
-                height={55}
-                className="object-contain"
+                className="h-15 md:h-25"
               />
             </div>
           </div>

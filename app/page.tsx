@@ -112,14 +112,30 @@ export default function Home() {
     fetch("/api/media?type=reel")
       .then((res) => res.json())
       .then((data) => {
-        // console.log("Reels Data:");
-        // console.log(data);
-
-        const formatted = data.map((item: any) => ({
+        const formatted: ReelItem[] = data.map((item: any) => ({
           id: item._id,
           videoUrl: item.url,
         }));
-        setReels(formatted);
+
+        // Ensure at least 6 reels
+        const minimumReels = 6;
+        let finalReels = [...formatted];
+
+        if (formatted.length > 0 && formatted.length < minimumReels) {
+          let index = 0;
+
+          while (finalReels.length < minimumReels) {
+            finalReels.push({
+              ...formatted[index % formatted.length],
+              // unique id for React keys
+              id: `${formatted[index % formatted.length].id}-${finalReels.length}`,
+            });
+
+            index++;
+          }
+        }
+
+        setReels(finalReels);
       })
       .catch((err) => console.log(err));
   }, []);
@@ -660,16 +676,11 @@ export default function Home() {
       </h1>
 
       {/* Reels Section */}
-      <ReelsSlider
-        reels={[
-          { id: "1", videoUrl: "https://d1ho0zjs4a519l.cloudfront.net/reels/general/217af872-8a61-4980-8933-9e7ab76053c3-reels1.mp4" },
-          { id: "2", videoUrl: "/reels2.mp4" },
-          { id: "3", videoUrl: "https://d1ho0zjs4a519l.cloudfront.net/reels/general/217af872-8a61-4980-8933-9e7ab76053c3-reels1.mp4" },
-          { id: "4", videoUrl: "/reels2.mp4" },
-          { id: "5", videoUrl: "https://d1ho0zjs4a519l.cloudfront.net/reels/general/217af872-8a61-4980-8933-9e7ab76053c3-reels1.mp4" },
-          { id: "6", videoUrl: "/reels2.mp4" },
-        ]}
-      />
+      {reels.length > 0 && (
+        <ReelsSlider
+          reels={reels}
+        />
+      )}
 
       {/* Address Section */}
 
