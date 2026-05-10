@@ -75,8 +75,8 @@ export default function Home() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("Brand data from API: ");
-        console.log(data);
+        // console.log("Brand data from API: ");
+        // console.log(data);
         setBrands(data);
       })
       .catch((err) => console.log(err));
@@ -92,8 +92,8 @@ export default function Home() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("Category Data from API: ");
-        console.log(data);
+        // console.log("Category Data from API: ");
+        // console.log(data);
         setCategories(data);
         setPage(data[0]);
       })
@@ -112,8 +112,8 @@ export default function Home() {
     fetch("/api/media?type=reel")
       .then((res) => res.json())
       .then((data) => {
-        console.log("Reels Data:");
-        console.log(data);
+        // console.log("Reels Data:");
+        // console.log(data);
 
         const formatted = data.map((item: any) => ({
           id: item._id,
@@ -588,8 +588,8 @@ export default function Home() {
 
       {/* Banner 2 */}
       <div className="md:p-6 px-6 md:mt-10 flex justify-center">
-        {banners?.mid1?.items?.[0]?.url && (
-          <SingleBanner banner={banners.mid1.items[0].url} />
+        {banners?.promo1.items[0].url && (
+          <SingleBanner banner={banners.promo1.items[0].url} />
         )}
       </div>
 
@@ -612,8 +612,8 @@ export default function Home() {
 
       {/* Banner 3 */}
       <div className="md:p-6 px-6 md:mt-10 flex justify-center">
-        {banners?.mid2?.items?.[0]?.url && (
-          <SingleBanner banner={banners.mid2.items[0].url} />
+        {banners?.promo2.items[0].url && (
+          <SingleBanner banner={banners.promo2.items[0].url} />
         )}
       </div>
 
@@ -625,8 +625,8 @@ export default function Home() {
 
       {/* Banner 4 */}
       <div className="md:p-6 px-6 md:mt-10 flex justify-center">
-        {banners?.mid3?.items?.[0]?.url && (
-          <SingleBanner banner={banners.mid3.items[0].url} />
+        {banners?.promo3.items[0].url && (
+          <SingleBanner banner={banners.promo3.items[0].url} />
         )}
       </div>
 

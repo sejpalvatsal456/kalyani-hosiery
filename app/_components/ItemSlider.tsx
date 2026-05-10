@@ -37,7 +37,7 @@ export default function ItemSlider<T>({
   }, [items.length, visibleItems]);
 
   return (
-    <div className="w-full overflow-hidden md:py-10">
+    <div className="w-full overflow-hidden md:py-5">
       <div
         className="flex transition-transform duration-500 ease-in-out"
         style={{
