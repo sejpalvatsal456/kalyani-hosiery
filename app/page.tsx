@@ -587,13 +587,13 @@ export default function Home() {
       </div>
 
       {/* Banner 2 */}
-      <div className="md:p-6 px-6 md:mt-10 flex justify-center">
+      <div className="md:p-6 px-6 md:mt-0 flex justify-center">
         {banners?.promo1.items[0].url && (
           <SingleBanner banner={banners.promo1.items[0].url} />
         )}
       </div>
 
-      <div className="max-w-7xl mt-3 mx-auto md:mt-10">
+      <div className="max-w-7xl mt-3 mx-auto md:mt-0">
         {/* <FiveItemSlider brands={brands} /> */}
         <ItemSlider
           items={brands}
@@ -604,14 +604,14 @@ export default function Home() {
               src={brand.brandLogo}
               alt={brand.brandName}
               onClick={(e) => router.push("/search?brand=" + brand.brandName)}
-              className="w-20 h-20 md:w-40 md:h-40 object-contain rounded-lg transition shadow-xl cursor-pointer"
+              className="w-20 h-20 md:w-30 md:h-30 object-contain rounded-lg transition shadow-xl cursor-pointer"
             />
           )}
         />
       </div>
 
       {/* Banner 3 */}
-      <div className="md:p-6 px-6 md:mt-10 flex justify-center">
+      <div className="md:p-6 px-6 md:mt-0 flex justify-center">
         {banners?.promo2.items[0].url && (
           <SingleBanner banner={banners.promo2.items[0].url} />
         )}
@@ -619,18 +619,18 @@ export default function Home() {
 
       {/* Cateogries */}
 
-      <div className="md:mt-10">
+      <div className="md:mt-0">
         <SubcategorySlider subCats={subcategories || []} />
       </div>
 
       {/* Banner 4 */}
-      <div className="md:p-6 px-6 md:mt-10 flex justify-center">
+      <div className="md:p-6 px-6 md:mt-0 flex justify-center">
         {banners?.promo3.items[0].url && (
           <SingleBanner banner={banners.promo3.items[0].url} />
         )}
       </div>
 
-      <div className="max-w-7xl mt-3 mx-auto md:mt-10">
+      <div className="max-w-7xl mt-3 mx-auto md:mt-0">
         {/* <FiveItemSlider brands={brands} /> */}
         <ItemSlider
           items={salesProduct}
@@ -649,7 +649,7 @@ export default function Home() {
       </div>
 
       {/* Banner 5 */}
-      <div className="md:p-6 px-6 md:mt-10 flex justify-center">
+      <div className="md:p-6 px-6 md:mt-0 flex justify-center">
         <SingleBanner banner="https://assets.myntassets.com/w_980,c_limit,fl_progressive,dpr_2.0/assets/images/2026/FEBRUARY/26/VUKUZgUj_b4dda5139af545218f9aea110ab7b12e.jpg" />
       </div>
 
