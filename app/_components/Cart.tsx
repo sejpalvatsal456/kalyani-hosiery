@@ -129,8 +129,6 @@ export default function Cart() {
     setIsLoading(false);
   };
 
-  // FIXME: Update the logic
-
   useEffect(() => {
     fetch("/api/auth/me", {
       method: "GET",
