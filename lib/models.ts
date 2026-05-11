@@ -17,8 +17,6 @@ const AddressSchema = new Schema(
 const CartSchema = new Schema(
   {
     productId: { type: Types.ObjectId, ref: "Product", required: true },
-    colorId: { type: String, required: true },
-    sizeId: { type: String, required: true },
     sku: { type: String, required: true },
     quantity: { type: Number, required: true, min: 1 },
   },

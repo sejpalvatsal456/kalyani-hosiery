@@ -7,17 +7,16 @@ import { IDisplayProduct, IProduct, IUser } from "@/lib/typeDefinitions";
 import BannerSlider from "./BannerSlider";
 import ProductPreviewSlider from "./ProductPreviewSlider";
 import toast, { Toaster } from "react-hot-toast";
+import { IoBagHandleOutline, IoBagOutline } from "react-icons/io5";
+import { TbTruckDelivery } from "react-icons/tb";
+import { Banknote, RefreshCcw } from "lucide-react";
 
 const getDiscount = (mrp: number, price: number) => {
   const discount = ((mrp - price) / mrp) * 100;
   return Math.round(discount);
 };
 
-export default function ProductOverview({
-  slug,
-}: {
-  slug: string;
-}) {
+export default function ProductOverview({ slug }: { slug: string }) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -25,7 +24,7 @@ export default function ProductOverview({
   const [search, setSearch] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<number>(0);
   const [selectedSize, setSelectedSize] = useState<number>(0);
-  const [user, setUser] = useState<IUser|null>(null);
+  const [user, setUser] = useState<IUser | null>(null);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isOutOfStock, setIsOutOfStock] = useState<boolean>(false);
@@ -62,12 +61,12 @@ export default function ProductOverview({
 
   const handleClick = () => {
     setIsLoading(true);
-    if(!user) {
+    if (!user) {
       setIsLoading(false);
       router.push(`/auth/login?callbackUrl=${encodeURIComponent(pathname)}`);
       return;
     }
-    if(!productData || !selectedVariant) {
+    if (!productData || !selectedVariant) {
       setIsLoading(false);
       return;
     }
@@ -80,16 +79,74 @@ export default function ProductOverview({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ userId: user._id, prodId: prodId, sku }),
     })
-    .then(res => res.json())
-    .then(data => {
-      setUser({...user, cart: data.newCart});
-    })
-    .catch(err => {
-      console.log(err);
-      toast.error("Failed to add in cart.")
-    });
+      .then((res) => res.json())
+      .then((data) => {
+        setUser({ ...user, cart: data.newCart });
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Failed to add in cart.");
+      });
     setIsLoading(false);
     toast.success("Added In Cart Successful");
+  };
+
+  const handleBuyNow = async () => {
+    setIsLoading(true);
+    if (!user) {
+      setIsLoading(false);
+      router.push(`/auth/login?callbackUrl=${encodeURIComponent(pathname)}`);
+      return;
+    }
+    if (!productData || !selectedVariant) {
+      setIsLoading(false);
+      return;
+    }
+
+    const prodId = productData._id;
+    const sku = selectedVariant.sku;
+    console.log(productData);
+    /*
+    productId: item.productId,
+    color: item.color,
+    colorId: item.colorId,
+    size: item.size,
+    sizeId: item.sizeId,
+    sku: item.sku,
+    price: item.sellingPrice,
+    quantity: item.quantity,
+    */
+    const items = {
+      productId: productData._id,
+      color: selectedVariant.colorName,
+      size: selectedVariant.sizeName,
+      sku: selectedVariant.sku,
+      price: selectedVariant.sellingPrice,
+      quantity: 1,
+    };
+    console.log(items);
+
+    const res = await fetch("/api/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ items: items }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.msg);
+      return;
+    }
+
+    if (!user.address) {
+      router.push("/addAddress/");
+      return;
+    }
+
+    router.push("/checkout/");
+
+    setIsLoading(false);
   };
 
   const sizeListEl = selectedColorGroup.variants.map(
@@ -100,14 +157,12 @@ export default function ProductOverview({
           className="relative flex flex-col items-center"
           onClick={() => {
             setSelectedSize(key);
-            setIsOutOfStock(
-              selectedColorGroup.variants[key]?.stock === 0,
-            );
+            setIsOutOfStock(selectedColorGroup.variants[key]?.stock === 0);
           }}
         >
           <button
             className={
-              "border-1 block rounded-full border-gray-300 font-medium cursor-pointer text-xl w-15 h-15 " +
+              "border-1 block rounded-xl border-gray-300 font-medium cursor-pointer text-md w-15 h-15 " +
               (selectedSize == key ? `border-none bg-[#fc2167] text-white` : "")
             }
           >
@@ -115,7 +170,9 @@ export default function ProductOverview({
           </button>
           {/* Color - #d17a00 */}
           {variant.stock < 10 && (
-            <span className="absolute -bottom-2 bg-[#d17a00] text-white px-2">{variant.stock} left</span>
+            <span className="absolute -bottom-2 bg-[#d17a00] text-white px-2">
+              {variant.stock} left
+            </span>
           )}
         </div>
       );
@@ -135,15 +192,16 @@ export default function ProductOverview({
     })
       .then((res) => res.json())
       .then((data) => {
-        if(data) {
+        if (data) {
           const product = data;
+          console.log("Product Data from API: ");
           console.log(product);
           setProductData({
             _id: product._id,
             brandId: product.brandId,
             productName: product.productName,
             slug: product.slug,
-            category: product.category,
+            category: product.categoryId.name,
             subcategory: product.subcategoryId._id,
             thumbnail: product.thumbnail,
             varients: product.varients,
@@ -155,7 +213,7 @@ export default function ProductOverview({
           setSelectedColor(0);
           setSelectedSize(0);
         } else {
-          alert("Data not found")
+          alert("Data not found");
         }
       })
       .catch((err) => {
@@ -181,11 +239,15 @@ export default function ProductOverview({
         <div className="h-[100vh] w-[100vw] mt-10 flex flex-col md:flex-row justify-evenly">
           {/* Photo Privews */}
           <div className="w-[100%] md:ml-0 md:w-[45vw] flex justify-center">
-              <ProductPreviewSlider imageData={
-              selectedVariant?.imgLinks?.map((imgLink: string, key: number) => {
-                return { id: key, image: imgLink };
-              }) || []
-            } />
+            <ProductPreviewSlider
+              imageData={
+                selectedVariant?.imgLinks?.map(
+                  (imgLink: string, key: number) => {
+                    return { id: key, image: imgLink };
+                  },
+                ) || []
+              }
+            />
           </div>
 
           {/* Product Overview */}
@@ -198,7 +260,9 @@ export default function ProductOverview({
             </span> */}
 
             <p className="inline-block md:flex md:flex-col gap-2 line-clamp-2 w-[90%]">
-              <span className="md:text-3xl text-xl font-bold">{productData.brandId.brandName}</span> {" "}
+              <span className="md:text-3xl text-xl font-bold">
+                {productData.brandId.brandName}
+              </span>{" "}
               <span className="md:text-xl text-xl text-gray-500">
                 {productData.productName}
               </span>
@@ -209,8 +273,7 @@ export default function ProductOverview({
                 ₹ {selectedVariant?.mrp}
               </span>
               <h1 className="text-2xl font-semibold ml-3 mr-5">
-                ₹{" "}
-                {selectedVariant?.sellingPrice}
+                ₹ {selectedVariant?.sellingPrice}
               </h1>
               {/* color - #ff416e to #f48a6d */}
               <span
@@ -221,35 +284,43 @@ export default function ProductOverview({
               </span>
             </div>
 
-            <span className="text-green-600 font-bold text-md inline-block mt-3">inclusive of all taxes</span>
+            <span className="text-green-600 font-bold text-md inline-block mt-3">
+              inclusive of all taxes
+            </span>
 
             {/* Product description */}
-
 
             {/* Display colors */}
             <div className="flex flex-col gap-4">
               <h1 className="text-lg mt-5 font-semibold">Colors</h1>
               <div className="grid grid-cols-3 md:grid-cols-5 gap-10 px-5 w-[90%]">
                 {colorGroups.map(({ imgLinks }, key) => {
-                    return (
-                      <div 
-                        key={key} 
-                        className="flex flex-col rounded-lg p-0"
-                        onClick={e => {
-                          setSelectedColor(key);
-                          setSelectedSize(0);
-                        }}
-                      >
-                        <img
-                          src={imgLinks[0]}
-                          width={70}
-                          className="rounded-2xl"
-                          style={ key === selectedColor ? { borderColor: '#ff4c85', borderWidth: 2, borderBottomWidth: 10 } : {}}
-                        />
-                      </div>
-                    );
-                  },
-                )}
+                  return (
+                    <div
+                      key={key}
+                      className="flex flex-col rounded-lg p-0"
+                      onClick={(e) => {
+                        setSelectedColor(key);
+                        setSelectedSize(0);
+                      }}
+                    >
+                      <img
+                        src={imgLinks[0]}
+                        width={70}
+                        className="rounded-2xl"
+                        style={
+                          key === selectedColor
+                            ? {
+                                borderColor: "#ff4c85",
+                                borderWidth: 2,
+                                borderBottomWidth: 10,
+                              }
+                            : {}
+                        }
+                      />
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
@@ -265,41 +336,105 @@ export default function ProductOverview({
             {/* Buy Now button */}
 
             {!isOutOfStock ? (
-              <button
-                onClick={handleClick}
-                className={
-                  `mt-10 w-[80vw] md:w-140 mx-4 h-14 rounded font-semibold text-white text-xl hover:bg-white hover:text-[#fc2167] hover:border-[#fc2167] hover:border-1 transition-all duration-300s ` +
-                  (isLoading
-                    ? "bg-[#851136] cursor-not-allowed"
-                    : "bg-[#fc2167] cursor-pointer")
-                }
-                disabled={isLoading}
-              >
-                Add to Cart
-              </button>
+              <>
+                <button
+                  onClick={handleClick}
+                  className={
+                    `mt-10 w-[80vw] md:w-140 mx-4 h-14 flex justify-center items-center gap-4 rounded-xl font-semibold text-white text-xl hover:bg-white hover:text-[#fc2167] hover:border-[#fc2167] hover:border-1 transition-all duration-300s ` +
+                    (isLoading
+                      ? "bg-[#851136] cursor-not-allowed"
+                      : "bg-[#fc2167] cursor-pointer")
+                  }
+                  disabled={isLoading}
+                >
+                  <IoBagHandleOutline size={25} />
+                  Add to Cart
+                </button>
+                <button
+                  className="mt-5 w-[80vw] md:w-140 mx-4 flex justify-center items-center gap-4 h-14 bg-white rounded-xl font-semibold text-[#fc2167] text-xl border-1 cursor-pointer hover:bg-gray-100 transition-all duration-300s "
+                  onClick={handleBuyNow}
+                >
+                  <TbTruckDelivery size={25} />
+                  Buy Now
+                </button>
+              </>
             ) : (
               <button
                 disabled
-                className="mt-10 md:mt-5 w-[80vw] md:w-140 mx-4 h-14 bg-white rounded font-semibold text-[#bf1b4f] text-xl border-1 cursor-not-allowed transition-all duration-300s "
+                className="mt-10 w-[80vw] md:w-140 mx-4 h-14 bg-white rounded-xl font-semibold text-[#bf1b4f] text-xl border-1 cursor-not-allowed transition-all duration-300s "
               >
                 Out of Stock
               </button>
             )}
 
+            {/* <div className="space-y-3 mt-5 text-[#1f2937]">
+              <div className="flex items-center gap-4">
+                <div className="relative flex h-12 w-12 items-center justify-center">
+                  <Banknote className="h-9 w-9 stroke-[1.8]" />
+
+                  <div className="absolute bottom-0 right-0 flex h-5 w-5 items-center justify-center rounded-full border border-[#20c997] bg-white">
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="h-3 w-3 text-[#20c997]"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M20 6L9 17l-5-5" />
+                    </svg>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-semibold leading-none tracking-[-0.02em]">
+                    Pay on Delivery is available
+                  </h3>
+
+                  <p className="text-sm text-gray-500">
+                    ₹10 additional fee applicable
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="relative flex h-12 w-12 items-center justify-center">
+                  <RefreshCcw className="h-7 w-7 stroke-[1.8]" />
+                  <div className="absolute bottom-0 right-0 flex h-5 w-5 items-center justify-center rounded-full border border-[#20c997] bg-white">
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="h-3 w-3 text-[#20c997]"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M20 6L9 17l-5-5" />
+                    </svg>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-lg font-semibold leading-none tracking-[-0.02em]">
+                    Hassle free 7 days Return & Exchange
+                  </h3>
+                </div>
+              </div>
+            </div> */}
+
             <div className="flex flex-col gap-2">
               <h1 className="text-lg mt-5 font-semibold">Descriptions</h1>
-              <ul className="mb-10 mt-5 flex flex-col gap-3">
+              <div className="mb-10 mt-5 grid grid-cols-2 gap-5 border-1 border-gray-300 p-4 rounded-xl">
                 {productData.desc.map((pair, key) => {
                   return (
-                    <li key={key} className="text-gray-500">
-                      <span className="inline-block w-[40vw] md:w-[20vw]">
-                        {pair.key}:{" "}
-                      </span>
+                    <div key={key} className="flex flex-col text-gray-800">
+                      <span className="font-bold">{pair.key}</span>
                       <span>{pair.value}</span>
-                    </li>
+                    </div>
                   );
                 })}
-              </ul>
+              </div>
             </div>
           </div>
         </div>

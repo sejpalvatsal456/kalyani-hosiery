@@ -66,6 +66,7 @@ export default function SearchPageWrapper({
   const [user, setUser] = useState<IUser | null>(null);
 
   // Fetching the data product from API
+  console.log(`/api/products/search?q=${searchQuery}&brand=${brand}&subcategory=${subcategory}`);
   useEffect(() => {
     setIsLoading(true);
     fetch(`/api/products/search?q=${searchQuery}&brand=${brand}&subcategory=${subcategory}`, {

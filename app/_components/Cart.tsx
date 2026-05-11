@@ -1,6 +1,8 @@
-import React, { FormEvent, useEffect, useState } from 'react';
-import CartItem from './CartItem';
-import Script from 'next/script';
+import React, { FormEvent, useEffect, useState } from "react";
+import CartItem from "./CartItem";
+import Script from "next/script";
+import { IUser } from "@/lib/typeDefinitions";
+import { useRouter } from "next/navigation";
 
 type CartItemType = {
   productId: string;
@@ -19,9 +21,11 @@ type CartItemType = {
 };
 
 export default function Cart() {
+  const [user, setUser] = useState<IUser | null>(null);
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [IsLoading, setIsLoading] = useState(true);
+  const router = useRouter();
 
   const toggleSelection = (sku: string) => {
     setSelectedIds((prev) => {
@@ -77,23 +81,7 @@ export default function Cart() {
     setCartItems((prev) => prev.filter((item) => item.sku !== sku)); // ✅
   };
 
-  useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        const res = await fetch("/api/cart");
-        const data = await res.json();
-        setCartItems(data.data);
-      } catch (err) {
-        console.error("Failed to fetch cart:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchCart();
-  }, []);
-
-  const handlePlaceOrder = async(e:FormEvent) => {
+  const handlePlaceOrder = async (e: FormEvent) => {
     e.preventDefault();
 
     setIsLoading(true);
@@ -111,57 +99,97 @@ export default function Cart() {
         quantity: item.quantity,
       }));
 
-    const payload = { amount: selectedTotal, items: items };
-    console.log("Payload: ");
-    console.log(payload);
+    console.log(items);
 
-    const res = await fetch("/api/createOrder/", {
+    if (!user) {
+      router.push("/auth/login");
+      return;
+    }
+
+    const res = await fetch('/api/orders', {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify({ items: items })
     });
 
     const data = await res.json();
 
-    if (!res.ok) {
-      alert("Error in API response");
-      setIsLoading(false);
+    if(!res.ok) {
+      alert(data.msg);
       return;
     }
 
-    const redirectUrl = data?.data?.instrumentResponse?.redirectInfo?.url;
-    if (redirectUrl) window.location.href = redirectUrl;
+    if(!user.address){
+      router.push('/addAddress/');
+      return;
+    }
+
+    router.push('/checkout/');
 
     setIsLoading(false);
-    alert(`Payment of ₹${selectedTotal} initiated successfully!`);
-  }
+  };
 
-  
+  // FIXME: Update the logic
+
+  useEffect(() => {
+    fetch("/api/auth/me", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data.data);
+        setUser(data.data);
+      })
+      .catch((err) => console.log(err));
+    const fetchCart = async () => {
+      try {
+        const res = await fetch("/api/cart");
+        const data = await res.json();
+        setCartItems(data.data);
+      } catch (err) {
+        console.error("Failed to fetch cart:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCart();
+  }, []);
+
+  useEffect(() => {
+    console.log(selectedIds);
+  });
 
   if (IsLoading) return <p className="text-center mt-10">Loading...</p>;
 
   return (
-    <div className='flex h-full items-center justify-center'>
-      <Script type='text/javascript' src='https://checkout.razorpay.com/v1/checkout.js' />
+    <div className="flex h-full items-center justify-center">
+      <Script
+        type="text/javascript"
+        src="https://checkout.razorpay.com/v1/checkout.js"
+      />
       <div className="w-full md:w-[90%] h-[90%] py-5 px-3 md:px-10 border-1 border-gray-300 shadow-lg overflow-y-scroll">
         <h1 className="ml-2 md:ml-0 text-xl font-semibold">Cart</h1>
-        <div className='mt-10 ml-2 md:ml-0 flex flex-row gap-5'>
+        <div className="mt-10 ml-2 md:ml-0 flex flex-row gap-5">
           <input
             type="checkbox"
-            className='scale-[1.4]'
+            className="scale-[1.4]"
             checked={allSelected}
             onChange={toggleSelectAll}
           />
-          <span className='text-lg font-medium'>{selectedIds.size}/{cartItems.length} Selected Items</span>
+          <span className="text-lg font-medium">
+            {selectedIds.size}/{cartItems.length} Selected Items
+          </span>
         </div>
-        <div className='flex flex-col gap-10 mt-3'>
+        <div className="flex flex-col gap-10 mt-3">
           {cartItems.length === 0 && (
             <p className="text-gray-500">Your cart is empty.</p>
           )}
 
           {cartItems.map((item, key) => (
             <CartItem
-              key={item.productId}
+              key={item.sku} // ✅ IMPORTANT (not index)
               productId={item.productId}
               image={item.thumbnail}
               brand={item.brand}
@@ -171,12 +199,10 @@ export default function Cart() {
               quantity={item.quantity}
               price={item.sellingPrice ?? 0}
               originalPrice={item.mrp ?? 0}
-              isSelected={selectedIds.has(item.productId)}
-              onSelect={() => toggleSelection(item.productId)}
-              onQuantityChange={(qty) =>
-                updateQuantity(item.productId, qty)
-              }
-              onDeleteItem={onDeleteItem}
+              isSelected={selectedIds.has(item.sku)} // ✅
+              onSelect={() => toggleSelection(item.sku)} // ✅
+              onQuantityChange={(qty) => updateQuantity(item.sku, qty)} // fix below
+              onDeleteItem={() => onDeleteItem(item.sku)} // fix below
             />
           ))}
         </div>
@@ -191,5 +217,5 @@ export default function Cart() {
         </button>
       </div>
     </div>
-  )
+  );
 }

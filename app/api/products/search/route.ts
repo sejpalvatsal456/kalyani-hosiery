@@ -64,9 +64,12 @@ export async function GET(req: Request) {
   }
 
   // 📂 Subcategory filter
+  console.log("subcategorySlug: " + subcategorySlug);
   if (subcategorySlug) {
     const subcategory = await Subcategory.findOne({ slug: subcategorySlug }).select("_id");
+    console.log("subcategory: " + subcategory);
     if (subcategory?._id) {
+
       query.subcategoryId = subcategory._id;
     } else {
       return NextResponse.json({ products: [], total: 0 });

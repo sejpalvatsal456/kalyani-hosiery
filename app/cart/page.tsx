@@ -107,7 +107,7 @@ export default function CartPage() {
         quantity: item.quantity,
       }));
 
-     if(!user){
+    if(!user){
       router.push('/auth/login');
       return;
     }
